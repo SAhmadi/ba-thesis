@@ -1,0 +1,8 @@
+image: $CI_REGISTRY/cn-tsn/general/templates/latex
+
+pdf:
+  script:
+    - latexmk
+  artifacts:
+    paths:
+      - master.pdf
