@@ -1,17 +1,36 @@
 \chapter{Einleitung}
 
 \section{Motivation}
-This is the introduction; In general, each chapter should be
-contained in another file. If you want to quote something, do it like
-this:~\cite{Cavin2002a}.
+%This is the introduction; In general, each chapter should be
+%contained in another file. If you want to quote something, do it like
+%this:~\cite{Cavin2002a}.
+Bei der Korrektur von Studentenabgaben neigt man als Korrektor schnell dazu den Quellcode
+sofort zu kompiliert und auszuführen, da dadurch bereits ein sehr aussagekräftiger Eindruck
+über die Qualität der Abgabe ersichtlich wird. Jedoch bringt das Ausführen von fremden und ungeprüften Programmen einige Gefahren mit sich.
+Es können Sicherheitslücken der Java Virtual-Machine (JVM)
+oder des eigenen Systems ausgenutzt werden, wodurch Schadprogramme eingeschleust werden können.
+Um dies zu verhindern, kann man das Programm in einer isolierten Umgebung laufen lassen.
+Das manuelle Aufsetzen einer Virtual Machine (VM) auf dem eigenen Computer benötigt relativ
+viele Ressourcen und ist zugleich auch sehr aufwendig nur um ein kleines Programm auszuführen.
+Ein Ausweichen auf traditionelle, externe Dienste von Public Cloud Providern haben den Nachteil,
+dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
+auch wenn der Dienst nicht genutzt wird.
+Man muss sie selbst auf Sicherheitslücken prüfen und verwalten.
+Eine effizientere Lösung wäre eine serverlose Anwendung.
+Das Konzept des Serverless-Computing beinhaltet das Entwickeln und Bereitstellen
+von skalierbaren Anwendungen ohne komplexe Serververwaltung. Zusätzlich gilt,
+dass nur der eigentliche Verbrauch in Zahlung gestellt werden soll.
+Dafür bieten Cloud Provider Dienste an, welche von ihnen selbst verwaltet werden,
+sodass sich Entwickler nur auf die Implementierung ihrer Anwendungen konzentrieren müssen.
+
+TODO: Wie 'Java Virtual-Machine' schreiben (siehe Oracle)\\
+TODO: Verlinken von offizieller Oracle JVM Website
+
 
 \section{Überblick der Arbeit}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+1. Ziel der Arbeit formulieren:\\
+-- Erstellen einer App zur sicheren Ausführung von Studentenabgaben\\
+-- Erstellen eines Frontends (Code Editors), um den Studenten die Abgabe zu erleichtern\\
+-- Maybe: Einbinden in MOPS. Darauf eingehen, dass MOPS (Java/Spring) != Python/Flask.
+Parser bauen der Thymeleaf nach Jinja übersetzt\\
+-- Kurz auf die Gliederung der Arbeit eingehen und Kapitel **kurz** erklären\\
