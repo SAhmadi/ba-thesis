@@ -13,32 +13,43 @@ TODO: Zitieren von Martin Fowler\\
 TODO: Zitieren von 'What Is Serverless?' by John Chapin, Mike Roberts\\
 
 
-\subsection{Function as a Service}
+\section{Function as a Service}
 1. Erklären von FaaS\\
 -- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
 -- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
 
 
-\subsection{Backend as a Service}
-TODO: REMOVE?
+\section{Serverless Containers und VMs}
+\subsection{Containers}
+1. Erlkären von Linux Containers\\
+-- Verpacken und isolieren von Software in einer produktionsreifen Laufzeitumgebung\\
+-- Erleichtert das Entwickeln auf unterschiedlichen Systemen und Umgebungen\\
+-- Keine vollständige Isolation\\
+-- Host und Container können sich Ressourcen teilen\\
+-- Relative ressourcenarm\\
 
-\subsection{Serverless Containers}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\subsection{Virtual Machines}
+2. Erklären von VMs\\
+-- Abstraktion der Hardware\\
+-- Emulieren eines Betriebssystems\\
+-- Machine kann mehrer Betriebssysteme laufen\\
+-- Isolation vom Hostsystem\\
+-- Ressourcenintensiv\\
+
+\subsection{Google gVisor}
+-- Applikationskernel für Container in Golang\\
+-- Implementiert viele des Linux kernel interfaces\\
+-- Fängt SystemCalls ab und gibt sich als GuestKernel aus\\
+TODO: siehe gVisor Doku und Whitepapers\\
 
 
+\subsection{AWS Firecracker}
+-- Benutzt KVM (Kernel-based Virtaul Machine, ähnlich sVMs)\\
+TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
 
 \section{Eigenschaften serverlosen Architekturen}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+-- Eigenschaften auflisten
+-- Skalierbar
+-- Kosten pro eigentlichem Verbraucht
+-- keine komplexe Verwaltung (managed Services)
+-- Beispiele auflisten
