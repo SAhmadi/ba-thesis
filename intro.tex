@@ -18,37 +18,38 @@ Das Ausweichen auf traditionelle, externe Dienste von Public Cloud Providern hat
 dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
 auch wenn der Dienst nicht genutzt wird. Außerdem muss man im Vorhinein grob die Auslastung
 abschätzen, um den Server passend zu provisionieren.
-Man muss sie selbst auf Sicherheitslücken prüfen und verwalten.
+Man muss den Server selbst auf Sicherheitslücken prüfen und verwalten.
 Effizienter wäre es das Programm, mithilfe einer serverlosen Anwendung, in einer sicheren Umgebung auszuführen.
 Das Konzept des Serverless-Computing beinhaltet das Entwickeln und Bereitstellen
-von skalierbaren Anwendungen ohne komplexe Serververwaltung.
-Außerdem wird auch nur der eigentliche Verbrauch der Anwendung in Zahlung gestellt (Vgl. \cite{CioGov}).
-Dafür bieten Cloud Provider Dienste an, welche von ihnen selbst verwaltet werden,
-sodass sich Entwickler nur auf die Implementierung ihrer Anwendungen konzentrieren müssen
-
+von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
+in Zahlung gestellt wird (Vgl. \cite{CioGov}).
+Dafür bieten Public Cloud Provider Dienste an, welche sie selbst verwalten
 \footnote{
-  Einige Serverless-Services der drei großen Public Cloud Provider\\
-  {\url{https://aws.amazon.com/de/lambda/}},\\
-  {\url{https://azure.microsoft.com/de-de/services/functions/}}\\
-  {\url{https://cloud.google.com/run?hl=de}}
-}
-
-Bei vielen Services der Public Cloud Provider, gilt zusätzlich dass nur der eigentliche Verbrauch in Zahlung gestellt wird.
-Korrektoren können dadurch die Studentenabgaben sicher ausführen und testen.
-Gleichzeitig stehen den Studenten eine einheitliche und verwaltungslose Platform zurverfügung,
-womit sie ihre Aufgaben lösen können.
-
-%TODO: Wie 'Java Virtual-Machine' schreiben (siehe Oracle)\\
-%TODO: Verlinken von offizieller Oracle JVM Website\\
-%TODO: Self-Hosted Kubernetes Aspekt einbringen
-%TODO: Verlinken von OpenFaaS und Fn-Project
-
+  Gängige serverlose Dienste zum Beispiel: {\url{https://aws.amazon.com/de/lambda/}},\\{\url{https://cloud.google.com/run?hl=de}}
+}.
+Korrektoren können dadurch ihre Studentenabgaben sicher ausführen und testen.
+Den Studenten steht eine einheitliche Platform zur Verfügung, in der sie ihre Arbeiten überprüfen können.
+Entwickler brauchen sich nur um das Programm und neue Erweiterungen kümmern, da die mühselige Arbeit
+der Skalierung, Provisionierung und Instandhaltung bereits von den Cloud Providern übernommen wird.
 
 \section{Überblick der Arbeit}
-1. Ziel der Arbeit formulieren:\\
--- Erstellen einer App zur sicheren Ausführung von Studentenabgaben\\
--- Erstellen eines Frontends (Code Editors), um den Studenten die Abgabe zu erleichtern\\
--- Maybe: Einbinden in MOPS. Darauf eingehen, dass MOPS (Java/Spring) != Python/Flask.
-Parser bauen der Thymeleaf nach Jinja übersetzt\\
--- Kurz auf die Gliederung der Arbeit eingehen und Kapitel **kurz** erklären\\
+Das Ziel dieser Arbeit ist es das Konzept des Serverless-Computing anhand eines praktischen
+Beispiels zuverdeutlichen. Hierfür wird eine serverlose Applikation entwickelt,
+der es den Studenten und Korrektoren des Moduls Programmierung
+\footnote{
+  \href{
+    https://www.cs.hhu.de/de/lehrstuehle-und-arbeitsgruppen/betriebssysteme-prof-dr-michael-schoettner/lehre-und-abschlussarbeiten/fruehere-lehrveranstaltungen/vorlesungen/ws-201920/programmierung.html?C=D\%253BO\%253DA
+    }{HHU Programmierung 2019/2020}
+} ermöglicht einfache Java und Gradle Programme, in einer abgekapselten Umgebung, auszuführen und zu testen.
 
+Dazu werden zu Beginn die nötigen Grundlagen und Begriffe erklärt. Es werden zwei prominente und
+unterschiedliche Dienstarten vorgestellt, welche Cloud Provider aktuell den Entwicklern zur Verfügung stellen.
+Es werden aktuelle serverlose Dienste der Public Cloud Provider und Open-Source Lösungen vorgestellt.
+Ein wichtiger Bestandteil der Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung,
+getrennt voneinander ausgeführt werden. Dafür werden Container und Virtual Machines
+näher erkundet. Denn diese zwei Konzepte sind das Fundament der Umgebungen,
+in der die Cloud Provider die zahlreichen Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
+
+Mithilfe der zuvor erlernten Grundlagen, vergleichen wir danach einige einfache
+serverlose Architekturen mit ihren traditionellen Gegenstücken,
+um einen besseren Eindruck über die Eigenschaften des Serverless-Computing zubekommen.
