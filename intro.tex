@@ -3,12 +3,14 @@
 \section{Motivation}
 %This is the introduction; In general, each chapter should be
 %contained in another file. If you want to quote something, do it like
-%this:~\cite{Cavin2002a}.
+%Creating a footnote is easy.\footnote{An example footnote.}
+
 Bei der Korrektur von Studentenabgaben neigt man als Korrektor schnell dazu den Quellcode
 sofort zu kompiliert und auszuführen, weil dadurch bereits ein sehr aussagekräftiger Eindruck
 über die Qualität der Abgabe ersichtlich wird. Jedoch bringt das Ausführen von fremden und ungeprüften Programmen einige Gefahren mit sich.
-Es können Sicherheitslücken der Java Virtual-Machine (JVM)
-oder des eigenen Systems ausgenutzt werden, wodurch Schadprogramme eingeschleust werden können.
+Es können Sicherheitslücken der Java Runtime Environment (JRE) \cite{Jre}
+oder des eigenen Systems ausgenutzt werden, wodurch Schadprogramme eingeschleust
+werden können \cite{CveJreVuln}.
 Um dies zu verhindern, kann man das Programm in einer isolierten Umgebung laufen lassen.
 Das manuelle Aufsetzen einer Virtual Machine (VM) auf dem eigenen Computer benötigt relativ
 viele Ressourcen und ist zugleich auch recht aufwendig nur um ein kleines Programm auszuführen.
@@ -17,20 +19,29 @@ dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
 auch wenn der Dienst nicht genutzt wird. Außerdem muss man im Vorhinein grob die Auslastung
 abschätzen, um den Server passend zu provisionieren.
 Man muss sie selbst auf Sicherheitslücken prüfen und verwalten.
-Eine effizientere Lösung wäre eine serverlose Anwendung.
+Effizienter wäre es das Programm, mithilfe einer serverlosen Anwendung, in einer sicheren Umgebung auszuführen.
 Das Konzept des Serverless-Computing beinhaltet das Entwickeln und Bereitstellen
-von skalierbaren Anwendungen ohne komplexe Serververwaltung. 
+von skalierbaren Anwendungen ohne komplexe Serververwaltung.
+Außerdem wird auch nur der eigentliche Verbrauch der Anwendung in Zahlung gestellt (Vgl. \cite{CioGov}).
 Dafür bieten Cloud Provider Dienste an, welche von ihnen selbst verwaltet werden,
-sodass sich Entwickler nur auf die Implementierung ihrer Anwendungen konzentrieren müssen.
+sodass sich Entwickler nur auf die Implementierung ihrer Anwendungen konzentrieren müssen
+
+\footnote{
+  Einige Serverless-Services der drei großen Public Cloud Provider\\
+  {\url{https://aws.amazon.com/de/lambda/}},\\
+  {\url{https://azure.microsoft.com/de-de/services/functions/}}\\
+  {\url{https://cloud.google.com/run?hl=de}}
+}
+
 Bei vielen Services der Public Cloud Provider, gilt zusätzlich dass nur der eigentliche Verbrauch in Zahlung gestellt wird.
 Korrektoren können dadurch die Studentenabgaben sicher ausführen und testen.
 Gleichzeitig stehen den Studenten eine einheitliche und verwaltungslose Platform zurverfügung,
 womit sie ihre Aufgaben lösen können.
 
-TODO: Wie 'Java Virtual-Machine' schreiben (siehe Oracle)\\
-TODO: Verlinken von offizieller Oracle JVM Website\\
-TODO: Self-Hosted Kubernetes Aspekt einbringen
-TODO: Verlinken von OpenFaaS und Fn-Project
+%TODO: Wie 'Java Virtual-Machine' schreiben (siehe Oracle)\\
+%TODO: Verlinken von offizieller Oracle JVM Website\\
+%TODO: Self-Hosted Kubernetes Aspekt einbringen
+%TODO: Verlinken von OpenFaaS und Fn-Project
 
 
 \section{Überblick der Arbeit}
