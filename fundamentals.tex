@@ -6,50 +6,58 @@
 -- Cloud-Provider übernehemen Wartung und Infrastruktur (NoOps)\\
 -- Erstellen 'Serverless-App' durch kleine, abgekapselte Funktionen (FaaS),\\
 oder traditionelle App in Container verpackt\\
---
+-- Kosten pro eigentlichem Verbraucht
+-- keine komplexe Verwaltung (managed Services)
+-- Vergleich zu traditionellen Diensten
 
-TODO: Zitieren von AWS Whitepaper/Blog\\
-TODO: Zitieren von Martin Fowler\\
-TODO: Zitieren von 'What Is Serverless?' by John Chapin, Mike Roberts\\
+% TODO: Zitieren von AWS Whitepaper/Blog\\
+% TODO: Zitieren von Martin Fowler\\
+% TODO: Zitieren von 'What Is Serverless?' by John Chapin, Mike Roberts\\
 
-
-\section{Function as a Service}
-1. Erklären von FaaS\\
--- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
--- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
-
-
-\section{Serverless Containers und VMs}
-\subsection{Containers}
-1. Erlkären von Linux Containers\\
--- Verpacken und isolieren von Software in einer produktionsreifen Laufzeitumgebung\\
--- Erleichtert das Entwickeln auf unterschiedlichen Systemen und Umgebungen\\
--- Keine vollständige Isolation\\
--- Host und Container können sich Ressourcen teilen\\
--- Relative ressourcenarm\\
-
-\subsection{Virtual Machines}
-2. Erklären von VMs\\
+\section{Virtual-Machine}
+1. Was ist Virtualisierung?
 -- Abstraktion der Hardware\\
 -- Emulieren eines Betriebssystems\\
 -- Machine kann mehrer Betriebssysteme laufen\\
 -- Isolation vom Hostsystem\\
 -- Ressourcenintensiv\\
 
+\section{Container}
+1. Was sind Container?
+-- Verpacken und isolieren von Software in einer produktionsreifen Laufzeitumgebung\\
+-- Erleichtert das Entwickeln auf unterschiedlichen Systemen und Umgebungen\\
+-- Keine vollständige Isolation\\
+-- Host und Container können sich Ressourcen teilen\\
+-- Relative ressourcenarm\\
+
+\section{Function as a Service}
+-- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
+-- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
+
+\section{Serverless Containers}
+-- Laufzeitumgebung der serverlosen Anwendung wird durch Dockerimage bereitgestellt
+-- Anwendung kann beliebigen aufbau haben
+
+\section{Open-Source und self-hosted Lösungen}
+-- OpenFaaS
+-- IBM OpenWhisk
+-- Oracle Fn Project
+
+\section{Sichere Umgebungen}
+-- VMs sind zu Ressourcen intensiv
+-- Container sind nicht sicher
+
 \subsection{Google gVisor}
 -- Applikationskernel für Container in Golang\\
 -- Implementiert viele des Linux kernel interfaces\\
 -- Fängt SystemCalls ab und gibt sich als GuestKernel aus\\
-TODO: siehe gVisor Doku und Whitepapers\\
-
+% TODO: siehe gVisor Doku und Whitepapers\\
 
 \subsection{AWS Firecracker}
 -- Benutzt KVM (Kernel-based Virtaul Machine, ähnlich sVMs)\\
-TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
+% TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
 
-\section{Eigenschaften serverlosen Architekturen}
--- Eigenschaften auflisten
--- Skalierbar
--- Kosten pro eigentlichem Verbraucht
--- keine komplexe Verwaltung (managed Services)
--- Beispiele auflisten
+\section{Eigenschaften serverloser Architekturen}
+-- Architekturdartstellung einer simplen Webanwendung, Frontend + Backend + Datenbank
+-- Vier eigenschaften des Serverless Computing bei jedem der Services deutlich machen
+-- Serverless sieht vor soviel wie möglich die Dienste der Cloud-Provider zuverwenden
