@@ -16,13 +16,12 @@ Effizienter wäre eine serverlose (engl. \textit{serverless}) Anwendung, dass di
 Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bereitstellen
 von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
 in Zahlung gestellt wird \cite{CioGov}.
-Dafür bieten Cloud-Provider Dienste an, welche sie selbst verwalten.
-\footnote{
+Dafür bieten Cloud-Provider Dienste an, welche sie selbst verwalten \footnote{
   Gängige \textit{serverless} Dienste:
   {\href{https://aws.amazon.com/de/lambda/}{AWS Lambda}},
   {\href{https://azure.microsoft.com/de-de/services/functions/}{Azure Functions}},
   {\href{https://cloud.google.com/run?hl=de}{Google Cloud Run}}
-}
+}.
 Korrektoren können dadurch ihre Studentenabgaben sicher ausführen und testen.
 Den Studenten steht eine einheitliche Platform zur Verfügung, in der sie ihre Arbeiten überprüfen können und
 Entwickler brauchen sich nur um das Programm sowie neue Erweiterungen kümmern, da die mühselige Arbeit
@@ -43,11 +42,15 @@ der es den Studenten und Korrektoren des Moduls Programmierung
 
 \section{Aufbau der Arbeit}
 Zu Beginn werden die nötigen Grundlagen und Begriffe erklärt.
-Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung, getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines näher erkundet. Denn die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
-Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, welche Cloud-Provider zur Verfügung stellen. Zusätzlich werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{Open-Source} Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und Eigenschaften einer abstrakten aber üblichen serverlosen Architektur erläutert.
+Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung, getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines näher erkundet. Die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
+Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt. Zusätzlich werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{open-source} Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und Eigenschaften einer einfachen serverlosen Architektur erläutert.
 
 Darauffolgend werden die minimalen Anforderungen und Funktionen der serverlosen Anwendung vorgestellt, um den Studenten und Korrektoren ein nutzbares Werkzeug für das Testen von Java Programmen zur Verfügung zu stellen.
 
 Anschließend wird die Architektur und Implementierung der Anwendung präsentiert. Aufgrund des Datenschutzes ist eine selbst betrieben Lösung sehr interessant, sodass auch kurz auf eine open-source Alternative eingegangen wird.
 
 Nach dem Aufbau folgt das Testen und Verfeinern. Da die Anwendung primär auf Studenten und Korrektoren des Moduls Programmierung gerichtet ist, werden einige Übungsaufgaben des Moduls aus dem Wintersemester 2019 zum Testen verwendet. Es werden Performance-Probleme aufgelistet und entsprechend Verbesserungen eingeführt.
+
+Danach folgt ein Vergleich mit ähnlichen Softwarediensten. Dadurch werden Anwendungsgrenzen und Vebesserungen besser hervorgehoben.
+
+Abschließend wird ein Fazit gezogen, sowie ein Ausblick auf mögliche Erweiterungen der Anwendung vorgeschlagen.

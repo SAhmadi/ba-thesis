@@ -1,26 +1,84 @@
 \chapter{Grundlagen}
+Für das Verständnis der Ausarbeitung werden einige Grundlagen benötigt.
+In diesem Kapitel werden diese Grundlagen übermittelt.
+Es werden die wichtigsten Eigenschaften des Serverless-Computing erläutert,
+sowie gängige serverlose Dienste vorgestellt.
 
 \section{Serverless-Computing}
-1. 'Serverless Computing' Begriffserklärung\\
--- Definieren von Programmcode ohne auf Infrastruktur zu achten\\
--- Cloud-Provider übernehemen Wartung und Infrastruktur (NoOps)\\
--- Erstellen 'Serverless-App' durch kleine, abgekapselte Funktionen (FaaS),\\
-oder traditionelle App in Container verpackt\\
--- Kosten pro eigentlichem Verbraucht
--- keine komplexe Verwaltung (managed Services)
--- Vergleich zu traditionellen Diensten
+Serverless-Computing ist ein Konzept, mit dem man skalierbare Anwendungen
+entwickeln und ohne komplexe Serververwaltung bereitstellen kann \cite{CioGov}.
+Das Konzept ist aktuell bei den öffentlichen Cloud-Providern beliebt, die viele
+serverlose Dienste für Entwickler und Unternehmen bereitstellen. Trotz des Namens
+werden selbstverständlich immer noch \textit{Server} verwendet. Der Name symbolisiert die geringe
+und einfache Serververwaltung im Vergleich zur den üblichen selbstverwalteten
+Diensten auf \cite{CNCF}.
+Häufig wird der Begriff \textit{serverless} mit einer ganz bestimmten serverlosen Dienstart
+assoziiert, den \textit{Function-as-a-Service} (FaaS).
 
-% TODO: Zitieren von AWS Whitepaper/Blog\\
-% TODO: Zitieren von Martin Fowler\\
-% TODO: Zitieren von 'What Is Serverless?' by John Chapin, Mike Roberts\\
+Die Idee ist, dass Entwickler ihre Anwendungslogik aus isolierten und 
+zustandslosen Funktionen aufbauen. Es ist vorgesehen, dass jede Funktion nur für eine
+ganz spezifische Aufgabe zuständig ist. Die Funktionen können
+durch Ereignisse (engl. \textit{Events}) ausgelöst werden. Treffen solche Ereignisse ein,
+provisioniert der Cloudanbieter die passenden Ressourcen und führt die jeweilige Funktion aus.
+Aufgrund des geringen Aufgabenbereichs und Zustandslosigkeit einer Funktion,
+sind Cloudanbieter in der Lage sehr schnell mehrere Instanzen einer Funktion zu starten,
+um eine erhöhte Nachfrage zu bewältigen.
+Verringert sich die Nachfrage wieder, werden die Instanzen abgebaut. Anders ist 
+es bei traditionellen selbstverwalteten Diensten. Dort müssen Entwickler die Nachfrage grob
+abschätzen und bei zu hoher Nachfrage die Kapazitäten rechtzeitig
+erhöhen \cite{WhatIsServerless} \cite{DBLP:journals/corr/BaldiniCCCFIMMR17}.
+
+Ein weiterer Vorteil des Serverless-Computing ist, dass Cloudanbieter
+bei ihren serverlosen Diensten nur die eigentlichen Rechentätigkeiten
+in Zahlung stellen, sodass für Entwickler und Unternehmen nur dann Kosten
+anfallen, wenn ihre Anwendungen auch benutzt werden \cite{EcoArc}.
+
+Auch das Wegfallen der Provisionierung und täglichen Verwaltung bringt Vorteile mit sich.
+Entwickler können sich auf die eigentliche Entwicklung der Anwendungen konzentrieren und
+müssen sich nicht mit den täglichen Kleinigkeiten des Entwicklungsalltags
+beschäftigen \cite{DBLP:journals/corr/BaldiniCCCFIMMR17}.
+
+Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
+die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
+die angefragten Funktionen passend hoch und runter skalieren. Auch wenn bereits stark auf 
+andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlosen Dienste
+gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
+aktiviert werden, können Daten in eine Funktion eingeführt werden, um
+dann an die benötigten Komponenten, in passendem Dateiformat, wieder ausgeführt zu werden
+\cite{DBLP:journals/corr/BaldiniCCCFIMMR17} \cite{HpcServerless}.
+
+Um im Folgenden tiefer in die Architektur einer serverlosen Platform einzutauchen, müssen
+die zwei Begriffe Virtual-Machine und Container erklärt werden.
 
 \section{Virtual-Machine}
-1. Was ist Virtualisierung?
--- Abstraktion der Hardware\\
--- Emulieren eines Betriebssystems\\
--- Machine kann mehrer Betriebssysteme laufen\\
--- Isolation vom Hostsystem\\
--- Ressourcenintensiv\\
+Bei Virtual-Machines handelt es sich um eine virtuelle Umgebung, mit komplett 
+eigenen Ressourcen, wie CPU und Speicher.
+Möglich wird die Virtualisierung durch den \textit{Virtual Machine Monitor} (VMM),
+häufig auch \textit{Hypervisor} genannt.
+Der Hypervisor ist ein Softwarestück, das dafür zuständig ist die physischen
+und virtuellen Ressourcen zu verwalten. Er ist ebenfalls für die Kommunikation
+zwischen den physischen und virtuellen Ressourcen zuständig, denn die Arbeit in einer
+Virtual-Machine wird immer noch von den physisch vorhanden Hardwareressourcen ausgeführt.
+Hier übernimmt der Hypervisor die Planung (engl. \textit{Schedule}) der Anfragen aus
+den virtuellen Umgebungen. Ein großer Vorteil der Virtualisierung von Hardwareressourcen ist,
+dass jede Virtual-Machine ihr eigenes Betriebssystem benutzen kann
+\cite{RedHatVM} \cite{RedHatHypervisor}.
+
+Es gibt zwei unterschiedliche Arten von Hypervisoren.
+
+\subsection{Native Hypervisor}
+Ein nativer Hypervisor (Typ 1 Hypervisor) nimmt den Platz des eigentlichen Betriebssystems ein
+und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Er läuft direkt
+auf der Hardware und dirigiert die virtuellen Ressourcen direkt zu den physischen Ressourcen.
+Bekannte Typ 1 Hypervisor sind unteranderem
+\href{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}{Microsoft Hyper-V},
+\href{https://www.vmware.com/de/products/vsphere.html}{VMware vSphere} und
+\href{https://www.linux-kvm.org/page/Main_Page}{KVM}, welcher in den Linux
+Kernel eingefügt wurde
+\cite{RedHatHypervisor}.
+
+\subsection{Hosted Hypervisor}
+TODO
 
 \section{Container}
 1. Was sind Container?

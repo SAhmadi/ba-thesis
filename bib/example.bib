@@ -1,10 +1,52 @@
-@InProceedings{ Cavin2002a,
-  author = {David Cavin and Yoav Sasson and Andr{\'{e}} Schiper},
-  title =	{{On the Accuracy of MANET Simulators}},
-  year = {2002},
-  pages =	{38--43},
-  month =	{10},
-  booktitle =	{Proceedings of the Workshop on Principles of Mobile Computing (POMC'02)}
+@article{DBLP:journals/corr/BaldiniCCCFIMMR17,
+  author    = {Ioana Baldini and
+               Paul C. Castro and
+               Kerry Shih{-}Ping Chang and
+               Perry Cheng and
+               Stephen J. Fink and
+               Vatche Ishakian and
+               Nick Mitchell and
+               Vinod Muthusamy and
+               Rodric M. Rabbah and
+               Aleksander Slominski and
+               Philippe Suter},
+  title     = {Serverless Computing: Current Trends and Open Problems},
+  journal   = {CoRR},
+  volume    = {abs/1706.03178},
+  year      = {2017},
+  url       = {http://arxiv.org/abs/1706.03178},
+  archivePrefix = {arXiv},
+  eprint    = {1706.03178},
+  timestamp = {Mon, 13 Aug 2018 16:47:26 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/BaldiniCCCFIMMR17.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@InProceedings{HpcServerless,
+  author="Spillner, Josef
+  and Mateos, Cristian
+  and Monge, David A.",
+  editor="Mocskos, Esteban
+  and Nesmachnow, Sergio",
+  title="FaaSter, Better, Cheaper: The Prospect of Serverless Scientific Computing and HPC",
+  booktitle="High Performance Computing",
+  year="2018",
+  publisher="Springer International Publishing",
+  address="Cham",
+  abstract="The adoption of cloud computing facilities and programming models differs vastly between different application domains. Scalable web applications, low-latency mobile backends and on-demand provisioned databases are typical cases for which cloud services on the platform or infrastructure level exist and are convincing when considering technical and economical arguments. Applications with specific processing demands, including high-performance computing, high-throughput computing and certain flavours of scientific computing, have historically required special configurations such as compute- or memory-optimised virtual machine instances. With the rise of function-level compute instances through Function-as-a-Service (FaaS) models, the fitness of generic configurations needs to be re-evaluated for these applications. We analyse several demanding computing tasks with regards to how FaaS models compare against conventional monolithic algorithm execution. Beside the comparison, we contribute a refined FaaSification process for legacy software and provide a roadmap for future work.",
+  isbn="978-3-319-73353-1"
+}
+%pages="154--168",
+
+@InProceedings{WhatIsServerless,
+  author="Mike Roberts, John Chapin",
+  editor = {Brian Foster},
+  title=" Understanding the Latest Advances in
+    Cloud and Service-Based Architecture",
+  booktitle="What Is Serverless?",
+  year="2017",
+  publisher="O'Reilly Media, Inc.",
+  isbn="978-1-491-98416-1"
 }
 
 @manual{Jre,
@@ -32,7 +74,14 @@
   author = {RedHat},
   title = {What is a virtual machine},
   note = {\url{https://www.redhat.com/en/topics/virtualization/what-is-a-virtual-machine}},
-  accessed = {Letzter Zugriff: 2020-07-26}
+  accessed = {Letzter Zugriff: 2020-07-28}
+}
+
+@manual{RedHatHypervisor,
+  author = {RedHat},
+  title = {What is a hypervisor?},
+  note = {\url{https://www.redhat.com/en/topics/virtualization/what-is-a-hypervisor}},
+  accessed = {Letzter Zugriff: 2020-07-28}
 }
 
 @manual{Docker,
@@ -40,4 +89,18 @@
   title = {What is a Container?},
   note = {\url{https://www.docker.com/resources/what-container}},
   accessed = {Letzter Zugriff: 2020-07-26}
+}
+
+@manual{CNCF,
+  author = {CNCF},
+  title = {CNCF Serverless Whitepaper v1.0},
+  note = {\url{https://github.com/cncf/wg-serverless/tree/master/whitepapers/serverless-overview}},
+  accessed = {Letzter Zugriff: 2020-07-27}
+}
+
+@manual{EcoArc,
+  author = {Gojko Adzic, Robert Chatley},
+  title = {Serverless Computing: Economic and Architectural Impact},
+  note = {\url{https://www.doc.ic.ac.uk/~rbc/papers/fse-serverless-17.pdf}},
+  accessed = {Letzter Zugriff: 2020-07-27}
 }
