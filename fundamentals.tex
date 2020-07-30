@@ -26,7 +26,7 @@ um eine erhöhte Nachfrage zu bewältigen.
 Verringert sich die Nachfrage wieder, werden die Instanzen abgebaut. Anders ist 
 es bei traditionellen selbstverwalteten Diensten. Dort müssen Entwickler die Nachfrage grob
 abschätzen und bei zu hoher Nachfrage die Kapazitäten rechtzeitig
-erhöhen \cite{WhatIsServerless} \cite{DBLP:journals/corr/BaldiniCCCFIMMR17}.
+erhöhen \cite{WhatIsServerless} \cite{ServerlessTrends}.
 
 Ein weiterer Vorteil des Serverless-Computing ist, dass Cloudanbieter
 bei ihren serverlosen Diensten nur die eigentlichen Rechentätigkeiten
@@ -36,7 +36,7 @@ anfallen, wenn ihre Anwendungen auch benutzt werden \cite{EcoArc}.
 Auch das Wegfallen der Provisionierung und täglichen Verwaltung bringt Vorteile mit sich.
 Entwickler können sich auf die eigentliche Entwicklung der Anwendungen konzentrieren und
 müssen sich nicht mit den täglichen Kleinigkeiten des Entwicklungsalltags
-beschäftigen \cite{DBLP:journals/corr/BaldiniCCCFIMMR17}.
+beschäftigen \cite{ServerlessTrends}.
 
 Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
 die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
@@ -45,32 +45,33 @@ andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlose
 gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
 aktiviert werden, können Daten in eine Funktion eingeführt werden, um
 dann an die benötigten Komponenten, in passendem Dateiformat, wieder ausgeführt zu werden
-\cite{DBLP:journals/corr/BaldiniCCCFIMMR17} \cite{HpcServerless}.
+\cite{ServerlessTrends} \cite{HpcServerless}.
 
 Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer serverlosen Platform
 eintauchen zu können, müssen die zwei Begriffe Virtual-Machine und Container erklärt werden.
 
 \section{Virtual-Machine}
-Bei Virtual-Machines handelt es sich um eine virtuelle Umgebung, mit komplett 
-eigenen Ressourcen, wie CPU und Speicher.
+Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit komplett 
+eigenen Ressourcen, wie unter anderem CPU und Speicher.
 Möglich wird die Virtualisierung durch den \textit{Virtual Machine Monitor} (VMM),
 häufig auch \textit{Hypervisor} genannt.
 Der Hypervisor ist ein Softwarestück, das dafür zuständig ist die physischen
 und virtuellen Ressourcen zu verwalten. Er ist für die Kommunikation
-zwischen den physischen und virtuellen Ressourcen zuständig, denn die Arbeit in einer
-Virtual-Machine wird immer noch von den physisch vorhanden Hardwareressourcen ausgeführt.
-Hier übernimmt der Hypervisor die Planung (engl. \textit{Schedule}) der Anfragen und Instruktionen
-aus den virtuellen Umgebungen. Ein großer Vorteil der Virtualisierung von Hardwareressourcen ist,
+zwischen den beiden zuständig, denn die Arbeit in einer
+virtuellen Umgebung wird immer noch von den physisch vorhanden Hardwareressourcen ausgeführt.
+Hier übernimmt der Hypervisor die Planung (engl. \textit{Scheduling}) und das Abbilden
+der Anfragen und Instruktionen aus den virtuellen Umgebungen auf die Hardwareressourcen.
+Ein großer Vorteil der Virtualisierung von Hardwareressourcen ist,
 dass jede Virtual-Machine ihr eigenes Betriebssystem benutzen kann
 \cite{RedHatVM} \cite{RedHatHypervisor}.
 
 Es gibt zwei unterschiedliche Arten von Hypervisoren. Im nachfolgenden Verlauf der Arbeit
-ist die zweite Art zu vernachlässigen, wird aber aufgrund der Vollständigkeit hier erwähnt.
+ist die zweite Art zu vernachlässigen, wird aufgrund der Vollständigkeit hier erwähnt.
 
 \subsection{Native Hypervisor}
-Ein nativer Hypervisor (auch Typ 1 Hypervisor) nimmt den Platz des eigentlichen Betriebssystems ein
+Ein nativer Hypervisor, auch Typ 1 Hypervisor genannt, nimmt den Platz des eigentlichen Betriebssystems ein
 und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Er läuft direkt
-auf der Hardware und dirigiert die virtuellen Ressourcen direkt zu den physischen Ressourcen.
+auf der Hardware und dirigiert die virtuellen Ressourcen zu den physischen Ressourcen.
 Bekannte Typ 1 Hypervisor sind unter anderem
 \href{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}{Microsoft Hyper-V},
 \href{https://www.vmware.com/de/products/vsphere.html}{VMware vSphere} und
@@ -78,12 +79,12 @@ Bekannte Typ 1 Hypervisor sind unter anderem
 Kernel eingefügt wurde \cite{RedHatHypervisor}.
 
 \subsection{Hosted Hypervisor}
-Ein hosted Hypervisor, auch Typ 2 Hypervisor, läuft als übliche
-Applikation auf dem Host-Betriebssystem,
-wie \href{https://www.virtualbox.org/}{Oracle VirtualBox}.
+Ein hosted Hypervisor, auch Typ 2 Hypervisor genannt, läuft als übliche
+Applikation auf dem Host-Betriebssystem.
+Ein Beispiel hierfür wäre VirtualBox von Oracle \cite{VirtualBox}.
 Die virtuellen Ressourcen kommunizieren mit dem Host-Betriebssystem,
 welcher wiederum die Instruktionen an die physischen Hardwareressourcen weiterleitet.
-Somit laufen die virtuellen Umgebungen auf dem Gastgeber-Betriebssystem \cite{RedHatHypervisor}.
+Somit laufen die virtuellen Umgebungen auf dem Host-Betriebssystem \cite{RedHatHypervisor}.
 
 \section{Container}
 Ein Linux Container beinhalten fast vollständig isolierte Prozesse.

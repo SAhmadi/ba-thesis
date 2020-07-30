@@ -1,16 +1,23 @@
 \chapter{Einleitung}
-In diesem Kapitel wird die Problemstellung der Arbeit und das Ziel eines möglichen Lösungskonzeptes
-erläutert. Außerdem wird ein Überblick über die einzelnen Kapitel gegeben.
+In diesem Kapitel wird die Problemstellung und das Ziel der Arbeit vorgestellt.
+Außerdem wird ein Überblick über die einzelnen Kapitel gegeben.
 
 \section{Motivation}
-Bei der Korrektur von Studentenabgaben neigt man als Korrektor schnell dazu den Quellcode sofort zu kompiliert und das resultierende Programm auszuführen, weil dadurch bereits ein sehr aussagekräftiger Eindruck über die Qualität der Abgabe ersichtlich wird. Jedoch bringt das Ausführen von fremden und ungeprüften Programmen einige Gefahren mit sich.
+Bei der Korrektur von Studentenabgaben neigt man als Korrektor schnell dazu den Quellcode sofort 
+zu kompiliert und das resultierende Programm auszuführen, 
+weil dadurch bereits ein sehr aussagekräftiger Eindruck über die Qualität der Abgabe ersichtlich wird. 
+Jedoch bringt das Ausführen von fremden und ungeprüften Programmen einige Gefahren mit sich.
 Es können Sicherheitslücken der \textit{Java Runtime Environment} (JRE) \cite{Jre}
 oder des eigenen Systems ausgenutzt werden, wodurch Schadprogramme eingeschleust
 werden können \cite{CveJreVuln}.
 Um dies zu verhindern, kann man das Programm in einer isolierten Umgebung laufen lassen.
-Das manuelle Aufsetzen einer \textit{Virtual-Machine} (VM) \cite{RedHatVM} auf dem eigenen Computer benötigt relativ
-viele Ressourcen und ist zugleich auch recht aufwendig nur um ein kleines Programm auszuführen.
-Das Ausweichen auf traditionelle externe Dienste von \textit{Cloud-Providern} hat den Nachteil, dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss, auch wenn der Dienst nicht genutzt wird. Man muss im Vorhinein grob die Auslastung abschätzen, um den Server passend einzustellen. Außerdem muss der Server regelmäßig auf Sicherheitslücken geprüft und dementsprechend aktualisiert werden.
+Das manuelle Aufsetzen einer \textit{Virtual-Machine} (VM) \cite{RedHatVM} auf dem eigenen Computer
+benötigt relativ viele Ressourcen und ist zugleich auch recht aufwendig nur um ein kleines Programm auszuführen.
+Das Ausweichen auf traditionelle externe Dienste von \textit{Cloud-Providern} hat den Nachteil,
+dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
+auch wenn der Dienst nicht genutzt wird. Man muss im Vorhinein grob die Auslastung abschätzen,
+um den Server passend einzustellen. Außerdem muss der Server regelmäßig auf
+Sicherheitslücken geprüft und dementsprechend aktualisiert werden.
 
 Effizienter wäre eine serverlose (engl. \textit{serverless}) Anwendung, dass die Studentenabgaben in einer sicheren Umgebung ausführt.
 Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bereitstellen
@@ -42,8 +49,14 @@ der es den Studenten und Korrektoren des Moduls Programmierung
 
 \section{Aufbau der Arbeit}
 Zu Beginn werden die nötigen Grundlagen und Begriffe erklärt.
-Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung, getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines näher erkundet. Die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
-Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt. Zusätzlich werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{open-source} Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und Eigenschaften einer einfachen serverlosen Architektur erläutert.
+Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung,
+getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines 
+näher erkundet. Die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen 
+Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
+Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt. 
+Zusätzlich werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{open source} 
+Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und 
+Eigenschaften einer einfachen serverlosen Architektur erläutert.
 
 Darauffolgend werden die minimalen Anforderungen und Funktionen der serverlosen Anwendung vorgestellt, um den Studenten und Korrektoren ein nutzbares Werkzeug für das Testen von Java Programmen zur Verfügung zu stellen.
 
@@ -51,6 +64,6 @@ Anschließend wird die Architektur und Implementierung der Anwendung präsentier
 
 Nach dem Aufbau folgt das Testen und Verfeinern. Da die Anwendung primär auf Studenten und Korrektoren des Moduls Programmierung gerichtet ist, werden einige Übungsaufgaben des Moduls aus dem Wintersemester 2019 zum Testen verwendet. Es werden Performance-Probleme aufgelistet und entsprechend Verbesserungen eingeführt.
 
-Danach folgt ein Vergleich mit ähnlichen Softwarediensten. Dadurch werden Anwendungsgrenzen und Vebesserungen besser hervorgehoben.
+Danach folgt ein Vergleich mit ähnlichen Softwarediensten. Dadurch werden Anwendungsgrenzen und Verbesserungen besser hervorgehoben.
 
 Abschließend wird ein Fazit gezogen, sowie ein Ausblick auf mögliche Erweiterungen der Anwendung vorgeschlagen.
