@@ -23,11 +23,12 @@ Effizienter wäre eine serverlose (engl. \textit{serverless}) Anwendung, dass di
 Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bereitstellen
 von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
 in Zahlung gestellt wird \cite{CioGov}.
-Dafür bieten Cloud-Provider Dienste an, welche sie selbst verwalten \footnote{
-  Gängige \textit{serverless} Dienste:
-  {\href{https://aws.amazon.com/de/lambda/}{AWS Lambda}},
-  {\href{https://azure.microsoft.com/de-de/services/functions/}{Azure Functions}},
-  {\href{https://cloud.google.com/run?hl=de}{Google Cloud Run}}
+Dafür bieten Cloud-Provider Dienste an, welche sie selbst verwalten
+\footnote{
+  \textit{Serverless} Dienste von Amazon, Microsoft und Google: \\
+  {\url{https://aws.amazon.com/de/lambda/}}, \\
+  {\url{https://azure.microsoft.com/de-de/services/functions/}}, \\
+  {\url{https://cloud.google.com/run?hl=de}}
 }.
 Korrektoren können dadurch ihre Studentenabgaben sicher ausführen und testen.
 Den Studenten steht eine einheitliche Platform zur Verfügung, in der sie ihre Arbeiten überprüfen können und
@@ -38,13 +39,10 @@ der Skalierung, Provisionierung und Instandhaltung bereits von den Cloud-Provide
 Das Ziel dieser Arbeit ist es das Konzept des Serverless-Computing anhand eines praktischen
 Beispiels zu verdeutlichen. Hierfür wird eine serverlose Applikation entwickelt,
 der es den Studenten und Korrektoren des Moduls Programmierung
-\footnote{
-  \href{
-    https://www.cs.hhu.de/de/lehrstuehle-und-arbeitsgruppen/betriebssysteme-prof-dr-michael-schoettner/lehre-und-abschlussarbeiten/fruehere-lehrveranstaltungen/vorlesungen/ws-201920/programmierung.html?C=D\%253BO\%253DA
-    }{Website HHU Programmierung 2019/2020}
-} ermöglicht einfache
-\textit{Java} \footnote{\url{https://www.oracle.com/de/java/}} und
-\textit{Gradle} \footnote{\url{https://gradle.org/}} Programme, in einer abgekapselten Umgebung, auszuführen und zu testen.
+\footnote{\url{https://www.cs.hhu.de/de/lehrstuehle-und-arbeitsgruppen/betriebssysteme-prof-dr-michael-schoettner/lehre-und-abschlussarbeiten/fruehere-lehrveranstaltungen/vorlesungen/ws-201920/programmierung.html?C=D\%253BO\%253DA}}
+ermöglicht einfache \textit{Java} \footnote{\url{https://www.oracle.com/de/java/}}
+und \textit{Gradle} \footnote{\url{https://gradle.org/}} Programme, in einer
+abgekapselten Umgebung, auszuführen und zu testen.
 
 
 \section{Aufbau der Arbeit}
@@ -53,8 +51,9 @@ Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in e
 getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines 
 näher erkundet. Die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen 
 Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
-Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt. 
-Zusätzlich werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{open source} 
+Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, die Cloud Provider
+den Entwicklern zur Verfügung stellen.
+Außerdem werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{Open Source} 
 Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und 
 Eigenschaften einer einfachen serverlosen Architektur erläutert.
 

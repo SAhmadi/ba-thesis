@@ -51,40 +51,35 @@ Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer serverlo
 eintauchen zu können, müssen die zwei Begriffe Virtual-Machine und Container erklärt werden.
 
 \section{Virtual-Machine}
-Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit komplett 
-eigenen Ressourcen, wie unter anderem CPU und Speicher.
+Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit 
+eigenen virtuellen Ressourcen, wie unter anderem CPU und Speicher.
 Möglich wird die Virtualisierung durch den \textit{Virtual Machine Monitor} (VMM),
-häufig auch \textit{Hypervisor} genannt.
-Der Hypervisor ist ein Softwarestück, das dafür zuständig ist die physischen
-und virtuellen Ressourcen zu verwalten. Er ist für die Kommunikation
-zwischen den beiden zuständig, denn die Arbeit in einer
-virtuellen Umgebung wird immer noch von den physisch vorhanden Hardwareressourcen ausgeführt.
-Hier übernimmt der Hypervisor die Planung (engl. \textit{Scheduling}) und das Abbilden
-der Anfragen und Instruktionen aus den virtuellen Umgebungen auf die Hardwareressourcen.
+auch \textbf{Hypervisor} genannt.
+Der Hypervisor ist ein Softwarestück, der dafür zuständig ist die 
+virtuellen Ressourcen zu verwalten und Instruktionen aus der virtuellen Umgebung
+auf die physischen Ressourcen abzubilden. Er reserviert physische Ressourcen und weist es den VMs zu.
+Der Hypervisor ist der Kommunikationskanal zwischen den virtuellen Umgebungen und der Hardware.
 Ein großer Vorteil der Virtualisierung von Hardwareressourcen ist,
-dass jede Virtual-Machine ihr eigenes Betriebssystem benutzen kann
+dass jede Virtual-Machine ihr eigenes Betriebssystem benutzen kann. Somit können auf einer Maschine
+mehrere Betriebssysteme laufen.
 \cite{RedHatVM} \cite{RedHatHypervisor}.
 
-Es gibt zwei unterschiedliche Arten von Hypervisoren. Im nachfolgenden Verlauf der Arbeit
-ist die zweite Art zu vernachlässigen, wird aufgrund der Vollständigkeit hier erwähnt.
-
-\subsection{Native Hypervisor}
-Ein nativer Hypervisor, auch Typ 1 Hypervisor genannt, nimmt den Platz des eigentlichen Betriebssystems ein
-und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Er läuft direkt
-auf der Hardware und dirigiert die virtuellen Ressourcen zu den physischen Ressourcen.
-Bekannte Typ 1 Hypervisor sind unter anderem
-\href{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}{Microsoft Hyper-V},
-\href{https://www.vmware.com/de/products/vsphere.html}{VMware vSphere} und
-\href{https://www.linux-kvm.org/page/Main_Page}{KVM}, welcher in den Linux
-Kernel eingefügt wurde \cite{RedHatHypervisor}.
-
-\subsection{Hosted Hypervisor}
-Ein hosted Hypervisor, auch Typ 2 Hypervisor genannt, läuft als übliche
-Applikation auf dem Host-Betriebssystem.
-Ein Beispiel hierfür wäre VirtualBox von Oracle \cite{VirtualBox}.
-Die virtuellen Ressourcen kommunizieren mit dem Host-Betriebssystem,
-welcher wiederum die Instruktionen an die physischen Hardwareressourcen weiterleitet.
-Somit laufen die virtuellen Umgebungen auf dem Host-Betriebssystem \cite{RedHatHypervisor}.
+Es wird grob unter zwei Arten von Hypervisoren unterschieden.
+Ein nativer Hypervisor, auch \textbf{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
+und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein bekannter Typ 1 Hypervisor ist
+unter anderem Microsoft Hyper-V
+\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
+\cite{RedHatHypervisor}.
+Ein hosted Hypervisor, auch \textbf{Typ 2 Hypervisor}  genannt, läuft als übliche
+Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre Oracle VirtualBox
+\footnote{\url{https://www.virtualbox.org/}}, welches auch in der Informatik
+an der Heinrich-Heine-Universität (HHU) verwendet wird \cite{HHUFachschaft}.
+Der Hypervisor kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
+physischen Ressourcen. Erst in Zusammenarbeit mit dem Host-Betriebssysteme
+werden die Instruktionen an die physischen Hardwareressourcen weitergeleitet.
+Somit laufen die virtuellen Umgebungen auf dem Host-Betriebssystem,
+haben aber jeweils ein eigenes Betriebssystem \cite{RedHatHypervisor}.
+Ein Hosted Hypervisor ist im Vergleich zu einem nativen Hypervisor ressourcen 
 
 \section{Container}
 Ein Linux Container beinhalten fast vollständig isolierte Prozesse.
