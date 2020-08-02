@@ -18,8 +18,9 @@ dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
 auch wenn der Dienst nicht genutzt wird. Man muss im Vorhinein grob die Auslastung abschätzen,
 um den Server passend einzustellen. Außerdem muss der Server regelmäßig auf
 Sicherheitslücken geprüft und dementsprechend aktualisiert werden.
+Effizienter wäre eine serverlose (engl. \textit{serverless}) Anwendung, dass die
+Studentenabgaben in einer sicheren Umgebung ausführt.
 
-Effizienter wäre eine serverlose (engl. \textit{serverless}) Anwendung, dass die Studentenabgaben in einer sicheren Umgebung ausführt.
 Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bereitstellen
 von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
 in Zahlung gestellt wird \cite{CioGov}.
@@ -44,25 +45,32 @@ ermöglicht einfache \textit{Java} \footnote{\url{https://www.oracle.com/de/java
 und \textit{Gradle} \footnote{\url{https://gradle.org/}} Programme, in einer
 abgekapselten Umgebung, auszuführen und zu testen.
 
-
 \section{Aufbau der Arbeit}
-Zu Beginn werden die nötigen Grundlagen und Begriffe erklärt.
-Ein wichtiger Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung,
+\paragraph{Kapitel 2 - Grundlagen} Zu Beginn werden die nötigen Grundlagen und Begriffe erklärt.
+Ein wesentlicher Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung,
 getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines 
-näher erkundet. Die zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die zahlreichen 
+näher erkundet. Diese zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die 
 Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
-Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, die Cloud Provider
-den Entwicklern zur Verfügung stellen.
-Außerdem werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{Open Source} 
+Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, die den Entwicklern zur Verfügung stehen.
+Außerdem werden aktuell verfügbare serverlose Dienste der Cloud-Provider sowie \textit{Open-Source} 
 Lösungen vorgestellt. Mithilfe der zuvor erlernten Grundbegriffe, werden Aufbau und 
 Eigenschaften einer einfachen serverlosen Architektur erläutert.
 
-Darauffolgend werden die minimalen Anforderungen und Funktionen der serverlosen Anwendung vorgestellt, um den Studenten und Korrektoren ein nutzbares Werkzeug für das Testen von Java Programmen zur Verfügung zu stellen.
+\paragraph{Kapitel 3 - Anforderungen} Es werden die minimalen Anforderungen und Funktionen
+der serverlosen Anwendung vorgestellt, um den Studenten und Korrektoren ein nutzbares Werkzeug
+für das Testen von Java Programmen zur Verfügung zu stellen.
 
-Anschließend wird die Architektur und Implementierung der Anwendung präsentiert. Aufgrund des Datenschutzes ist eine selbst betrieben Lösung sehr interessant, sodass auch kurz auf eine open-source Alternative eingegangen wird.
+\paragraph{Kapitel 4 - Entwicklung} In diesem Kapitel wird die eigentliche Architektur
+und Implementierung der Anwendung präsentiert. Aufgrund des Datenschutzes ist eine
+selbst betrieben Lösung sehr interessant, sodass auch kurz auf eine Open-Source Alternative eingegangen wird.
 
-Nach dem Aufbau folgt das Testen und Verfeinern. Da die Anwendung primär auf Studenten und Korrektoren des Moduls Programmierung gerichtet ist, werden einige Übungsaufgaben des Moduls aus dem Wintersemester 2019 zum Testen verwendet. Es werden Performance-Probleme aufgelistet und entsprechend Verbesserungen eingeführt.
+\paragraph{Kapitel 5 - Testen und Optimierung} Nach dem Aufbau folgt das Testen und Verfeinern.
+Da die Anwendung primär auf Studenten und Korrektoren des Moduls Programmierung gerichtet ist,
+werden einige Übungsaufgaben des Moduls aus dem Wintersemester 2019 zum Testen verwendet.
+Es werden Performance-Probleme aufgelistet und mögliche Verbesserungen vorgeschlagen.
 
-Danach folgt ein Vergleich mit ähnlichen Softwarediensten. Dadurch werden Anwendungsgrenzen und Verbesserungen besser hervorgehoben.
+\paragraph{Kapitel 6 - Vergleiche und Evaluation} Danach folgt ein Vergleich mit ähnlichen Lösungen.
+Dadurch werden Anwendungsgrenzen und Erweiterungen besser hervorgehoben.
 
-Abschließend wird ein Fazit gezogen, sowie ein Ausblick auf mögliche Erweiterungen der Anwendung vorgeschlagen.
+\paragraph{Kapitel 7 - Fazit und Ausblick} Abschließend wird ein Fazit gezogen und ein Ausblick auf
+zukünftige Erweiterungen und Verbesserungen der Anwendung geworfen.
