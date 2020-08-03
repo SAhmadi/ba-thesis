@@ -47,84 +47,124 @@ aktiviert werden, können Daten in eine Funktion eingeführt werden, um
 dann an die benötigten Komponenten, in passendem Dateiformat, wieder ausgeführt zu werden
 \cite{ServerlessTrends} \cite{HpcServerless}.
 
-Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer serverlosen Platform
-eintauchen zu können, müssen die zwei Begriffe Virtual-Machine und Container erklärt werden.
+Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer
+serverlosen Platform und den Aspekt der Sicherheit eintauchen zu können,
+werden die zwei Begriffe Virtual-Machine und Container vorgestellt.
 
 \section{Virtual-Machine}
 Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit 
 eigenen virtuellen Ressourcen, wie unter anderem CPU und Speicher.
-Möglich wird die Virtualisierung durch den \textit{Virtual Machine Monitor} (VMM),
-auch \textbf{Hypervisor} genannt.
-Der Hypervisor ist ein Softwarestück, der dafür zuständig ist die 
-virtuellen Ressourcen zu verwalten und Instruktionen aus der virtuellen Umgebung
-auf die physischen Ressourcen abzubilden. Er reserviert physische Ressourcen und weist es den VMs zu.
-Der Hypervisor ist der Kommunikationskanal zwischen den virtuellen Umgebungen und der Hardware.
-Ein großer Vorteil der Virtualisierung von Hardwareressourcen ist,
-dass jede Virtual-Machine ihr eigenes Betriebssystem benutzen kann. Somit können auf einer Maschine
-mehrere Betriebssysteme laufen.
-\cite{RedHatVM} \cite{RedHatHypervisor}.
+Ein \textit{Virtual Machine Monitor} (VMM), auch \textit{Hypervisor} genannt
+ist ein Softwarestück, das dafür zuständig ist die 
+virtuellen Umgebungen einschließlich seiner virtuellen Ressourcen zu verwalten
+und Instruktionen auf die physischen Ressourcen abzubilden.
+Der Hypervisor reserviert physische Ressourcen und plant die Zuweisen
+an die einzelnen VMs. Er ist der Kommunikationskanal 
+zwischen den virtuellen Umgebungen und der Hardware.
+Ein großer Vorteil der Virtualisierung von Hardwareressourcen
+ist, dass jede Virtual-Machine ihr eigenes Betriebssystem
+benutzen kann. Somit können auf einer Maschine
+mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
+\cite{RedHatVM} \cite{RedHatHypervisor}. Es wird unter zwei
+Arten von Hypervisor unterschieden.
 
-Es wird grob unter zwei Arten von Hypervisoren unterschieden.
-Ein nativer Hypervisor, auch \textbf{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
-und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein bekannter Typ 1 Hypervisor ist
+Ein nativer Hypervisor, auch \textit{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
+und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein gängiger Typ 1 Hypervisor ist
 unter anderem Microsoft Hyper-V
 \footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
 \cite{RedHatHypervisor}.
-Ein hosted Hypervisor, auch \textbf{Typ 2 Hypervisor}  genannt, läuft als übliche
+Ein hosted Hypervisor, auch \textit{Typ 2 Hypervisor}  genannt, läuft als übliche
 Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre Oracle VirtualBox
 \footnote{\url{https://www.virtualbox.org/}}, welches auch in der Informatik
 an der Heinrich-Heine-Universität (HHU) verwendet wird \cite{HHUFachschaft}.
-Der Hypervisor kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
-physischen Ressourcen. Erst in Zusammenarbeit mit dem Host-Betriebssysteme
+Der hosted Hypervisor kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
+physischen Ressourcen. Erst in Zusammenarbeit mit ihm
 werden die Instruktionen an die physischen Hardwareressourcen weitergeleitet.
 Somit laufen die virtuellen Umgebungen auf dem Host-Betriebssystem,
 haben aber jeweils ein eigenes Betriebssystem \cite{RedHatHypervisor}.
-Ein Hosted Hypervisor ist im Vergleich zu einem nativen Hypervisor ressourcen 
+Im Vergleich zu einem nativen Hypervisor ist das Erstellen einer VM
+mit einem hosted Hypervisor ohne großen Aufwand möglich.
+Ein Nachteil ist jedoch, dass sie langsamer und ineffizienter sind, da sie nicht
+direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
+Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (KVM). KVM ist in
+den Linux-Kernel \footnote{\url{https://www.kernel.org}} integriert und wandelt
+das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
+Hardware-Virtualisierungserweiterungen, wie beispielsweise Intel-VT
+\footnote{\url{https://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html}}.
+Diese Erweiterungen wurden eingeführt,
+um die Virtualisierung zu beschleunigen und die Entwicklung
+von Hypervisoren zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
 
 \section{Container}
-Ein Linux Container beinhalten fast vollständig isolierte Prozesse.
-Durch eine Konfigurationsdatei (\textit{Image}) werden alle nötigen Ressourcen und Dateien,
-die für das Ausführen der Prozesse benötigt werden, definiert. Ähnlich wie ein Typ 2 Hypervisor
-laufen Container auf dem Host-Betriebssystem, mit dem großen Unterschied, dass die einzelnen
-Container selbst keine eigenen Betriebssysteme haben. Container teilen sich das
-Host-Betriebssystem und \textit{Kernel}.
-Dadurch haben Container den Vorteil, dass sie kompakter und viel sparsamer sind.
+Virtualisierung ist auch mithilfe von Linux Container möglich,
+was auch Containerisierung (engl. \textit{Containerization})
+genannt wird. Diese enthalten isolierte Prozesse
+\footnote{\url{https://www.tldp.org/LDP/tlk/kernel/processes.html}}.
+Container teilen sich den Host-Kernel. Durch eine
+Konfigurationsdatei (\textit{Image}) werden alle
+nötigen Ressourcen und Dateien definiert, die für das Ausführen
+der Prozesse benötigt werden. Dadurch spart man sich ein komplettes
+Betriebsystem zu laden, wodurch sie den Vorteil,
+dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
+definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
+können \cite{RedHatContainer}. Container bauen auf zwei Komponenten
+des Linux-Kernels auf, den Namensräumen
+(\textit{namespaces}) und den Kontrollgruppen
+(\textit{cgroups}).
 
-1. Was sind Container?
--- Verpacken und isolieren von Software in einer produktionsreifen Laufzeitumgebung\\
--- Erleichtert das Entwickeln auf unterschiedlichen Systemen und Umgebungen\\
--- Keine vollständige Isolation\\
--- Host und Container können sich Ressourcen teilen\\
--- Relative ressourcenarm\\
+Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
+für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
+Prozesse innerhalb des namespaces sehen nur ihre isolierte lokale
+Ausprägung der Ressource \cite{UbuntuNamespaces}.
+Dadurch können mehrere Container gleichzeitig auf die gleiche
+Ressource zugreifen \cite{RedHatIntroToLinuxContainers}.
+Es existieren unterschiedliche namespaces, wie beispielsweise
+\textit{mount namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/mount_namespaces.7.html}},
+\textit{network namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/network_namespaces.7.html}}
+und \textit{pid namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/pid_namespaces.7.html}}.
+Durch mount namespaces kann die Sicht auf das Dateisystem
+(engl. \textit{filesystem}) für Prozesse beschränkt werden.
+Mit network namespaces lassen sich IP-Adressen, Ports
+und Routing Tabellen isolieren. PID (deut. Prozess-ID) namespaces teilen
+den Identifikationsbereich. Ein Prozess hat dadurch zwei
+PIDs. Eine Identifaktionsnummer auf dem Host-Betriebssystem und eine
+innerhalb des namespaces, welche sich beide unterscheiden können
+\cite{lwnDotNetNamespaces}.
 
-\section{Function as a Service}
--- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
--- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
+Cgroups haben zwei wichtige Aufgaben. Sie erlauben das Gruppieren
+von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
+Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses
+\cite{RedHatIntroToLinuxContainers}.
 
-\section{Serverless Containers}
--- Laufzeitumgebung der serverlosen Anwendung wird durch Dockerimage bereitgestellt
--- Anwendung kann beliebigen aufbau haben
 
-\section{Open-Source und self-hosted Lösungen}
--- OpenFaaS
--- IBM OpenWhisk
--- Oracle Fn Project
+% \section{Function as a Service}
+% -- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
+% -- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
 
-\section{Sichere Umgebungen}
--- VMs sind zu Ressourcen intensiv
--- Container sind nicht sicher
+% \section{Serverless Containers}
+% -- Laufzeitumgebung der serverlosen Anwendung wird durch Dockerimage bereitgestellt
+% -- Anwendung kann beliebigen aufbau haben
 
-\subsection{Google gVisor}
--- Applikationskernel für Container in Golang\\
--- Implementiert viele des Linux kernel interfaces\\
--- Fängt SystemCalls ab und gibt sich als GuestKernel aus\\
-% TODO: siehe gVisor Doku und Whitepapers\\
+% \section{Open-Source und self-hosted Lösungen}
+% -- OpenFaaS
+% -- IBM OpenWhisk
+% -- Oracle Fn Project
 
-\subsection{AWS Firecracker}
--- Benutzt KVM (Kernel-based Virtaul Machine, ähnlich sVMs)\\
-% TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
+% \section{Sichere Umgebungen}
+% -- VMs sind zu Ressourcen intensiv
+% -- Container sind nicht sicher
 
-\section{Eigenschaften serverloser Architekturen}
--- Architekturdartstellung einer simplen Webanwendung, Frontend + Backend + Datenbank
--- Vier eigenschaften des Serverless Computing bei jedem der Services deutlich machen
--- Serverless sieht vor soviel wie möglich die Dienste der Cloud-Provider zuverwenden
+% \subsection{Google gVisor}
+% -- Applikationskernel für Container in Golang\\
+% -- Implementiert viele des Linux kernel interfaces\\
+% -- Fängt SystemCalls ab und gibt sich als GuestKernel aus\\
+% % TODO: siehe gVisor Doku und Whitepapers\\
+
+% \subsection{AWS Firecracker}
+% -- Benutzt KVM (Kernel-based Virtaul Machine, ähnlich sVMs)\\
+% % TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
+
+% \section{Eigenschaften serverloser Architekturen}
+% -- Architekturdartstellung einer simplen Webanwendung, Frontend + Backend + Datenbank
+% -- Vier eigenschaften des Serverless Computing bei jedem der Services deutlich machen
+% -- Serverless sieht vor soviel wie möglich die Dienste der Cloud-Provider zuverwenden

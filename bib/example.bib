@@ -47,7 +47,6 @@
   abstract="The adoption of cloud computing facilities and programming models differs vastly between different application domains. Scalable web applications, low-latency mobile backends and on-demand provisioned databases are typical cases for which cloud services on the platform or infrastructure level exist and are convincing when considering technical and economical arguments. Applications with specific processing demands, including high-performance computing, high-throughput computing and certain flavours of scientific computing, have historically required special configurations such as compute- or memory-optimised virtual machine instances. With the rise of function-level compute instances through Function-as-a-Service (FaaS) models, the fitness of generic configurations needs to be re-evaluated for these applications. We analyse several demanding computing tasks with regards to how FaaS models compare against conventional monolithic algorithm execution. Beside the comparison, we contribute a refined FaaSification process for legacy software and provide a roadmap for future work.",
   isbn="978-3-319-73353-1"
 }
-%pages="154--168",
 
 @InProceedings{WhatIsServerless,
   author="Mike Roberts, John Chapin",
@@ -60,67 +59,151 @@
   isbn="978-1-491-98416-1"
 }
 
-@manual{Jre,
+@misc{Jre,
   author = {Oracle},
   title = {Java Platform Standard Edition 8 Documentation},
-  note = {\url{https://docs.oracle.com/javase/8/docs/}},
-  accessed = {Letzter Zugriff: 2020-07-20}
+  howpublished = {Website},
+  url = {https://docs.oracle.com/javase/8/docs/},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
 }
 
-@manual{CveJreVuln,
+@misc{CveJreVuln,
   author = {CVE Details},
   title = {JRE Security Vulnerabilities Published in 2019},
-  note = {\url{https://www.cvedetails.com/vulnerability-list/vendor_id-93/product_id-19117/year-2019/Oracle-JRE.html}},
-  accessed = {Letzter Zugriff: 2020-07-20}
+  howpublished = {Website},
+  url = {https://www.cvedetails.com/vulnerability-list/vendor_id-93/product_id-19117/year-2019/Oracle-JRE.html},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03},
 }
 
-@manual{CioGov,
-  author = {CIO Council's Innovation Committee},
-  title = {{Demystifying NoOps and Serverless Computing}},
-  note = {\url{https://www.cio.gov/resources/Demystifying\%20NoOps\%20and\%20Serverless\%20Computing_FINAL.pdf}},
-  accessed = {Letzter Zugriff: 2020-07-20}
+@techreport{CioGov,
+  author = {CIO Council Innovation Committee},
+  title = {Demystifying NoOps and Serverless Computing},
+  institution = {The Chief Information Officers Council},
+  year = {2019},
+  url = {https://www.cio.gov/resources/Demystifying%20NoOps%20and%20Serverless%20Computing_FINAL.pdf},
+  urldate = {2020-08-03}
 }
 
-@manual{RedHatVM,
+@misc{RedHatVM,
   author = {RedHat},
   title = {What is a virtual machine},
-  note = {\url{https://www.redhat.com/en/topics/virtualization/what-is-a-virtual-machine}},
-  accessed = {Letzter Zugriff: 2020-07-28}
+  howpublished = {Website},
+  url = {https://www.redhat.com/en/topics/virtualization/what-is-a-virtual-machine},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
 }
 
-@manual{RedHatHypervisor,
+@misc{RedHatHypervisor,
   author = {RedHat},
   title = {What is a hypervisor?},
-  note = {\url{https://www.redhat.com/en/topics/virtualization/what-is-a-hypervisor}},
-  accessed = {Letzter Zugriff: 2020-07-28}
+  howpublished = {Website},
+  url = {https://www.redhat.com/en/topics/virtualization/what-is-a-hypervisor},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
 }
 
-@manual{Docker,
+@misc{RedHatKVM,
+  author = {RedHat},
+  title = {https://www.redhat.com/en/topics/virtualization/what-is-KVM},
+  howpublished = {Website},
+  url = {https://www.redhat.com/en/topics/virtualization/what-is-KVM},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{RedHatContainer,
+  author = {RedHat},
+  title = {What's a Linux container?},
+  howpublished = {Website},
+  url = {https://www.redhat.com/en/topics/containers/whats-a-linux-container},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{RedHatIntroToLinuxContainers,
+  author = {RedHat},
+  title = {Chapter 1. Introduction to Linux Containers},
+  howpublished = {Website},
+  url = {https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html/overview_of_containers_in_red_hat_systems/introduction_to_linux_containers},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{Docker,
   author = {Docker},
   title = {What is a Container?},
-  note = {\url{https://www.docker.com/resources/what-container}},
-  accessed = {Letzter Zugriff: 2020-07-26}
+  howpublished = {Website},
+  url = {https://www.docker.com/resources/what-container},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
 }
 
-@manual{CNCF,
+@techreport{CNCF,
   author = {CNCF},
   title = {CNCF Serverless Whitepaper v1.0},
-  note = {\url{https://github.com/cncf/wg-serverless/tree/master/whitepapers/serverless-overview}},
-  accessed = {Letzter Zugriff: 2020-07-27}
+  institution = {Cloud Native Computing Foundation},
+  year = {2018},
+  url = {https://gw.alipayobjects.com/os/basement_prod/24ec4498-71d4-4a60-b785-fa530456c65b.pdf},
+  urldate = {2020-08-03}
 }
 
-@manual{EcoArc,
-  author = {Gojko Adzic, Robert Chatley},
-  title = {Serverless Computing: Economic and Architectural Impact},
-  note = {\url{https://www.doc.ic.ac.uk/~rbc/papers/fse-serverless-17.pdf}},
-  accessed = {Letzter Zugriff: 2020-07-27}
+@inproceedings{EcoArc,
+  author = {Adzic, Gojko and Chatley, Robert},
+  year = {2017},
+  month = {08},
+  pages = {884-889},
+  title = {Serverless computing: economic and architectural impact},
+  isbn = {978-1-4503-5105-8},
+  publisher = {Unpublished},
+  doi = {10.1145/3106237.3117767}
 }
 
 @misc{HHUFachschaft,
   author = {Fachschaft Informatik - Heinrich Heine Universität Düsseldorf},
   title = {Ersti Stick FAQ},
   howpublished = {Website},
-  year = {2020},
   url = {https://fscs.hhu.de/ersti-stick-faq/},
-  date = {2020-08-02}
+  year = {2020},  
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{IBMHypervisor,
+  author = {IBM Cloud Education},
+  title = {Hypervisors},
+  howpublished = {Website},
+  url = {https://www.ibm.com/cloud/learn/hypervisors#toc-type-1-vs--Ik2a8-2y},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{UbuntuNamespaces,
+  author = {Ubuntu Manpage},
+  title = {namespaces - overview of Linux namespaces},
+  howpublished = {Website},
+  url = {http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html},
+  year = {2020},
+  date = {2020-08-03},
+  urldate = {2020-08-03}
+}
+
+@misc{lwnDotNetNamespaces,
+  author = {Kerrisk, Michael},
+  title = {Namespaces in operation, part 1: namespaces overview},
+  howpublished = {Website},
+  url = {https://lwn.net/Articles/531114/},
+  year = {2013},
+  date = {2013-01-04},
+  urldate = {2020-08-04}
 }
