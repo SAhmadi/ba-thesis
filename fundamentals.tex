@@ -10,23 +10,102 @@ entwickeln und ohne komplexe Serververwaltung bereitstellen kann \cite{CioGov}.
 Das Konzept ist aktuell bei den öffentlichen Cloud-Providern beliebt, die viele
 serverlose Dienste für Entwickler und Unternehmen bereitstellen. Trotz des Namens
 werden selbstverständlich immer noch \textit{Server} verwendet. Der Name symbolisiert die geringe
-und einfache Serververwaltung im Vergleich zur den üblichen selbstverwalteten
-Diensten auf \cite{CNCF}.
-Häufig wird der Begriff \textit{serverless} mit einer ganz bestimmten serverlosen Dienstart
-assoziiert, den \textit{Function-as-a-Service} (FaaS).
+und einfache Serververwaltung im Vergleich zu üblichen selbstverwalteten
+Diensten \cite{CNCF}. Eine serverlose Anwendung baut auf
+isolierte, kompakte und zustandslose Funktionen auf. Das Prinzip
+wird \textit{Function as a Service (FaaS)} genannt. Jedoch ist das Thema
+Serverless relativ neu und wird dementsprechend immer weiter
+ausgebaut \cite{ServerlessTrends}.
+So haben Cloud-Provider auch eine neue serverlose Dienstarten
+vorgestellt die \textit{Serverless Containers}, wie Google Cloud Run
+\footnote{\url{https://cloud.google.com/run}} oder AWS Fargate
+\footnote{\url{https://aws.amazon.com/de/fargate/}}. Entwickler
+können mit Serverless Containers beliebige Anwendungen bereitstellen,
+den diese serverlose Dienstart erwartet für die Bereitstellung
+eine Dockerfile \footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
+Dadurch können Entwickler die Laufzeitumgebung ihrer Anwendungen
+kontrollieren, was bei FaaS nicht der Fall ist.
 
+\subsection{Function as a Service}
+Häufig wird der Begriff serverless mit einer ganz bestimmten serverlosen Dienstart
+assoziiert, den Function-as-a-Service (FaaS).
 Die Idee ist, dass Entwickler ihre Anwendungslogik aus isolierten und 
 zustandslosen Funktionen aufbauen. Es ist vorgesehen, dass jede Funktion nur für eine
 ganz spezifische Aufgabe zuständig ist. Die Funktionen können
-durch Ereignisse (engl. \textit{Events}) ausgelöst werden. Treffen solche Ereignisse ein,
-provisioniert der Cloudanbieter die passenden Ressourcen und führt die jeweilige Funktion aus.
-Aufgrund des geringen Aufgabenbereichs und Zustandslosigkeit einer Funktion,
+durch Ereignisse (engl. \textit{Events}) ausgelöst werden.
+Durch Events können einzelnen Funktionen miteinander oder mit
+weiteren Diensten der Architektur verbunden werden. 
+Treffen solche Ereignisse ein, provisioniert der
+Cloudanbieter die passenden Ressourcen und führt die jeweilige Funktion aus.
+Aufgrund des geringen Aufgabenbereichs und der Zustandslosigkeit einer Funktion,
 sind Cloudanbieter in der Lage sehr schnell mehrere Instanzen einer Funktion zu starten,
 um eine erhöhte Nachfrage zu bewältigen.
 Verringert sich die Nachfrage wieder, werden die Instanzen abgebaut. Anders ist 
 es bei traditionellen selbstverwalteten Diensten. Dort müssen Entwickler die Nachfrage grob
 abschätzen und bei zu hoher Nachfrage die Kapazitäten rechtzeitig
-erhöhen \cite{WhatIsServerless} \cite{ServerlessTrends}.
+erhöhen. Verringert sich die Nachfrage wieder muss daran
+gedacht werden die Kapazitäten zuverkleinern, da sonst
+Ressourcen in Zahlung gestellt werden die nicht gebraucht wurden
+\cite{WhatIsServerless} \cite{ServerlessTrends}.
+
+\subsection{Aufbau einer serverless Platform}
+Obwohl die ausgearbeitete Anwendung in Kapitel 3
+mithilfe des Serverless Container Dienstes von Google entwickelt wird,
+wird im folgenden der Aufbau einer serverlosen Platform
+anhand von Apache OpenWhisk
+\footnote{\url{https://openwhisk.apache.org/}} vorgestellt.
+Aus Googles Dokumentationen wird nicht eindeutig ersichtlich, wie
+deren Service aufgebaut ist. Dagegen ist OpenWhisk eine
+gut dokumentierte Open-Source Lösung, die initial von IBM entwickelt
+wurde.
+
+In OpenWhisks Dokumentation werden serverlose Funktionen
+\textit{Actions} genannt. Erstellen Entwickler ihre
+Actions werden sie durch einen HTTP-Endpunkt der Form\\
+\texttt{/api/v1/namespaces/\$userNamespace/actions/myAction} zugänglich
+\cite{OpenWhiskGithub}. \texttt{myAction} ist der Name der Action
+und die \texttt{\$userNamespace} Variable ist hier ein
+Platzhalter, denn in OpenWhisk können Actions für eine bessere
+Verwaltung und Authorisierung in Gruppen aufgeteilt werden.
+Im nachfolgenden wird vom Standard-Namespace, dem Unterstrich,
+ausgegangen. Der Endpunkt ändert sich zu
+\texttt{/api/v1/namespaces/\_/actions/myAction} ab.
+Bei einem eintrettenden Event ist \textit{nginx}
+\footnote{\url{https://www.nginx.com/}} die erste Station.
+Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
+Nginx leitet den Aufruf weiter an den \textit{Controller}.
+Der Controller implementiert die Rest-API und filtert die
+eintrettenden Anfragen durch, um die passende Action und
+den weiteren Verlauf zu ermitteln.
+Er authorisiert die Anfrage und schaut auf nötigen Authentifizierungen.
+Dafür befragt er CouchDB \footnote{\url{https://couchdb.apache.org/}},
+eine dokumentenbasierte Datenbank. Nachdem Authorisierungs-
+und Authentifizierungsschritte erfolgreich abschließen,
+wird die Actions-Logik aus der Datenbank entnommen und an den
+Load-Balancer weitergeleitet. Der Load-Balancer ist bestandteil
+des Controllers und enthält eine Sicht auf alle \textit{Invoker}.
+Die Aufgabe der Invoker ist es, die Action am Ende auszuführen.
+In der Theorie würde der Load-Balancer sich einen freien Invoker suchen
+und ihm die Action-Logik übergeben. Jedoch kann es zu Unerwarteten
+Störungen und Abstüzungen kommen oder es lässt sich kein freier
+Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
+Apache Kafka \footnote{\url{https://kafka.apache.org/}},
+einer verteilten Streaming-Platform. Kafka speichert seine
+einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
+Nachrichten vorhanden sind. Die Nachricht enthält welcher
+Invoker die Action ausführen soll, egal ob dieser momentan
+beschäftigt ist. Kafka verarbeitet die Nachricht und sendet eine
+Empfangsbestätigung mit der \texttt{activationId} zurück. Mithilfe
+der \texttt{activationId} lässt sich später das Result der Action
+abfragen. Wenn der Invoker aus der Nachricht frei ist, wird die
+Action ausgeführt. Dafür wird ein Docker Container gestartet,
+welcher eine passende Laufzeitumgebung für die Action zur Verfügung
+stellt. Die Action-Logik wird in den Container geladen und ausgeführt.
+Das Resultat wird entnommen und der Container wird heruntergefahren.
+Das Resultat sowie die \texttt{activationId} werden in die
+activations-Datenbank gespeichert. Nun kann, wie bereits zu Beginn,
+über dem Endpunkt und der \texttt{activationId} das Resultat abgefragt
+werden \cite{OpenWhiskGithub}.
 
 Ein weiterer Vorteil des Serverless-Computing ist, dass Cloudanbieter
 bei ihren serverlosen Diensten nur die eigentlichen Rechentätigkeiten
@@ -44,7 +123,7 @@ die angefragten Funktionen passend hoch und runter skalieren. Auch wenn bereits 
 andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlosen Dienste
 gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
 aktiviert werden, können Daten in eine Funktion eingeführt werden, um
-dann an die benötigten Komponenten, in passendem Dateiformat, wieder ausgeführt zu werden
+dann an die benötigten Komponenten, in passendem Format, wieder ausgeführt zu werden
 \cite{ServerlessTrends} \cite{HpcServerless}.
 
 Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer
@@ -68,11 +147,14 @@ mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
 \cite{RedHatVM} \cite{RedHatHypervisor}. Es wird unter zwei
 Arten von Hypervisor unterschieden.
 
+\subsection{Hypervisortyp}
 Ein nativer Hypervisor, auch \textit{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
 und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein gängiger Typ 1 Hypervisor ist
 unter anderem Microsoft Hyper-V
 \footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
-\cite{RedHatHypervisor}.
+\cite{RedHatHypervisor}. Es wird kein zugrundeligendes Betriebssystem
+benötigt.
+
 Ein hosted Hypervisor, auch \textit{Typ 2 Hypervisor}  genannt, läuft als übliche
 Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre Oracle VirtualBox
 \footnote{\url{https://www.virtualbox.org/}}, welches auch in der Informatik
@@ -86,14 +168,15 @@ Im Vergleich zu einem nativen Hypervisor ist das Erstellen einer VM
 mit einem hosted Hypervisor ohne großen Aufwand möglich.
 Ein Nachteil ist jedoch, dass sie langsamer und ineffizienter sind, da sie nicht
 direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
-Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (KVM). KVM ist in
-den Linux-Kernel \footnote{\url{https://www.kernel.org}} integriert und wandelt
+
+Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (\textit{KVM}).
+KVM ist in den Linux-Kernel \footnote{\url{https://www.kernel.org}} integriert und wandelt
 das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
 Hardware-Virtualisierungserweiterungen, wie beispielsweise Intel-VT
 \footnote{\url{https://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html}}.
 Diese Erweiterungen wurden eingeführt,
-um die Virtualisierung zu beschleunigen und die Entwicklung
-von Hypervisoren zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
+um die Virtualisierung und die Entwicklung
+von Hypervisor zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
 
 \section{Container}
 Virtualisierung ist auch mithilfe von Linux Container möglich,
@@ -109,8 +192,9 @@ dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
 definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
 können \cite{RedHatContainer}. Container bauen auf zwei Komponenten
 des Linux-Kernels auf, den Namensräumen
-(\textit{namespaces}) und den Kontrollgruppen
-(\textit{cgroups}).
+(\textit{namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
+und den Kontrollgruppen
+(\textit{cgroups} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
 
 Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
@@ -129,15 +213,22 @@ und Routing Tabellen isolieren. PID (deut. Prozess-ID) namespaces teilen
 den Identifikationsbereich. Ein Prozess hat dadurch zwei
 PIDs. Eine Identifaktionsnummer auf dem Host-Betriebssystem und eine
 innerhalb des namespaces, welche sich beide unterscheiden können
-\cite{lwnDotNetNamespaces}.
+\cite{LwnDotNetNamespaces}.
 
 Cgroups haben zwei wichtige Aufgaben. Sie erlauben das Gruppieren
 von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
-Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses
+Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
+Möglich wird dies durch \textit{subsystems},
+auch \textit{resource controller} genannt. Subsytems sind Bestandteil
+des Kernels und erlauben das Ändern von Prozesseigenschaften und
+Prozessverhalten in einer cgroups Gruppierung. 
 \cite{RedHatIntroToLinuxContainers}.
 
 
-% \section{Function as a Service}
+\section{Function as a Service}
+Bei Function as a Service handelt es sich um eine serverlose Dienstart.
+
+
 % -- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
 % -- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
 
