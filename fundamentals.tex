@@ -7,24 +7,28 @@ sowie gängige serverlose Dienste vorgestellt.
 \section{Serverless-Computing}
 Serverless-Computing ist ein Konzept, mit dem man skalierbare Anwendungen
 entwickeln und ohne komplexe Serververwaltung bereitstellen kann \cite{CioGov}.
-Das Konzept ist aktuell bei den öffentlichen Cloud-Providern beliebt, die viele
+Das Konzept ist bei den öffentlichen Cloud-Providern beliebt, die viele
 serverlose Dienste für Entwickler und Unternehmen bereitstellen. Trotz des Namens
 werden selbstverständlich immer noch \textit{Server} verwendet. Der Name symbolisiert die geringe
 und einfache Serververwaltung im Vergleich zu üblichen selbstverwalteten
-Diensten \cite{CNCF}. Eine serverlose Anwendung baut auf
-isolierte, kompakte und zustandslose Funktionen auf. Das Prinzip
-wird \textit{Function as a Service (FaaS)} genannt. Jedoch ist das Thema
-Serverless relativ neu und wird dementsprechend immer weiter
-ausgebaut \cite{ServerlessTrends}.
-So haben Cloud-Provider auch eine neue serverlose Dienstarten
-vorgestellt die \textit{Serverless Containers}, wie Google Cloud Run
-\footnote{\url{https://cloud.google.com/run}} oder AWS Fargate
-\footnote{\url{https://aws.amazon.com/de/fargate/}}. Entwickler
-können mit Serverless Containers beliebige Anwendungen bereitstellen,
-den diese serverlose Dienstart erwartet für die Bereitstellung
-eine Dockerfile \footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
-Dadurch können Entwickler die Laufzeitumgebung ihrer Anwendungen
-kontrollieren, was bei FaaS nicht der Fall ist.
+Diensten \cite{CNCF}. Es wird meist zwischen zwei Arten von
+serverlosen Diensten unterschieden. Cloud-Provider bieten mehrere
+Laufzeitumgebungen und Programmiersprachen zur Auswahl an,
+sodass Entwickler durch isolierte, kompakte und zustandslose Funktionen
+ihre Anwendungen entwicklen können. Diese Dienstart wird auch
+\textit{Function-as-a-Service} (FaaS) genannt, wie beispielsweise
+AWS Lambda \footnote{\url{https://aws.amazon.com/de/lambda/}}.
+Serverless ist ein relativ neues Thema, sodass
+der Begriff immer weiter ausgebaut wird \cite{ServerlessTrends}.
+So haben Cloud-Provider mit \textit{Serverless Containers}
+eine weitere serverlose Dienstarten eingeführt. Google Cloud Run
+\footnote{\url{https://cloud.google.com/run}} und AWS Fargate
+\footnote{\url{https://aws.amazon.com/de/fargate/}} geben Entwicklern
+die Freiheit eine beliebige Anwendungen bereitzustellen,
+denn sie erwarten für die Bereitstellung eine Dockerfile
+\footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
+Entwickler können somit die Laufzeitumgebung ihrer Anwendungen
+genaustens definieren und kontrollieren \cite{ServerlessTrends}.
 
 \subsection{Function as a Service}
 Häufig wird der Begriff serverless mit einer ganz bestimmten serverlosen Dienstart
@@ -47,6 +51,46 @@ erhöhen. Verringert sich die Nachfrage wieder muss daran
 gedacht werden die Kapazitäten zuverkleinern, da sonst
 Ressourcen in Zahlung gestellt werden die nicht gebraucht wurden
 \cite{WhatIsServerless} \cite{ServerlessTrends}.
+
+\subsection{Serverless Containers}
+Eine neue serverlose Dienstart sind die Serverless Containers.
+Ein großer Nachteil von FaaS Diensten der Cloud-Provider ist,
+dass man die Laufzeitumgebung nicht erweitern kann. Bei der
+Entwicklung seiner Funktionen muss man aus einer geringen Auswahl
+an Programmiersprachen und Laufzeiten auswählen. Serverlose Container
+bieten hier einen großen Vorteil, denn sie erwarten eine Dockerfile.
+Eine Dockerfile ist eine Konfigurationsdatei, in der man die
+Laufzeitumgebung des Containers genaustens definieren kann.
+Dadurch haben Entwickler mehr Kontrolle und Freiheit bei der
+Anwendungsentwicklung. 
+
+\subsection{Eigenschaften von Serverless}
+Damit ein Dienst dem \textit{Serverless} Prinzip folgt, sollte es
+es gewisse Charakteristiken aufweisen. Diese Eigenschaften gelten
+für FaaS und Serverless Container.
+
+\paragraph{Einfache Bereitstellung und Verwaltung} Eine Anwendung sollte so einfach
+wie möglich bereitsgestellt und verwaltet werden können.
+FaaS und Serverless Container Dienste erwarten meist nur die
+Anwendungslogik und eine Dockerfile \cite{ServerlessTrends}.
+Mit nur wenigen Kommandos und Interaktionen in der Kommandozeile oder
+der graphischen Benutzeroberfläche sollte die Anwendung
+bereitgestellt werden können. Nach dem Aufsetzen sollte
+die weitere Verwaltung der Anwendung, wie Updates und
+Anpassung der Ressourcen, den Entwicklern ohne
+Komplexität ermöglicht werden. Serverlose Dienste, wie
+Google Cloud Run, geben den Entwicklern die Möglichkeit unteranderem
+die Speicherkapazität \cite{CloudRunMemLimits} und
+CPU-Anzahl \cite{CloudRunCpuAlloc} der Containerinstanzen zu setzen.  
+
+\paragraph{Skalierbarkeit} Eine Anwendung  
+
+
+% Skalierbar
+% (x) Einfache Bereitstellung und Verwaltung
+% Zahlung nach Rechenzeit, nicht Stündlich oder monatlich
+% 
+
 
 \subsection{Aufbau einer serverless Platform}
 Obwohl die ausgearbeitete Anwendung in Kapitel 3
@@ -106,6 +150,7 @@ Das Resultat sowie die \texttt{activationId} werden in die
 activations-Datenbank gespeichert. Nun kann, wie bereits zu Beginn,
 über dem Endpunkt und der \texttt{activationId} das Resultat abgefragt
 werden \cite{OpenWhiskGithub}.
+
 
 Ein weiterer Vorteil des Serverless-Computing ist, dass Cloudanbieter
 bei ihren serverlosen Diensten nur die eigentlichen Rechentätigkeiten
@@ -223,10 +268,6 @@ auch \textit{resource controller} genannt. Subsytems sind Bestandteil
 des Kernels und erlauben das Ändern von Prozesseigenschaften und
 Prozessverhalten in einer cgroups Gruppierung. 
 \cite{RedHatIntroToLinuxContainers}.
-
-
-\section{Function as a Service}
-Bei Function as a Service handelt es sich um eine serverlose Dienstart.
 
 
 % -- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
