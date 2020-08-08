@@ -5,7 +5,7 @@ Es werden die wichtigsten Eigenschaften des Serverless-Computing erläutert,
 sowie gängige serverlose Dienste vorgestellt.
 
 \section{Serverless-Computing}
-Serverless-Computing ist ein Konzept, mit dem man skalierbare Anwendungen
+Serverless-Computing (Serverless) ist ein Konzept, mit dem man skalierbare Anwendungen
 entwickeln und ohne komplexe Serververwaltung bereitstellen kann \cite{CioGov}.
 Das Konzept ist bei den öffentlichen Cloud-Providern beliebt, die viele
 serverlose Dienste für Entwickler und Unternehmen bereitstellen. Trotz des Namens
@@ -15,18 +15,20 @@ Diensten \cite{CNCF}. Es wird meist zwischen zwei Arten von
 serverlosen Diensten unterschieden. Cloud-Provider bieten mehrere
 Laufzeitumgebungen und Programmiersprachen zur Auswahl an,
 sodass Entwickler durch isolierte, kompakte und zustandslose Funktionen
-ihre Anwendungen entwicklen können. Diese Dienstart wird auch
+ihre Anwendungen entwickeln können. Diese Dienstart wird auch
 \textit{Function-as-a-Service} (FaaS) genannt, wie beispielsweise
-AWS Lambda \footnote{\url{https://aws.amazon.com/de/lambda/}}.
+AWS Lambda\footnote{\url{https://aws.amazon.com/de/lambda/}}.
 Serverless ist ein relativ neues Thema, sodass
 der Begriff immer weiter ausgebaut wird \cite{ServerlessTrends}.
 So haben Cloud-Provider mit \textit{Serverless Containers}
-eine weitere serverlose Dienstarten eingeführt. Google Cloud Run
-\footnote{\url{https://cloud.google.com/run}} und AWS Fargate
-\footnote{\url{https://aws.amazon.com/de/fargate/}} geben Entwicklern
-die Freiheit eine beliebige Anwendungen bereitzustellen,
-denn sie erwarten für die Bereitstellung eine Dockerfile
-\footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
+eine weitere serverlose Dienstarten eingeführt.
+Google Cloud Run\footnote{\url{https://cloud.google.com/run}} und
+AWS Fargate\footnote{\url{https://aws.amazon.com/de/fargate/}} geben Entwicklern
+die Freiheit beliebige Anwendungen bereitzustellen,
+denn sie erwarten für die Bereitstellung eine
+Dockerfile\footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
+Eine Dockerfile ist eine Konfigurationsdatei, in der man die
+Laufzeitumgebung des Containers genaustens definieren kann.
 Entwickler können somit die Laufzeitumgebung ihrer Anwendungen
 genaustens definieren und kontrollieren \cite{ServerlessTrends}.
 
@@ -48,54 +50,86 @@ Verringert sich die Nachfrage wieder, werden die Instanzen abgebaut. Anders ist
 es bei traditionellen selbstverwalteten Diensten. Dort müssen Entwickler die Nachfrage grob
 abschätzen und bei zu hoher Nachfrage die Kapazitäten rechtzeitig
 erhöhen. Verringert sich die Nachfrage wieder muss daran
-gedacht werden die Kapazitäten zuverkleinern, da sonst
+gedacht werden die Kapazitäten zu verkleinern, da sonst
 Ressourcen in Zahlung gestellt werden die nicht gebraucht wurden
 \cite{WhatIsServerless} \cite{ServerlessTrends}.
 
 \subsection{Serverless Containers}
-Eine neue serverlose Dienstart sind die Serverless Containers.
+Eine weitere serverlose Dienstart sind die Serverless Containers.
 Ein großer Nachteil von FaaS Diensten der Cloud-Provider ist,
 dass man die Laufzeitumgebung nicht erweitern kann. Bei der
 Entwicklung seiner Funktionen muss man aus einer geringen Auswahl
 an Programmiersprachen und Laufzeiten auswählen. Serverlose Container
 bieten hier einen großen Vorteil, denn sie erwarten eine Dockerfile.
-Eine Dockerfile ist eine Konfigurationsdatei, in der man die
-Laufzeitumgebung des Containers genaustens definieren kann.
 Dadurch haben Entwickler mehr Kontrolle und Freiheit bei der
-Anwendungsentwicklung. 
+Anwendungsentwicklung. Zusätzlich bleiben die Vorteile der FaaS Dienste erhalten.
 
 \subsection{Eigenschaften von Serverless}
-Damit ein Dienst dem \textit{Serverless} Prinzip folgt, sollte es
-es gewisse Charakteristiken aufweisen. Diese Eigenschaften gelten
-für FaaS und Serverless Container.
+Damit ein Dienst dem Serverless-Prinzip folgt, sollte es
+gewisse Charakteristiken aufweisen \cite{ShafKhonMou}. Diese Eigenschaften gelten
+für FaaS sowie für Serverless Containers, können jedoch von Cloud-Provider zu
+Cloud-Provider leicht abweichen.
 
-\paragraph{Einfache Bereitstellung und Verwaltung} Eine Anwendung sollte so einfach
-wie möglich bereitsgestellt und verwaltet werden können.
+\paragraph{Einfache Bereitstellung} Eine Anwendung sollte so einfach
+wie möglich bereitgestellt werden können.
 FaaS und Serverless Container Dienste erwarten meist nur die
-Anwendungslogik und eine Dockerfile \cite{ServerlessTrends}.
+Anwendungslogik und eine Dockerfile.
 Mit nur wenigen Kommandos und Interaktionen in der Kommandozeile oder
-der graphischen Benutzeroberfläche sollte die Anwendung
-bereitgestellt werden können. Nach dem Aufsetzen sollte
-die weitere Verwaltung der Anwendung, wie Updates und
-Anpassung der Ressourcen, den Entwicklern ohne
-Komplexität ermöglicht werden. Serverlose Dienste, wie
-Google Cloud Run, geben den Entwicklern die Möglichkeit unteranderem
-die Speicherkapazität \cite{CloudRunMemLimits} und
-CPU-Anzahl \cite{CloudRunCpuAlloc} der Containerinstanzen zu setzen.  
+der grafischen Benutzeroberfläche sollte die Anwendung
+bereitgestellt werden können \cite{ServerlessTrends}.
 
-\paragraph{Skalierbarkeit} Eine Anwendung  
+\paragraph{Einfache Verwaltung und Wartung} 
+Nach dem Aufsetzen sollte die weitere Verwaltung der Anwendung, wie das Aktualisieren,
+ohne Komplexität möglich sein. Google Cloud Run gibt Entwicklern die Option
+Containerressourcen, wie beispielsweise die Speicherkapazität \cite{CloudRunMemLimits}
+und CPU-Anzahl \cite{CloudRunCpuAlloc}, anzupassen. Die Dienste und darunterliegende
+Infrastruktur wird von den Cloud-Providern selbst auf Sicherheitslücken überwacht \cite{ServerlessTrends}.
 
+\paragraph{Automatisches Skalieren} Bei erhöhter Nachfrage sollten weitere Instanzen der Anwendung
+schnell genug gestartet werden, sodass die Nachfrage gedeckt wird.
+Verringern sich die Anfrage, so sollten die zusätzlich gestarteten Instanzen wieder abgebaut werden.
+Durch das automatische Skalieren passt sich der Dienst an die aktuelle Nachfrage der Anwendung an.
+Werden gar keine Anfragen an die Anwendung getätigt, soll keine Instanz laufen.
+Dies wird auch \textit{scale-to-zero} genannt \cite{ServerlessTrends}.
 
-% Skalierbar
-% (x) Einfache Bereitstellung und Verwaltung
-% Zahlung nach Rechenzeit, nicht Stündlich oder monatlich
-% 
+\paragraph{Pay-for-use} Kosten fallen nur dann an, wenn mindestens eine
+Instanz der Anwendung arbeitet. Oft wird die eigentliche Rechendauer, Anzahl der
+Aufrufe pro Monat sowie die Konfiguration der Instanzen in Zahlung gestellt \cite{ServerlessTrends}.
+Verarbeitet die Anwendung keine Anfragen, fallen keine Kosten an.
+Selbstverwaltete Dienste dagegen werden oft stündlich oder monatlich in Zahlung gestellt.
+Dies ist die \textit{pay-for-use} Eigenschaft von Serverless \cite{Firecracker}.
+Zusätzlich bieten Google Cloud Run und AWS Lambda auch ein kostenloses Kontingent an
+\cite{CloudRunPricing} \cite{AWSLambda}. Erst nachdem die jeweiligen Ressourcen
+ausgelastet sind, fallen kosten an.
+
+\subsection{Nachteile von Serverless}
+Neben den zahlreichen Vorteilen bergen serverlose Dienste auch einige Nachteile.
+Das Verwenden von vielen serverlosen Diensten kann zur Abhängigkeit der
+Cloud-Provider (engl. \textit{vendor lock-in}) führen. Die einzelnen
+Services lassen sich leicht miteinander verbinden,
+was weiter die Komplexität der gesamten Anwendungsarchitektur verringert. Jedoch erwarten
+FaaS Dienste unterschiedliche Funktionsschreibweisen, sodass der Wechsel zu einem
+anderen Anbieter nicht mühelos ist \cite{EcoArc}.
+
+Die gestarteten Instanzen sind flüchtig (engl. \textit{ephemeral}). Dadurch
+eignet sich Serverless nicht für alle Anwendungen. Anfragen dürfen nicht davon ausgehen, dass sie von der
+gleichen Instanz bearbeitet werden. Einige Dienste, wie Google Cloud Run,
+haben auch eine maximale Zeitspanne (engl. \textit{timeout}), in der eine Anfrage abgearbeitet werden muss.
+Dauert es länger, wird die Bearbeitung abgebrochen \cite{CloudRunTimeout}.
+
+Ein weiteres Problem von Serverless sind die \textit{Cold-Starts}.
+Bei einer eintretenden Anfrage, braucht das Hochfahren einer neuen Anwendungsinstanz
+gewisse Zeit, denn Anwendungslogik und Laufzeitumgebung müssen erst initialisiert werden.
+Cloud-Provider versuchen diese Zeit zu minimieren \cite{Firecracker}. Wird eine Instanz mit der Bearbeitung einer Anfrage
+fertig, so wird sie nicht sofort herunterfahren, sondern erst nach einer gewissen Zeit.
+Dadurch kann sie bei erneuter Anfrage während diese Zeit wiederverwendet werden, denn Laufzeitumgebung und
+Anwendungslogik sind bereits geladen \cite{ColdStartComp}.
 
 
 \subsection{Aufbau einer serverless Platform}
 Obwohl die ausgearbeitete Anwendung in Kapitel 3
 mithilfe des Serverless Container Dienstes von Google entwickelt wird,
-wird im folgenden der Aufbau einer serverlosen Platform
+wird im Folgenden der Aufbau einer serverlosen Platform
 anhand von Apache OpenWhisk
 \footnote{\url{https://openwhisk.apache.org/}} vorgestellt.
 Aus Googles Dokumentationen wird nicht eindeutig ersichtlich, wie
