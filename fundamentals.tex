@@ -9,36 +9,41 @@ Serverless-Computing (Serverless) ist ein Konzept, mit dem man skalierbare Anwen
 entwickeln und ohne komplexe Serververwaltung bereitstellen kann \cite{CioGov}.
 Das Konzept ist bei den öffentlichen Cloud-Providern beliebt, die viele
 serverlose Dienste für Entwickler und Unternehmen bereitstellen. Trotz des Namens
-werden selbstverständlich immer noch \textit{Server} verwendet. Der Name symbolisiert die geringe
+werden selbstverständlich immer noch \emph{Server} verwendet. Der Name symbolisiert die geringe
 und einfache Serververwaltung im Vergleich zu üblichen selbstverwalteten
 Diensten \cite{CNCF}. Es wird meist zwischen zwei Arten von
 serverlosen Diensten unterschieden. Cloud-Provider bieten mehrere
 Laufzeitumgebungen und Programmiersprachen zur Auswahl an,
 sodass Entwickler durch isolierte, kompakte und zustandslose Funktionen
 ihre Anwendungen entwickeln können. Diese Dienstart wird auch
-\textit{Function-as-a-Service} (FaaS) genannt, wie beispielsweise
+\emph{Function-as-a-Service} (FaaS) genannt, wie beispielsweise
 AWS Lambda\footnote{\url{https://aws.amazon.com/de/lambda/}}.
 Serverless ist ein relativ neues Thema, sodass
 der Begriff immer weiter ausgebaut wird \cite{ServerlessTrends}.
-So haben Cloud-Provider mit \textit{Serverless Containers}
+So haben Cloud-Provider mit \emph{Serverless Containers}
 eine weitere serverlose Dienstarten eingeführt.
-Google Cloud Run\footnote{\url{https://cloud.google.com/run}} und
-AWS Fargate\footnote{\url{https://aws.amazon.com/de/fargate/}} geben Entwicklern
-die Freiheit beliebige Anwendungen bereitzustellen,
-denn sie erwarten für die Bereitstellung eine
-Dockerfile\footnote{\url{https://docs.docker.com/engine/reference/builder/}}.
-Eine Dockerfile ist eine Konfigurationsdatei, in der man die
-Laufzeitumgebung des Containers genaustens definieren kann.
+Google Cloud Run\footnote{\url{https://cloud.google.com/run}}
+gibt Entwicklern die Freiheit die Laufzeitumgebung ihrer Anwendung
+selbst zu definieren, denn für die Bereitstellung erwartet es
+ein Dockerimage\footnote{\url{https://docs.docker.com/get-started/overview/}}.
+Ein Dockerimage ist eine mehrschichtige Schablone, welche
+alle nötigen Abhängigkeiten und Instruktionen für das
+Erzeugen eines Container enthält
+\cite{DockerDocs} \cite{RedHatDockerImage}.
 Entwickler können somit die Laufzeitumgebung ihrer Anwendungen
-genaustens definieren und kontrollieren \cite{ServerlessTrends}.
+genaustens definieren. Sie sind nicht gezwungen
+ihre Anwendungen aus einzelnen Funktionen zu entwickeln,
+sondern können auch eine übliche komplexere Applikation bereitstellen
+\cite{ServerlessTrends}.
 
 \subsection{Function as a Service}
 Häufig wird der Begriff serverless mit einer ganz bestimmten serverlosen Dienstart
 assoziiert, den Function-as-a-Service (FaaS).
 Die Idee ist, dass Entwickler ihre Anwendungslogik aus isolierten und 
-zustandslosen Funktionen aufbauen. Es ist vorgesehen, dass jede Funktion nur für eine
+zustandslosen Funktionen aufbauen.
+Es ist vorgesehen, dass jede Funktion nur für eine
 ganz spezifische Aufgabe zuständig ist. Die Funktionen können
-durch Ereignisse (engl. \textit{Events}) ausgelöst werden.
+durch Ereignisse (engl. \emph{Events}) ausgelöst werden.
 Durch Events können einzelnen Funktionen miteinander oder mit
 weiteren Diensten der Architektur verbunden werden. 
 Treffen solche Ereignisse ein, provisioniert der
@@ -60,9 +65,10 @@ Ein großer Nachteil von FaaS Diensten der Cloud-Provider ist,
 dass man die Laufzeitumgebung nicht erweitern kann. Bei der
 Entwicklung seiner Funktionen muss man aus einer geringen Auswahl
 an Programmiersprachen und Laufzeiten auswählen. Serverlose Container
-bieten hier einen großen Vorteil, denn sie erwarten eine Dockerfile.
+bieten hier einen großen Vorteil, denn sie erwarten ein Dockerimage.
 Dadurch haben Entwickler mehr Kontrolle und Freiheit bei der
-Anwendungsentwicklung. Zusätzlich bleiben die Vorteile der FaaS Dienste erhalten.
+Anwendungsentwicklung. Zusätzlich bleiben 
+die Vorteile der FaaS Dienste erhalten.
 
 \subsection{Eigenschaften von Serverless}
 Damit ein Dienst dem Serverless-Prinzip folgt, sollte es
@@ -90,34 +96,52 @@ schnell genug gestartet werden, sodass die Nachfrage gedeckt wird.
 Verringern sich die Anfrage, so sollten die zusätzlich gestarteten Instanzen wieder abgebaut werden.
 Durch das automatische Skalieren passt sich der Dienst an die aktuelle Nachfrage der Anwendung an.
 Werden gar keine Anfragen an die Anwendung getätigt, soll keine Instanz laufen.
-Dies wird auch \textit{scale-to-zero} genannt \cite{ServerlessTrends}.
+Dies wird auch \emph{scale-to-zero} genannt \cite{ServerlessTrends}.
 
-\paragraph{Pay-for-use} Kosten fallen nur dann an, wenn mindestens eine
+\paragraph{Bezahlung des eigentlichen Verbrauchs} Kosten fallen nur dann an, wenn mindestens eine
 Instanz der Anwendung arbeitet. Oft wird die eigentliche Rechendauer, Anzahl der
 Aufrufe pro Monat sowie die Konfiguration der Instanzen in Zahlung gestellt \cite{ServerlessTrends}.
 Verarbeitet die Anwendung keine Anfragen, fallen keine Kosten an.
 Selbstverwaltete Dienste dagegen werden oft stündlich oder monatlich in Zahlung gestellt.
-Dies ist die \textit{pay-for-use} Eigenschaft von Serverless \cite{Firecracker}.
+Dies ist die \emph{pay-for-use} Eigenschaft von Serverless \cite{Firecracker}.
 Zusätzlich bieten Google Cloud Run und AWS Lambda auch ein kostenloses Kontingent an
 \cite{CloudRunPricing} \cite{AWSLambda}. Erst nachdem die jeweiligen Ressourcen
 ausgelastet sind, fallen kosten an.
 
+Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
+die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
+die angefragten Funktionen passend hoch und runter skalieren.
+Dies kann unter Umständen auch zu geringeren Kosten führen 
+Auch wenn bereits stark auf 
+andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlosen Dienste
+gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
+aktiviert werden, können Daten in eine Funktion eingeführt werden, um
+dann an die benötigten Komponenten, in passendem Format, wieder ausgeführt zu werden
+\cite{ServerlessTrends} \cite{HpcServerless}.
+
 \subsection{Nachteile von Serverless}
 Neben den zahlreichen Vorteilen bergen serverlose Dienste auch einige Nachteile.
-Das Verwenden von vielen serverlosen Diensten kann zur Abhängigkeit der
-Cloud-Provider (engl. \textit{vendor lock-in}) führen. Die einzelnen
+Auch die Nachteile gelten, mit einer Ausnahme, für FaaS sowie für
+Serverless Containers Dienste.
+
+\paragraph{Abhängigkeit der Cloud-Provider} Das Verwenden von vielen serverlosen Diensten kann zur Abhängigkeit der
+Cloud-Provider (engl. \emph{vendor lock-in}) führen. Die einzelnen
 Services lassen sich leicht miteinander verbinden,
 was weiter die Komplexität der gesamten Anwendungsarchitektur verringert. Jedoch erwarten
 FaaS Dienste unterschiedliche Funktionsschreibweisen, sodass der Wechsel zu einem
 anderen Anbieter nicht mühelos ist \cite{EcoArc}.
+Serverless Container haben dieses Problem nicht.
+Deren Laufzeitumgebung wird durch ein Dockerimage festgelegt.
+Somit ist der Wechsel zu anderen Diensten ohne großen Aufwand
+möglich.
 
-Die gestarteten Instanzen sind flüchtig (engl. \textit{ephemeral}). Dadurch
+\paragraph{Flüchtige Instanzen} Die gestarteten Instanzen sind flüchtig (engl. \emph{ephemeral}). Dadurch
 eignet sich Serverless nicht für alle Anwendungen. Anfragen dürfen nicht davon ausgehen, dass sie von der
 gleichen Instanz bearbeitet werden. Einige Dienste, wie Google Cloud Run,
-haben auch eine maximale Zeitspanne (engl. \textit{timeout}), in der eine Anfrage abgearbeitet werden muss.
+haben auch eine maximale Zeitspanne (engl. \emph{timeout}), in der eine Anfrage abgearbeitet werden muss.
 Dauert es länger, wird die Bearbeitung abgebrochen \cite{CloudRunTimeout}.
 
-Ein weiteres Problem von Serverless sind die \textit{Cold-Starts}.
+\paragraph{Cold Starts} Ein weiteres Problem von Serverless sind die \emph{Cold-Starts}.
 Bei einer eintretenden Anfrage, braucht das Hochfahren einer neuen Anwendungsinstanz
 gewisse Zeit, denn Anwendungslogik und Laufzeitumgebung müssen erst initialisiert werden.
 Cloud-Provider versuchen diese Zeit zu minimieren \cite{Firecracker}. Wird eine Instanz mit der Bearbeitung einer Anfrage
@@ -125,85 +149,131 @@ fertig, so wird sie nicht sofort herunterfahren, sondern erst nach einer gewisse
 Dadurch kann sie bei erneuter Anfrage während diese Zeit wiederverwendet werden, denn Laufzeitumgebung und
 Anwendungslogik sind bereits geladen \cite{ColdStartComp}.
 
+\subsection{Open-Source Serverless Platform}
+
+Neben den serverlosen Diensten der Cloud-Provider stehen
+auch Open-Source Lösungen zur Verfügung. Platformen wie
+OpenFaaS\footnote{\url{https://www.openfaas.com/}},
+Apache OpenWhisk\footnote{\url{https://openwhisk.apache.org/}} und
+Oracle Fn Project\footnote{\url{https://fnproject.io/}} geben
+Entwicklern die Möglichkeit ihre Applikationen
+nach dem Serverless Konzept bereitzustellen und
+von den Vorteilen zu profitieren. Wie bei Serverless
+Container Diensten, haben sie den Vorteil,
+dass die Laufzeitumgebung der Instanzen durch
+eine Dockerfile konfiguriert werden kann.
+Jedoch werden einzelne ereignisgesteuerte Funktionen benutzt,
+um Anwendungen zu entwickeln, ähnlich den FaaS Diensten der
+Cloud-Provider \cite{OpenFaasGithub} \cite{OpenWhiskGithub}.
+Einen großen Nachteil haben sie dennoch.
+Für das Ausführen in einer Produktionsumgebung setzen einige
+der Platformen ein Container-Orchestrierungswerkzeug vorraus.
+Dieser muss erst aufgesetzt werden oder Entwickler greifen auf
+einen verwalteten Dienst der Cloud-Providern zurück. Jedoch fallen
+dann stündliche bzw. monatliche Fixkosten an und die
+Verwaltung der Anwendung steigt, sodass die Vorteil
+von Serverless nicht ganz ausgeschöpft werden.
 
 \subsection{Aufbau einer serverless Platform}
-Obwohl die ausgearbeitete Anwendung in Kapitel 3
-mithilfe des Serverless Container Dienstes von Google entwickelt wird,
-wird im Folgenden der Aufbau einer serverlosen Platform
-anhand von Apache OpenWhisk
-\footnote{\url{https://openwhisk.apache.org/}} vorgestellt.
+Obwohl die ausgearbeitete Anwendung im folgenden Kapitel
+mithilfe von Google Cloud Run entwickelt wird,
+wird hier der Aufbau einer serverlosen Platform
+anhand von Apache OpenWhisk vorgestellt.
 Aus Googles Dokumentationen wird nicht eindeutig ersichtlich, wie
 deren Service aufgebaut ist. Dagegen ist OpenWhisk eine
-gut dokumentierte Open-Source Lösung, die initial von IBM entwickelt
-wurde.
+gut dokumentierte Open-Source Lösung.
 
-In OpenWhisks Dokumentation werden serverlose Funktionen
-\textit{Actions} genannt. Erstellen Entwickler ihre
-Actions werden sie durch einen HTTP-Endpunkt der Form\\
-\texttt{/api/v1/namespaces/\$userNamespace/actions/myAction} zugänglich
-\cite{OpenWhiskGithub}. \texttt{myAction} ist der Name der Action
-und die \texttt{\$userNamespace} Variable ist hier ein
-Platzhalter, denn in OpenWhisk können Actions für eine bessere
-Verwaltung und Authorisierung in Gruppen aufgeteilt werden.
-Im nachfolgenden wird vom Standard-Namespace, dem Unterstrich,
-ausgegangen. Der Endpunkt ändert sich zu
-\texttt{/api/v1/namespaces/\_/actions/myAction} ab.
-Bei einem eintrettenden Event ist \textit{nginx}
-\footnote{\url{https://www.nginx.com/}} die erste Station.
-Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
-Nginx leitet den Aufruf weiter an den \textit{Controller}.
+In OpenWhisk werden serverlose Funktionen \emph{Actions} genannt.
+Dafür wird in einer Datei eine Funktion deklarieren.
+Die Funktion muss gewisse Vorraussetzungen erfüllen,
+damit OpenWhisk sie verwenden kann.
+Unteranderem muss der Rückgabewert als JSON Objekt
+interpretiert werden können \cite{OpenWhiskGithubActions}.\\
+
+\begin{lstlisting}[caption={Hello World JS Funktion. In Anlehnung an \cite{OpenWhiskGithub} \cite{OpenWhiskGithubActions}}, label={lst:openwhisk_action}]
+function main(params) {
+    console.log('Hello World');
+    return { msg: 'Hello World' };
+}
+\end{lstlisting}
+
+Die Funktion in Auflistung~\ref{lst:openwhisk_action},
+die nach Ausführung den Text \texttt{Hello World}
+in der Standardausgabe ausgibt und selbigen Text
+auch als JSON-Objekt zurück sendet, erfüllt alle Vorraussetzungen
+für die Umwandlung zu einer Action.\\
+
+\begin{lstlisting}[caption=Erstellen einer Action \cite{OpenWhiskGithub}, label={lst:openwhisk_create_action}]
+wsk action create myAction action.js
+\end{lstlisting}
+
+Die Action wird mithilfe der OpenWhisk CLI (\texttt{wsk})
+und dem Zusatz \texttt{action create} erzeugt.
+Mit \texttt{myAction} und \texttt{action.js} 
+in Auflistung~\ref{lst:openwhisk_create_action}
+sind der Name der Action und der Name der Datei angegeben
+\cite{OpenWhiskGithub}.\\
+
+\begin{lstlisting}[caption=Action Endpunkt \cite{OpenWhiskGithub}, label={lst:openwhisk_action_endpoint}]
+/api/v1/namespaces/$userNamespace/actions/myAction
+\end{lstlisting}
+
+Erstellen Entwickler ihre Actions werden sie durch
+einen HTTP-Endpunkt der Form in Auflistung~\ref{lst:openwhisk_action_endpoint},
+zugänglich.
+Die Variable \texttt{\$userNamespace} ist hier ein
+Platzhalter für einen Namensraum.
+In OpenWhisk können Actions für eine bessere
+Verwaltung und Authorisierung in Namensräumen aufgeteilt werden
+\cite{OpenWhiskGithub}.
+
+\begin{figure}
+    \centering
+    \includegraphics[height=10cm]{fig/openwhisk_architecture}
+    \caption{Apache OpenWhisk Architektur. In Anlehnung an \cite{OpenWhiskGithub}}
+    \label{fig:openwhisk_architecture}
+\end{figure}
+
+In Abbildung~\ref{fig:openwhisk_architecture} ist die Architektur von
+OpenWhisk abgebildet. Sie baut auf unterschiedliche Komponenten auf,
+um eine Anfrage zu bearbeiten. Bei einem eintrettenden Event \textbf{(1)}
+ist \emph{Nginx} \footnote{\url{https://www.nginx.com/}} \textbf{(2)} die erste
+Station. Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
+Nginx leitet den Aufruf weiter an den \emph{Controller} \textbf{(3)}.
 Der Controller implementiert die Rest-API und filtert die
 eintrettenden Anfragen durch, um die passende Action und
 den weiteren Verlauf zu ermitteln.
 Er authorisiert die Anfrage und schaut auf nötigen Authentifizierungen.
-Dafür befragt er CouchDB \footnote{\url{https://couchdb.apache.org/}},
+Dafür befragt er CouchDB\footnote{\url{https://couchdb.apache.org/}}
+\textbf{(4)},
 eine dokumentenbasierte Datenbank. Nachdem Authorisierungs-
 und Authentifizierungsschritte erfolgreich abschließen,
-wird die Actions-Logik aus der Datenbank entnommen und an den
+wird die Actions-Logik aus der Datenbank entnommen \textbf{(4)} und an den
 Load-Balancer weitergeleitet. Der Load-Balancer ist bestandteil
-des Controllers und enthält eine Sicht auf alle \textit{Invoker}.
+des Controllers und enthält eine Sicht auf alle \emph{Invoker}.
 Die Aufgabe der Invoker ist es, die Action am Ende auszuführen.
 In der Theorie würde der Load-Balancer sich einen freien Invoker suchen
 und ihm die Action-Logik übergeben. Jedoch kann es zu Unerwarteten
 Störungen und Abstüzungen kommen oder es lässt sich kein freier
 Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
-Apache Kafka \footnote{\url{https://kafka.apache.org/}},
+Apache Kafka \footnote{\url{https://kafka.apache.org/}} \textbf{(5)},
 einer verteilten Streaming-Platform. Kafka speichert seine
 einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
 Nachrichten vorhanden sind. Die Nachricht enthält welcher
-Invoker die Action ausführen soll, egal ob dieser momentan
+Invoker die Action ausführen soll, auch wenn dieser momentan
 beschäftigt ist. Kafka verarbeitet die Nachricht und sendet eine
 Empfangsbestätigung mit der \texttt{activationId} zurück. Mithilfe
 der \texttt{activationId} lässt sich später das Result der Action
 abfragen. Wenn der Invoker aus der Nachricht frei ist, wird die
-Action ausgeführt. Dafür wird ein Docker Container gestartet,
+Action ausgeführt. Dafür wird ein Docker Container gestartet \textbf{(6)},
 welcher eine passende Laufzeitumgebung für die Action zur Verfügung
 stellt. Die Action-Logik wird in den Container geladen und ausgeführt.
 Das Resultat wird entnommen und der Container wird heruntergefahren.
 Das Resultat sowie die \texttt{activationId} werden in die
-activations-Datenbank gespeichert. Nun kann, wie bereits zu Beginn,
-über dem Endpunkt und der \texttt{activationId} das Resultat abgefragt
-werden \cite{OpenWhiskGithub}.
-
-
-Ein weiterer Vorteil des Serverless-Computing ist, dass Cloudanbieter
-bei ihren serverlosen Diensten nur die eigentlichen Rechentätigkeiten
-in Zahlung stellen, sodass für Entwickler und Unternehmen nur dann Kosten
-anfallen, wenn ihre Anwendungen auch benutzt werden \cite{EcoArc}.
-
-Auch das Wegfallen der Provisionierung und täglichen Verwaltung bringt Vorteile mit sich.
-Entwickler können sich auf die eigentliche Entwicklung der Anwendungen konzentrieren und
-müssen sich nicht mit den täglichen Kleinigkeiten des Entwicklungsalltags
-beschäftigen \cite{ServerlessTrends}.
-
-Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
-die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
-die angefragten Funktionen passend hoch und runter skalieren. Auch wenn bereits stark auf 
-andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlosen Dienste
-gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
-aktiviert werden, können Daten in eine Funktion eingeführt werden, um
-dann an die benötigten Komponenten, in passendem Format, wieder ausgeführt zu werden
-\cite{ServerlessTrends} \cite{HpcServerless}.
+\texttt{activations}-Datenbank \textbf{(7)} gespeichert. Nun kann, wie bereits zu Beginn,
+über den Endpunkt und der \texttt{activationId} das Resultat aus
+der \texttt{activations}-Datenbank abgerufen werden werden
+\cite{OpenWhiskGithub}.
 
 Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer
 serverlosen Platform und den Aspekt der Sicherheit eintauchen zu können,
@@ -212,7 +282,7 @@ werden die zwei Begriffe Virtual-Machine und Container vorgestellt.
 \section{Virtual-Machine}
 Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit 
 eigenen virtuellen Ressourcen, wie unter anderem CPU und Speicher.
-Ein \textit{Virtual Machine Monitor} (VMM), auch \textit{Hypervisor} genannt
+Ein \emph{Virtual Machine Monitor} (VMM), auch \emph{Hypervisor} genannt
 ist ein Softwarestück, das dafür zuständig ist die 
 virtuellen Umgebungen einschließlich seiner virtuellen Ressourcen zu verwalten
 und Instruktionen auf die physischen Ressourcen abzubilden.
@@ -227,14 +297,14 @@ mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
 Arten von Hypervisor unterschieden.
 
 \subsection{Hypervisortyp}
-Ein nativer Hypervisor, auch \textit{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
+Ein nativer Hypervisor, auch \emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
 und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein gängiger Typ 1 Hypervisor ist
 unter anderem Microsoft Hyper-V
 \footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
 \cite{RedHatHypervisor}. Es wird kein zugrundeligendes Betriebssystem
 benötigt.
 
-Ein hosted Hypervisor, auch \textit{Typ 2 Hypervisor}  genannt, läuft als übliche
+Ein hosted Hypervisor, auch \emph{Typ 2 Hypervisor}  genannt, läuft als übliche
 Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre Oracle VirtualBox
 \footnote{\url{https://www.virtualbox.org/}}, welches auch in der Informatik
 an der Heinrich-Heine-Universität (HHU) verwendet wird \cite{HHUFachschaft}.
@@ -248,22 +318,20 @@ mit einem hosted Hypervisor ohne großen Aufwand möglich.
 Ein Nachteil ist jedoch, dass sie langsamer und ineffizienter sind, da sie nicht
 direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
 
-Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (\textit{KVM}).
-KVM ist in den Linux-Kernel \footnote{\url{https://www.kernel.org}} integriert und wandelt
+Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (\emph{KVM}).
+KVM ist in den Linux-Kernel integriert und wandelt
 das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
-Hardware-Virtualisierungserweiterungen, wie beispielsweise Intel-VT
-\footnote{\url{https://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html}}.
-Diese Erweiterungen wurden eingeführt,
-um die Virtualisierung und die Entwicklung
-von Hypervisor zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
+Hardware-Virtualisierungserweiterungen. Diese Erweiterungen wurden eingeführt,
+um die Virtualisierung und die Entwicklung von Hypervisor
+zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
 
 \section{Container}
 Virtualisierung ist auch mithilfe von Linux Container möglich,
-was auch Containerisierung (engl. \textit{Containerization})
+was auch Containerisierung (engl. \emph{Containerization})
 genannt wird. Diese enthalten isolierte Prozesse
 \footnote{\url{https://www.tldp.org/LDP/tlk/kernel/processes.html}}.
 Container teilen sich den Host-Kernel. Durch eine
-Konfigurationsdatei (\textit{Image}) werden alle
+Konfigurationsdatei (\emph{Image}) werden alle
 nötigen Ressourcen und Dateien definiert, die für das Ausführen
 der Prozesse benötigt werden. Dadurch spart man sich ein komplettes
 Betriebsystem zu laden, wodurch sie den Vorteil,
@@ -271,9 +339,9 @@ dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
 definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
 können \cite{RedHatContainer}. Container bauen auf zwei Komponenten
 des Linux-Kernels auf, den Namensräumen
-(\textit{namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
+(\emph{namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
 und den Kontrollgruppen
-(\textit{cgroups} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
+(\emph{cgroups} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
 
 Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
@@ -282,11 +350,10 @@ Ausprägung der Ressource \cite{UbuntuNamespaces}.
 Dadurch können mehrere Container gleichzeitig auf die gleiche
 Ressource zugreifen \cite{RedHatIntroToLinuxContainers}.
 Es existieren unterschiedliche namespaces, wie beispielsweise
-\textit{mount namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/mount_namespaces.7.html}},
-\textit{network namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/network_namespaces.7.html}}
-und \textit{pid namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/pid_namespaces.7.html}}.
+\emph{mount namespaces}, \emph{network namespaces}
+und \emph{pid namespaces}.
 Durch mount namespaces kann die Sicht auf das Dateisystem
-(engl. \textit{filesystem}) für Prozesse beschränkt werden.
+(engl. \emph{filesystem}) für Prozesse beschränkt werden.
 Mit network namespaces lassen sich IP-Adressen, Ports
 und Routing Tabellen isolieren. PID (deut. Prozess-ID) namespaces teilen
 den Identifikationsbereich. Ein Prozess hat dadurch zwei
@@ -297,8 +364,8 @@ innerhalb des namespaces, welche sich beide unterscheiden können
 Cgroups haben zwei wichtige Aufgaben. Sie erlauben das Gruppieren
 von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
 Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
-Möglich wird dies durch \textit{subsystems},
-auch \textit{resource controller} genannt. Subsytems sind Bestandteil
+Möglich wird dies durch \emph{subsystems},
+auch \emph{resource controller} genannt. Subsytems sind Bestandteil
 des Kernels und erlauben das Ändern von Prozesseigenschaften und
 Prozessverhalten in einer cgroups Gruppierung. 
 \cite{RedHatIntroToLinuxContainers}.

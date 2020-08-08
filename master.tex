@@ -52,6 +52,26 @@ bibliography=totoc]{scrbook}
 \usepackage[plainpages=false,pdfpagelabels]{hyperref}
 \usepackage{cleveref}
 
+
+%%%%%%% OWN PACKAGES %%%%%%%%
+\usepackage{listings}
+
+\lstdefinestyle{mystyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=none,                    
+    numbersep=5pt,
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    frame=lines
+}
+\lstset{style=mystyle}
+
 \def\mauve{0}
 \def\graffi{1}
 
@@ -118,6 +138,8 @@ bibliography=totoc]{scrbook}
 \listoffigures
 
 \listoftables
+
+\lstlistoflistings % FOR CODEBLOCKS
 
 \mainmatter
 
