@@ -24,14 +24,8 @@ Studentenabgaben in einer sicheren Umgebung ausführt.
 Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bereitstellen
 von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
 in Zahlung gestellt wird \cite{CioGov}.
-Dafür bieten Cloud-Provider Dienste an, welche sie selbst verwalten
-\footnote{
-  \textit{Serverless} Dienste von Amazon, Microsoft und Google: \\
-  {\url{https://aws.amazon.com/de/lambda/}}, \\
-  {\url{https://azure.microsoft.com/de-de/services/functions/}}, \\
-  {\url{https://cloud.google.com/run?hl=de}}
-}.
-Korrektoren können dadurch ihre Studentenabgaben sicher ausführen und testen.
+Dafür bieten Cloud-Provider Dienste an, welche sie selbst
+verwalten. Korrektoren können dadurch ihre Studentenabgaben sicher ausführen und testen.
 Den Studenten steht eine einheitliche Platform zur Verfügung, in der sie ihre Arbeiten überprüfen können und
 Entwickler brauchen sich nur um das Programm sowie neue Erweiterungen kümmern, da die mühselige Arbeit
 der Skalierung, Provisionierung und Instandhaltung bereits von den Cloud-Providern übernommen wird.
@@ -39,16 +33,17 @@ der Skalierung, Provisionierung und Instandhaltung bereits von den Cloud-Provide
 \section{Ziel der Arbeit}
 Das Ziel dieser Arbeit ist es das Konzept des Serverless-Computing anhand eines praktischen
 Beispiels zu verdeutlichen. Hierfür wird eine serverlose Applikation entwickelt,
-der es den Studenten und Korrektoren des Moduls Programmierung
-\footnote{\url{https://www.cs.hhu.de/de/lehrstuehle-und-arbeitsgruppen/betriebssysteme-prof-dr-michael-schoettner/lehre-und-abschlussarbeiten/fruehere-lehrveranstaltungen/vorlesungen/ws-201920/programmierung.html?C=D\%253BO\%253DA}}
-ermöglicht einfache \textit{Java} \footnote{\url{https://www.oracle.com/de/java/}}
-und \textit{Gradle} \footnote{\url{https://gradle.org/}} Programme, in einer
+der es den Studenten und Korrektoren des Moduls
+Programmierung ermöglicht einfache
+\textit{Java}\footnote{\url{https://www.oracle.com/de/java/}}
+und \textit{Gradle}\footnote{\url{https://gradle.org/}} Programme, in einer
 abgekapselten Umgebung, auszuführen und zu testen.
 
 \section{Aufbau der Arbeit}
 \paragraph{Kapitel 2 - Grundlagen} Zu Beginn werden die nötigen Grundlagen und Begriffe erklärt.
 Ein wesentlicher Bestandteil dieser Arbeit ist, dass die Abgaben der Studenten in einer sicheren Umgebung,
-getrennt voneinander ausgeführt werden. Dafür werden \textit{Container} \cite{Docker} und Virtual-Machines 
+getrennt voneinander ausgeführt werden. Dafür werden
+\textit{Container} und Virtual-Machines 
 näher erkundet. Diese zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die 
 Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
 Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, die den Entwicklern zur Verfügung stehen.

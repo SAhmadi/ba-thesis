@@ -237,7 +237,7 @@ Verwaltung und Authorisierung in Namensräumen aufgeteilt werden
 In Abbildung~\ref{fig:openwhisk_architecture} ist die Architektur von
 OpenWhisk abgebildet. Sie baut auf unterschiedliche Komponenten auf,
 um eine Anfrage zu bearbeiten. Bei einem eintrettenden Event \textbf{(1)}
-ist \emph{Nginx} \footnote{\url{https://www.nginx.com/}} \textbf{(2)} die erste
+ist \emph{Nginx}\footnote{\url{https://www.nginx.com/}} \textbf{(2)} die erste
 Station. Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
 Nginx leitet den Aufruf weiter an den \emph{Controller} \textbf{(3)}.
 Der Controller implementiert die Rest-API und filtert die
@@ -256,7 +256,7 @@ In der Theorie würde der Load-Balancer sich einen freien Invoker suchen
 und ihm die Action-Logik übergeben. Jedoch kann es zu Unerwarteten
 Störungen und Abstüzungen kommen oder es lässt sich kein freier
 Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
-Apache Kafka \footnote{\url{https://kafka.apache.org/}} \textbf{(5)},
+Apache Kafka\footnote{\url{https://kafka.apache.org/}} \textbf{(5)},
 einer verteilten Streaming-Platform. Kafka speichert seine
 einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
 Nachrichten vorhanden sind. Die Nachricht enthält welcher
@@ -299,14 +299,14 @@ Arten von Hypervisor unterschieden.
 \subsection{Hypervisortyp}
 Ein nativer Hypervisor, auch \emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
 und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein gängiger Typ 1 Hypervisor ist
-unter anderem Microsoft Hyper-V
-\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
+unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
 \cite{RedHatHypervisor}. Es wird kein zugrundeligendes Betriebssystem
 benötigt.
 
 Ein hosted Hypervisor, auch \emph{Typ 2 Hypervisor}  genannt, läuft als übliche
-Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre Oracle VirtualBox
-\footnote{\url{https://www.virtualbox.org/}}, welches auch in der Informatik
+Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre
+Oracle VirtualBox\footnote{\url{https://www.virtualbox.org/}},
+welches auch in der Informatik
 an der Heinrich-Heine-Universität (HHU) verwendet wird \cite{HHUFachschaft}.
 Der hosted Hypervisor kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
 physischen Ressourcen. Erst in Zusammenarbeit mit ihm
@@ -328,8 +328,7 @@ zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
 \section{Container}
 Virtualisierung ist auch mithilfe von Linux Container möglich,
 was auch Containerisierung (engl. \emph{Containerization})
-genannt wird. Diese enthalten isolierte Prozesse
-\footnote{\url{https://www.tldp.org/LDP/tlk/kernel/processes.html}}.
+genannt wird. Diese enthalten isolierte Prozesse.
 Container teilen sich den Host-Kernel. Durch eine
 Konfigurationsdatei (\emph{Image}) werden alle
 nötigen Ressourcen und Dateien definiert, die für das Ausführen
@@ -339,9 +338,9 @@ dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
 definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
 können \cite{RedHatContainer}. Container bauen auf zwei Komponenten
 des Linux-Kernels auf, den Namensräumen
-(\emph{namespaces} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
+(\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
 und den Kontrollgruppen
-(\emph{cgroups} \footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
+(\emph{cgroups}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
 
 Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
