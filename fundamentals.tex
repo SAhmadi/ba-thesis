@@ -276,11 +276,16 @@ Das Resultat sowie die \texttt{activationId} werden in die
 der \texttt{activations}-Datenbank abgerufen werden werden
 \cite{OpenWhiskGithub}.
 
-Um in den folgenden Kapiteln der Arbeit tiefer in die Architektur einer
-serverlosen Platform und den Aspekt der Sicherheit eintauchen zu können,
-werden die zwei Begriffe Virtual-Machine und Container vorgestellt.
+\section{Sichere Umgebungen für Serverless}
+Für Cloud-Provider ist es wichtig, dass die einzelnen
+Anwendungen ihrer zahlreichen Kunden sicher und abgekapselt
+voneinander laufen, sodass niemand unbefugten Zugriff auf
+andere Anwendungen hat. In diesem Abschnitt werden
+Virtual-Machines und Container näher erläutert, um ein Verständnis
+zu bekommen wie die einzelnen Anwendungen untereinander abgesichert 
+sind und ob sie für serverlose Anwendungen gut geeignet sind.
 
-\section{Virtual-Machine}
+\subsection{Virtual-Machine}
 Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit 
 eigenen virtuellen Ressourcen, wie unter anderem CPU und Speicher.
 Ein \emph{Virtual Machine Monitor} (VMM), auch \emph{Hypervisor} genannt
@@ -297,14 +302,22 @@ mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
 \cite{RedHatVM} \cite{RedHatHypervisor}. Es wird unter zwei
 Arten von Hypervisor unterschieden.
 
-\subsection{Hypervisortyp}
-Ein nativer Hypervisor, auch \emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen Hardware
-und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme. Ein gängiger Typ 1 Hypervisor ist
-unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
-\cite{RedHatHypervisor}. Es wird kein zugrundeligendes Betriebssystem
-benötigt.
+\paragraph{Typ 1 Hypervisor} Ein nativer Hypervisor,
+auch \emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen
+Hardware und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme.
+Der Hypervisor benötigt selbst kein zugrundeligendes Betriebssystem.
+Gängige Typ 1 Hypervisor sind unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
+\cite{RedHatHypervisor} und die Kernel-basierte Virtual
+Machine (\emph{KVM}). Die KVM ist in den Linux-Kernel integriert und wandelt
+das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
+Hardware-Virtualisierungserweiterungen. Diese Erweiterungen wurden eingeführt,
+um die Virtualisierung und die Entwicklung von Hypervisor
+zu beschleunigen. KVM kann auch mit einem weiteren
+Typ 2 Hypervisor benutzt werden, um diesen zu unterstützen und
+zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
 
-Ein hosted Hypervisor, auch \emph{Typ 2 Hypervisor}  genannt, läuft als übliche
+\paragraph{Typ 2 Hypervisor} Ein hosted Hypervisor, auch
+\emph{Typ 2 Hypervisor}  genannt, läuft als übliche
 Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre
 Oracle VirtualBox\footnote{\url{https://www.virtualbox.org/}},
 welches auch in der Informatik
@@ -319,14 +332,7 @@ mit einem hosted Hypervisor ohne großen Aufwand möglich.
 Ein Nachteil ist jedoch, dass sie langsamer und ineffizienter sind, da sie nicht
 direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
 
-Ein weiterer Hypervisor ist die Kernel-basierte Virtual Machine (\emph{KVM}).
-KVM ist in den Linux-Kernel integriert und wandelt
-das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
-Hardware-Virtualisierungserweiterungen. Diese Erweiterungen wurden eingeführt,
-um die Virtualisierung und die Entwicklung von Hypervisor
-zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
-
-\section{Container}
+\subsection{Container}
 Virtualisierung ist auch mithilfe von Linux Container möglich,
 was auch Containerisierung (engl. \emph{Containerization})
 genannt wird. Diese enthalten isolierte Prozesse.
@@ -337,11 +343,12 @@ der Prozesse benötigt werden. Dadurch spart man sich ein komplettes
 Betriebsystem zu laden, wodurch sie den Vorteil,
 dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
 definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
-können \cite{RedHatContainer}. Container bauen auf zwei Komponenten
+können \cite{RedHatContainer}. Container bauen auf drei Komponenten
 des Linux-Kernels auf, den Namensräumen
-(\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}})
-und den Kontrollgruppen
+(\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}}),
+den Kontrollgruppen
 (\emph{cgroups}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
+und den Filtern (\emph{seccomp-bpf}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man2/seccomp.2.html}}).
 
 Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
@@ -361,7 +368,7 @@ PIDs. Eine Identifaktionsnummer auf dem Host-Betriebssystem und eine
 innerhalb des namespaces, welche sich beide unterscheiden können
 \cite{LwnDotNetNamespaces}.
 
-Cgroups haben zwei wichtige Aufgaben. Sie erlauben das Gruppieren
+Es gibt zwei Aufgaben, die cgroups erfüllen. Sie erlauben das Gruppieren
 von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
 Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
 Möglich wird dies durch \emph{subsystems},
@@ -370,32 +377,104 @@ des Kernels und erlauben das Ändern von Prozesseigenschaften und
 Prozessverhalten in einer cgroups Gruppierung. 
 \cite{RedHatIntroToLinuxContainers}.
 
+Für die Sicherheit von Containerinstanzen ist secomp-bpf 
+verantwortlich. Es filtert und limitiert
+Systemaufrufe (\emph{syscalls}) von Prozessen,
+sowie die mitgelieferten Parameter der Systemaufrufe.
+Secomp-bpf ist ein wichtigster Baustein in der Isolation von
+Containern. Es verkleinert die Angriffsfläche 
+des Kernels. Jedoch benutzen Container einen
+Kernel, sodass bei Ausnutzung von Sicherheitslücken
+des Kernels alle Container angreifbar sind \cite{Firecracker}.
 
-% -- Ein Cloud Computing Service wie PaaS, IaaS, SaaS\\
-% -- Kleine, stateless Funktionen die einzelnd abgerechnet und skaliert werden\\
+\subsection{Ideale Virtualisierung für Serverless}
+Durch Serverless ist es möglich,
+dass eine Applikation in kürzester Zeit
+auf hunderte Instanzen hochskaliert. Vorallem bei FaaS Diensten,
+wo eine Funktion nur eine ganz spezifische Aufgabe tätigt,
+kann es vorkommen, dass eine Anwendung aus mehreren hunderten
+von kleinen Funktionen aufgebaut ist. Diese können alle separat
+skaliert werden können. Traditionelle VMs bieten
+eine robuste Isolation, denn jede VMs hat einen eigenen
+Guest-Kernel und ist durch den Hypervisor
+abgekapselt vom Host-Kernel und anderen VMs. Sie haben jedoch
+eine großen Startaufwand und sind für Serverless zu
+ressourcenintensiv \cite{Firecracker}. Container dagegen
+haben einen geringeren Startaufwand. Die Laufzeitumgebung der
+Anwendung lässt sich genaustens definieren, sodass keine
+unnötigen Ressourcen verschwendet werden. Aber Container
+teilen sich den Host-Kernel, sodass eine Sicherheitslücke
+im Kernel die Container angreifbar macht.
+Die ideale Virtualisierungmethode für Serverless sollte
+gewisse Eigenschaften aufweisen \cite{Firecracker}.
 
-% \section{Serverless Containers}
-% -- Laufzeitumgebung der serverlosen Anwendung wird durch Dockerimage bereitgestellt
-% -- Anwendung kann beliebigen aufbau haben
+\paragraph{Isolation} Mehrere Anwendungen, die gleichzeitig
+auf der selben Hardware laufen, sollten abgesichert und
+isoliert voneinander sein. Die Warhscheinlichkeit auf
+Sicherheitslücken und unbefugten Zugriff soll verringert werden
+\cite{Firecracker}.
 
-% \section{Open-Source und self-hosted Lösungen}
-% -- OpenFaaS
-% -- IBM OpenWhisk
-% -- Oracle Fn Project
+\paragraph{Aufwand und Dichte} Anders als traditionelle VMs
+sollte die ideale Virtualisierungmethode Anwendungen
+nicht zusätzlich verlangsamen. Die sichere Umgenung sollte
+kompakt sein \cite{Firecracker}.
 
-% \section{Sichere Umgebungen}
-% -- VMs sind zu Ressourcen intensiv
-% -- Container sind nicht sicher
+\paragraph{Performance} Die Leistung der Anwendungen sollten
+nicht beeinträchtigt werden. Zusätzlich sollte die Leistung auch 
+konstant und unabhängig von den einzelnen Instanzen sein
+\cite{Firecracker}.
 
-% \subsection{Google gVisor}
-% -- Applikationskernel für Container in Golang\\
-% -- Implementiert viele des Linux kernel interfaces\\
-% -- Fängt SystemCalls ab und gibt sich als GuestKernel aus\\
-% % TODO: siehe gVisor Doku und Whitepapers\\
+\paragraph{Kompatibilität} Anwendungen sollten die Möglich haben,
+ohne Einschränkungen beliebige Bibiliotheken und Dateien zu
+verwenden. Anwendungen sollten nicht extra angepasst werden
+müssen, um von der Sicherheit und Isolation zu profitieren
+\cite{Firecracker}.
 
-% \subsection{AWS Firecracker}
-% -- Benutzt KVM (Kernel-based Virtaul Machine, ähnlich sVMs)\\
-% % TODO: https://assets.amazon.science/96/c6/302e527240a3b1f86c86c3e8fc3d/firecracker-lightweight-virtualization-for-serverless-applications.pdf
+\paragraph{Schnelles Umschalten} Die Skalierungseigenschaft von
+Serverless sollte durch die Virtualisierungmethode nicht
+beeinträchtigt werden. Mehrere Instanzen der Anwendung sollten
+zügig hoch- und runtergefahren werden können \cite{Firecracker}.
+
+\paragraph{Soft Allocation} Da FaaS und Serverless
+Container Dienste auch nach Speicher,
+CPU und anderen Ressourcen konfiguriert
+werden können, muss die Virtualisierungmethode eine
+Überprovisionierung diese Ressourcen erlauben. Jedoch sollte
+eine Instanz nur die nötigen Ressourcen in Anspruch nehmen
+\cite{Firecracker}.
+
+\subsection{AWS Firecracker}
+Nach diesem theoretischen Ideal hat AWS mit Firecracker
+eine eigene Virtualisierungmethode aufgebaut, um ihre
+serverlosen Dienste zu verbessern.
+Firecracker ist ein Typ 2 Hypervisor optimiert für Serverless
+und entwickelt in Rust\footnote{\url{https://www.rust-lang.org}}.
+Mithilfe der KVM im Linux-Kernel erzeugt es kompakte
+Virtual-Machines (\emph{MicroVMs}). Möglich wird dies durch das
+Entfernen von Funktionen üblicher Hypervisor. Es werden nur wenige
+Geräte ünterstüzt. Geräte-Treiber für USB und
+GPUs wurden entfernt. Firecracker läuft als Prozess, der durch seccomp,
+cgroups und namespaces
+eingeschlossen ist und nur begrenzten Zugriff auch die
+Hardware und das Dateisystem hat. 
+AWS hat Firecracker
+auch eine REST-API beigelegt. Mit ihr können die einzelnen
+MicroVMs besser gesteuert und verwaltet werden \cite{Firecracker}. 
+
+\subsection{Google gVisor}
+Auch Google hat mit gVisor bei der Virtualisierung
+ihre Infrastruktur nachgebessert. Google gVisor ist ein
+Applikationskernel \cite{gVisor}. Es reimplementiert viele
+Aspekte des Linux-Kernel in Go\footnote{\url{https://golang.org}}.
+Es läuft als Prozess und nimmt den Platz des Guest-Kernel ein
+auf den übliche Anwendungen laufen können, unteranderm auch
+isolierte Container.
+Ähnlich wie seccomp fängt gVisor alle Systemaufrufe der
+Anwendungen ab und versucht viele diese Aufrufe selbst zu bearbeiten.
+Nur wenige werden an den Host-Kernel weitergeleitet. Da gVisor
+nicht alle Systemaufrufe implementiert wie der Linux-Kernel
+kann es für bestimmte Anwendungen zu Kompatibilitätsproblemen
+führen \cite{gVisor}.
 
 % \section{Eigenschaften serverloser Architekturen}
 % -- Architekturdartstellung einer simplen Webanwendung, Frontend + Backend + Datenbank
