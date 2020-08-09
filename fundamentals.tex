@@ -28,7 +28,7 @@ selbst zu definieren, denn für die Bereitstellung erwartet es
 ein Dockerimage\footnote{\url{https://docs.docker.com/get-started/overview/}}.
 Ein Dockerimage ist eine mehrschichtige Schablone, welche
 alle nötigen Abhängigkeiten und Instruktionen für das
-Erzeugen eines Container enthält
+Erzeugen eines Containers enthält
 \cite{DockerDocs} \cite{RedHatDockerImage}.
 Entwickler können somit die Laufzeitumgebung ihrer Anwendungen
 genaustens definieren. Sie sind nicht gezwungen
@@ -111,9 +111,9 @@ ausgelastet sind, fallen kosten an.
 Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
 die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
 die angefragten Funktionen passend hoch und runter skalieren.
-Dies kann unter Umständen auch zu geringeren Kosten führen 
-Auch wenn bereits stark auf 
-andere Services eines Cloud-Providers zurückgegriffen wird, sind die serverlosen Dienste
+Dies kann unter Umständen zu geringeren Kosten führen.
+Auch wenn bereits stark auf andere Services eines Cloud-Providers
+zurückgegriffen wird, sind die serverlosen Dienste
 gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
 aktiviert werden, können Daten in eine Funktion eingeführt werden, um
 dann an die benötigten Komponenten, in passendem Format, wieder ausgeführt zu werden
@@ -141,7 +141,7 @@ gleichen Instanz bearbeitet werden. Einige Dienste, wie Google Cloud Run,
 haben auch eine maximale Zeitspanne (engl. \emph{timeout}), in der eine Anfrage abgearbeitet werden muss.
 Dauert es länger, wird die Bearbeitung abgebrochen \cite{CloudRunTimeout}.
 
-\paragraph{Cold Starts} Ein weiteres Problem von Serverless sind die \emph{Cold-Starts}.
+\paragraph{Cold-Starts} Ein weiteres Problem von Serverless sind die \emph{Cold-Starts}.
 Bei einer eintretenden Anfrage, braucht das Hochfahren einer neuen Anwendungsinstanz
 gewisse Zeit, denn Anwendungslogik und Laufzeitumgebung müssen erst initialisiert werden.
 Cloud-Provider versuchen diese Zeit zu minimieren \cite{Firecracker}. Wird eine Instanz mit der Bearbeitung einer Anfrage
@@ -167,11 +167,11 @@ um Anwendungen zu entwickeln, ähnlich den FaaS Diensten der
 Cloud-Provider \cite{OpenFaasGithub} \cite{OpenWhiskGithub}.
 Einen großen Nachteil haben sie dennoch.
 Für das Ausführen in einer Produktionsumgebung setzen einige
-der Platformen ein Container-Orchestrierungswerkzeug vorraus.
+der Platformen Werkzeuge für Container-Orchestrierung voraus.
 Dieser muss erst aufgesetzt werden oder Entwickler greifen auf
-einen verwalteten Dienst der Cloud-Providern zurück. Jedoch fallen
+einen verwalteten Dienst der Cloud-Provider zurück. Jedoch fallen
 dann stündliche bzw. monatliche Fixkosten an und die
-Verwaltung der Anwendung steigt, sodass die Vorteil
+Verwaltung der Anwendung steigt, sodass die Vorteile
 von Serverless nicht ganz ausgeschöpft werden.
 
 \subsection{Aufbau einer serverless Platform}
@@ -185,9 +185,9 @@ gut dokumentierte Open-Source Lösung.
 
 In OpenWhisk werden serverlose Funktionen \emph{Actions} genannt.
 Dafür wird in einer Datei eine Funktion deklarieren.
-Die Funktion muss gewisse Vorraussetzungen erfüllen,
+Die Funktion muss gewisse Voraussetzungen erfüllen,
 damit OpenWhisk sie verwenden kann.
-Unteranderem muss der Rückgabewert als JSON Objekt
+Unter anderem muss der Rückgabewert als JSON Objekt
 interpretiert werden können \cite{OpenWhiskGithubActions}.\\
 
 \begin{lstlisting}[caption={Hello World JS Funktion. In Anlehnung an \cite{OpenWhiskGithub} \cite{OpenWhiskGithubActions}}, label={lst:openwhisk_action}]
@@ -200,7 +200,7 @@ function main(params) {
 Die Funktion in Auflistung~\ref{lst:openwhisk_action},
 die nach Ausführung den Text \texttt{Hello World}
 in der Standardausgabe ausgibt und selbigen Text
-auch als JSON-Objekt zurück sendet, erfüllt alle Vorraussetzungen
+auch als JSON-Objekt zurücksendet, erfüllt alle Voraussetzungen
 für die Umwandlung zu einer Action.\\
 
 \begin{lstlisting}[caption=Erstellen einer Action \cite{OpenWhiskGithub}, label={lst:openwhisk_create_action}]
@@ -224,7 +224,7 @@ zugänglich.
 Die Variable \texttt{\$userNamespace} ist hier ein
 Platzhalter für einen Namensraum.
 In OpenWhisk können Actions für eine bessere
-Verwaltung und Authorisierung in Namensräumen aufgeteilt werden
+Verwaltung und Autorisierung in Namensräumen aufgeteilt werden
 \cite{OpenWhiskGithub}.
 
 \begin{figure}
@@ -237,25 +237,25 @@ Verwaltung und Authorisierung in Namensräumen aufgeteilt werden
 In Abbildung~\ref{fig:openwhisk_architecture} ist die Architektur von
 OpenWhisk abgebildet.
 Sie baut auf unterschiedliche Komponenten auf,
-um eine Anfrage zu bearbeiten. Bei einem eintrettenden Event \textbf{(1)}
+um eine Anfrage zu bearbeiten. Bei einem eintretenden Event \textbf{(1)}
 ist \emph{Nginx}\footnote{\url{https://www.nginx.com/}} \textbf{(2)} die erste
 Station. Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
 Nginx leitet den Aufruf weiter an den \emph{Controller} \textbf{(3)}.
 Der Controller implementiert die Rest-API und filtert die
-eintrettenden Anfragen durch, um die passende Action und
+eintretenden Anfragen durch, um die passende Action und
 den weiteren Verlauf zu ermitteln.
-Er authorisiert die Anfrage und schaut auf nötigen Authentifizierungen.
+Er autorisiert die Anfrage und schaut auf nötigen Authentifizierungen.
 Dafür befragt er CouchDB\footnote{\url{https://couchdb.apache.org/}}
 \textbf{(4)},
-eine dokumentenbasierte Datenbank. Nachdem Authorisierungs-
-und Authentifizierungsschritte erfolgreich abschließen,
+eine Dokumenten-basierte Datenbank. Nachdem Autorisierung
+und Authentifizierung erfolgreich abschließen,
 wird die Actions-Logik aus der Datenbank entnommen \textbf{(4)} und an den
-Load-Balancer weitergeleitet. Der Load-Balancer ist bestandteil
+Load-Balancer weitergeleitet. Der Load-Balancer ist Bestandteil
 des Controllers und enthält eine Sicht auf alle \emph{Invoker}.
 Die Aufgabe der Invoker ist es, die Action am Ende auszuführen.
 In der Theorie würde der Load-Balancer sich einen freien Invoker suchen
-und ihm die Action-Logik übergeben. Jedoch kann es zu Unerwarteten
-Störungen und Abstüzungen kommen oder es lässt sich kein freier
+und ihm die Action-Logik übergeben. Jedoch kann es zu unerwarteten
+Störungen kommen oder es lässt sich kein freier
 Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
 Apache Kafka\footnote{\url{https://kafka.apache.org/}} \textbf{(5)},
 einer verteilten Streaming-Platform. Kafka speichert seine
@@ -264,7 +264,7 @@ Nachrichten vorhanden sind. Die Nachricht enthält welcher
 Invoker die Action ausführen soll, auch wenn dieser momentan
 beschäftigt ist. Kafka verarbeitet die Nachricht und sendet eine
 Empfangsbestätigung mit der \texttt{activationId} zurück. Mithilfe
-der \texttt{activationId} lässt sich später das Result der Action
+der \texttt{activationId} lässt sich später das Resultat der Action
 abfragen. Wenn der Invoker aus der Nachricht frei ist, wird die
 Action ausgeführt. Dafür wird ein Docker Container gestartet \textbf{(6)},
 welcher eine passende Laufzeitumgebung für die Action zur Verfügung
@@ -272,8 +272,8 @@ stellt. Die Action-Logik wird in den Container geladen und ausgeführt.
 Das Resultat wird entnommen und der Container wird heruntergefahren.
 Das Resultat sowie die \texttt{activationId} werden in die
 \texttt{activations}-Datenbank \textbf{(7)} gespeichert. Nun kann, wie bereits zu Beginn,
-über den Endpunkt und der \texttt{activationId} das Resultat aus
-der \texttt{activations}-Datenbank abgerufen werden werden
+über den Endpunkt und der neugewonnen \texttt{activationId} das Resultat aus
+der \texttt{activations}-Datenbank abgerufen werden
 \cite{OpenWhiskGithub}.
 
 \section{Sichere Umgebungen für Serverless}
@@ -281,8 +281,8 @@ Für Cloud-Provider ist es wichtig, dass die einzelnen
 Anwendungen ihrer zahlreichen Kunden sicher und abgekapselt
 voneinander laufen, sodass niemand unbefugten Zugriff auf
 andere Anwendungen hat. In diesem Abschnitt werden
-Virtual-Machines und Container näher erläutert, um ein Verständnis
-zu bekommen wie die einzelnen Anwendungen untereinander abgesichert 
+Virtual-Machines und Container näher erläutert, um ein Verständnis zu bekommen,
+wie die einzelnen Anwendungen untereinander abgesichert 
 sind und ob sie für serverlose Anwendungen gut geeignet sind.
 
 \subsection{Virtual-Machine}
@@ -292,7 +292,7 @@ Ein \emph{Virtual Machine Monitor} (VMM), auch \emph{Hypervisor} genannt
 ist ein Softwarestück, das dafür zuständig ist die 
 virtuellen Umgebungen einschließlich seiner virtuellen Ressourcen zu verwalten
 und Instruktionen auf die physischen Ressourcen abzubilden.
-Der Hypervisor reserviert physische Ressourcen und plant die Zuweisen
+Der Hypervisor reserviert physische Ressourcen und plant die Zuweisung
 an die einzelnen VMs. Er ist der Kommunikationskanal 
 zwischen den virtuellen Umgebungen und der Hardware.
 Ein großer Vorteil der Virtualisierung von Hardwareressourcen
@@ -302,10 +302,10 @@ mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
 \cite{RedHatVM} \cite{RedHatHypervisor}. Es wird unter zwei
 Arten von Hypervisor unterschieden.
 
-\paragraph{Typ 1 Hypervisor} Ein nativer Hypervisor,
-auch \emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen
+\paragraph{Typ 1 Hypervisor} Ein nativer Hypervisor, auch
+\emph{Typ 1 Hypervisor} genannt, läuft direkt auf der physischen
 Hardware und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme.
-Der Hypervisor benötigt selbst kein zugrundeligendes Betriebssystem.
+Der Hypervisor benötigt selbst kein zugrundeliegendes Betriebssystem.
 Gängige Typ 1 Hypervisor sind unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
 \cite{RedHatHypervisor} und die Kernel-basierte Virtual
 Machine (\emph{KVM}). Die KVM ist in den Linux-Kernel integriert und wandelt
@@ -340,17 +340,17 @@ Container teilen sich den Host-Kernel. Durch eine
 Konfigurationsdatei (\emph{Image}) werden alle
 nötigen Ressourcen und Dateien definiert, die für das Ausführen
 der Prozesse benötigt werden. Dadurch spart man sich ein komplettes
-Betriebsystem zu laden, wodurch sie den Vorteil,
-dass sie kompakter und sparsamer sind. Entwickler steht eine eindeutig
-definierte Laufzeitumgebung zur Verfügung, auf der sie ihre Anwendungen testen
-können \cite{RedHatContainer}. Container bauen auf drei Komponenten
+Betriebssystem zu laden, wodurch sie den Vorteil,
+dass sie kompakter und sparsamer sind. Entwicklern stehen eine eindeutig
+definierte Laufzeitumgebung zur Verfügung. Darauf können sie ihre Anwendungen testen
+\cite{RedHatContainer}. Container bauen auf drei Komponenten
 des Linux-Kernels auf, den Namensräumen
 (\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}}),
 den Kontrollgruppen
-(\emph{cgroups}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}}).
+(\emph{cgroups}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}})
 und den Filtern (\emph{seccomp-bpf}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man2/seccomp.2.html}}).
 
-Mithilfe von namespaces stellt der Kernel eine Isolationsmöglichkeit
+Mithilfe von namespaces stellt der Kernel eine Möglichkeit zur Isolation
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
 Prozesse innerhalb des namespaces sehen nur ihre isolierte lokale
 Ausprägung der Ressource \cite{UbuntuNamespaces}.
@@ -362,26 +362,26 @@ und \emph{pid namespaces}.
 Durch mount namespaces kann die Sicht auf das Dateisystem
 (engl. \emph{filesystem}) für Prozesse beschränkt werden.
 Mit network namespaces lassen sich IP-Adressen, Ports
-und Routing Tabellen isolieren. PID (deut. Prozess-ID) namespaces teilen
+und Routing Tabellen isolieren. PID (Prozess-ID) namespaces teilen
 den Identifikationsbereich. Ein Prozess hat dadurch zwei
-PIDs. Eine Identifaktionsnummer auf dem Host-Betriebssystem und eine
+PIDs. Eine Identifikationsnummer auf dem Host-Betriebssystem und eine
 innerhalb des namespaces, welche sich beide unterscheiden können
 \cite{LwnDotNetNamespaces}.
 
 Es gibt zwei Aufgaben, die cgroups erfüllen. Sie erlauben das Gruppieren
 von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
-Begrenz werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
+Begrenzt werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
 Möglich wird dies durch \emph{subsystems},
-auch \emph{resource controller} genannt. Subsytems sind Bestandteil
+auch \emph{resource controller} genannt. Subsystems sind Bestandteil
 des Kernels und erlauben das Ändern von Prozesseigenschaften und
 Prozessverhalten in einer cgroups Gruppierung. 
 \cite{RedHatIntroToLinuxContainers}.
 
-Für die Sicherheit von Containerinstanzen ist secomp-bpf 
+Für die Sicherheit von Containerinstanzen ist seccomp-bpf 
 verantwortlich. Es filtert und limitiert
 Systemaufrufe (\emph{syscalls}) von Prozessen,
 sowie die mitgelieferten Parameter der Systemaufrufe.
-Secomp-bpf ist ein wichtigster Baustein in der Isolation von
+Seccomp-bpf ist ein wichtigster Baustein in der Isolation von
 Containern. Es verkleinert die Angriffsfläche 
 des Kernels. Jedoch benutzen Container einen
 Kernel, sodass bei Ausnutzung von Sicherheitslücken
@@ -390,7 +390,7 @@ des Kernels alle Container angreifbar sind \cite{Firecracker}.
 \subsection{Ideale Virtualisierung für Serverless}
 Durch Serverless ist es möglich,
 dass eine Applikation in kürzester Zeit
-auf hunderte Instanzen hochskaliert. Vorallem bei FaaS Diensten,
+auf hunderte Instanzen hochskaliert. Vor allem bei FaaS Diensten,
 wo eine Funktion nur eine ganz spezifische Aufgabe tätigt,
 kann es vorkommen, dass eine Anwendung aus mehreren hunderten
 von kleinen Funktionen aufgebaut ist. Diese können alle separat
@@ -398,25 +398,25 @@ skaliert werden können. Traditionelle VMs bieten
 eine robuste Isolation, denn jede VMs hat einen eigenen
 Guest-Kernel und ist durch den Hypervisor
 abgekapselt vom Host-Kernel und anderen VMs. Sie haben jedoch
-eine großen Startaufwand und sind für Serverless zu
+einen großen Startaufwand und sind für Serverless zu
 ressourcenintensiv \cite{Firecracker}. Container dagegen
 haben einen geringeren Startaufwand. Die Laufzeitumgebung der
 Anwendung lässt sich genaustens definieren, sodass keine
 unnötigen Ressourcen verschwendet werden. Aber Container
 teilen sich den Host-Kernel, sodass eine Sicherheitslücke
 im Kernel die Container angreifbar macht.
-Die ideale Virtualisierungmethode für Serverless sollte
+Die ideale Virtualisierungsmethode für Serverless sollte
 gewisse Eigenschaften aufweisen \cite{Firecracker}.
 
 \paragraph{Isolation} Mehrere Anwendungen, die gleichzeitig
-auf der selben Hardware laufen, sollten abgesichert und
-isoliert voneinander sein. Die Warhscheinlichkeit auf
+auf derselben Hardware laufen, sollten abgesichert und
+isoliert voneinander sein. Die Wahrscheinlichkeit auf
 Sicherheitslücken und unbefugten Zugriff soll verringert werden
 \cite{Firecracker}.
 
 \paragraph{Aufwand und Dichte} Anders als traditionelle VMs
-sollte die ideale Virtualisierungmethode Anwendungen
-nicht zusätzlich verlangsamen. Die sichere Umgenung sollte
+sollte die ideale Virtualisierungsmethode Anwendungen
+nicht zusätzlich verlangsamen. Die sichere Umgebung sollte
 kompakt sein \cite{Firecracker}.
 
 \paragraph{Performance} Die Leistung der Anwendungen sollten
@@ -425,34 +425,34 @@ konstant und unabhängig von den einzelnen Instanzen sein
 \cite{Firecracker}.
 
 \paragraph{Kompatibilität} Anwendungen sollten die Möglich haben,
-ohne Einschränkungen beliebige Bibiliotheken und Dateien zu
+ohne Einschränkungen beliebige Bibliotheken und Dateien zu
 verwenden. Anwendungen sollten nicht extra angepasst werden
 müssen, um von der Sicherheit und Isolation zu profitieren
 \cite{Firecracker}.
 
-\paragraph{Schnelles Umschalten} Die Skalierungseigenschaft von
-Serverless sollte durch die Virtualisierungmethode nicht
+\paragraph{Schnelles Umschalten} Die Eigenschaft der Skalierung von
+Serverless sollte durch die Virtualisierungsmethode nicht
 beeinträchtigt werden. Mehrere Instanzen der Anwendung sollten
 zügig hoch- und runtergefahren werden können \cite{Firecracker}.
 
 \paragraph{Soft Allocation} Da FaaS und Serverless
 Container Dienste auch nach Speicher,
 CPU und anderen Ressourcen konfiguriert
-werden können, muss die Virtualisierungmethode eine
+werden können, muss die Virtualisierungsmethode eine
 Überprovisionierung diese Ressourcen erlauben. Jedoch sollte
 eine Instanz nur die nötigen Ressourcen in Anspruch nehmen
 \cite{Firecracker}.
 
 \subsection{AWS Firecracker}
 Nach diesem theoretischen Ideal hat AWS mit Firecracker
-eine eigene Virtualisierungmethode aufgebaut, um ihre
+eine eigene Virtualisierungsmethode aufgebaut, um ihre
 serverlosen Dienste zu verbessern.
 Firecracker ist ein Typ 2 Hypervisor optimiert für Serverless
 und entwickelt in Rust\footnote{\url{https://www.rust-lang.org}}.
 Mithilfe der KVM im Linux-Kernel erzeugt es kompakte
 Virtual-Machines (\emph{MicroVMs}). Möglich wird dies durch das
 Entfernen von Funktionen üblicher Hypervisor. Es werden nur wenige
-Geräte ünterstüzt. Geräte-Treiber für USB und
+Geräte unterstützt. Geräte-Treiber für USB und
 GPUs wurden entfernt. Firecracker läuft als Prozess, der durch seccomp,
 cgroups und namespaces
 eingeschlossen ist und nur begrenzten Zugriff auch die
@@ -466,8 +466,8 @@ Auch Google hat mit gVisor bei der Virtualisierung
 ihre Infrastruktur nachgebessert. Google gVisor ist ein
 Applikationskernel \cite{gVisor}. Es reimplementiert viele
 Aspekte des Linux-Kernel in Go\footnote{\url{https://golang.org}}.
-Es läuft als Prozess und nimmt den Platz des Guest-Kernel ein
-auf den übliche Anwendungen laufen können, unteranderm auch
+Es läuft als Prozess und nimmt den Platz des Guest-Kernels ein
+auf den üblichen Anwendungen laufen können, unter anderem auch
 isolierte Container.
 Ähnlich wie seccomp fängt gVisor alle Systemaufrufe der
 Anwendungen ab und versucht viele diese Aufrufe selbst zu bearbeiten.
