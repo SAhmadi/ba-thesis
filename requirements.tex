@@ -1,22 +1,25 @@
 \chapter{Anforderungen}
-Um das Serverless Kozept mit ihren Vor- und Nachteil
-besser zu verdeutlichen, wird in dem nachfolgeden Kapitel
+Um das Serverless Konzept mit ihren Vor- und Nachteil
+besser zu verdeutlichen, wird in dem nachfolgenden Kapitel
 eine prototypische Anwendung nach den Serverless-Prinzipien
 entwickelt. Die Anwendung soll den Korrektoren und Studenten
 des Moduls Programmierung der Heinrich-Heine-Universität
 ermöglichen ihre Java Programme zu testen.
 Es soll möglich sein eine einzige Java Datei auszuführen.
-Liefert man eine zusätzliche Datei, die JUnit Tests enthält
-könnnen diese Tests ausgeführt werden und das Resultat wird
-zurück geliefert. Da viele Aufgaben des Moduls
-Gradle benutzen, soll auch das Überreichen eines Gradle-Projekts
-ausgeführt und getestet werden können. Für das Testen, wird jedoch
-das Application-Plugin\footnote{\url{gradle application plguin}}
-von Gradle vorrausgesetzt.
+Liefert man eine zusätzliche Datei, die JUnit Tests enthält,
+können diese Tests ausgeführt werden und das Resultat wird
+zurückgeliefert. Da viele Aufgaben des Moduls
+Gradle benutzen, soll auch das Überreichen eines Gradle-Projekts möglich sein.
+Für das Testen wird jedoch
+das Applikation-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
+von Gradle vorausgesetzt.
+Die Anwendung kann durch Endpunkte angesprochen werden,
+stellt jedoch auch einen Endpunkt zur Verfügung, welcher sich nach
+der Modularen Online Platform für Studierende (MOPS) richtet.
+In ihr wird die Entwicklungsumgebung eingebunden.
 
-\section{Minimale Anforderungen}
--- /run/java
--- /run/gradle
--- /test/java
--- /test/gradle
--- Ausführen von einzelnen Dateien, .zip oder gezipptes Gradleprojekt
+\section{Zusätzliche Funktionen}
+Zusätzlich zur oben beschrieben Anwendung
+wird auch eine einfache Entwicklungsumgebung entwickelt.
+In ihr können Studenten Dateien erstellen und ausführen.
+Jedoch liegt der Fokus der Arbeit auf das obige Backend.
