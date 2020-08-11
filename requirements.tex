@@ -4,22 +4,23 @@ besser zu verdeutlichen, wird in dem nachfolgenden Kapitel
 eine prototypische Anwendung nach den Serverless-Prinzipien
 entwickelt. Die Anwendung soll den Korrektoren und Studenten
 des Moduls Programmierung der Heinrich-Heine-Universität
-ermöglichen ihre Java Programme zu testen.
-Es soll möglich sein eine einzige Java Datei auszuführen.
-Liefert man eine zusätzliche Datei, die JUnit Tests enthält,
-können diese Tests ausgeführt werden und das Resultat wird
-zurückgeliefert. Da viele Aufgaben des Moduls
-Gradle benutzen, soll auch das Überreichen eines Gradle-Projekts möglich sein.
-Für das Testen wird jedoch
-das Applikation-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
-von Gradle vorausgesetzt.
-Die Anwendung kann durch Endpunkte angesprochen werden,
-stellt jedoch auch einen Endpunkt zur Verfügung, welcher sich nach
-der Modularen Online Platform für Studierende (MOPS) richtet.
-In ihr wird die Entwicklungsumgebung eingebunden.
+ermöglichen Java Quelltext auszuführen und zu testen.
+Es soll möglich sein einzelne Java Dateien auszuführen.
+Werden zusätzliche JUnit Testdateien mitgeliefert,
+können die Tests ausgeführt werden.
+Da die Aufgaben des Moduls Gradle benutzen,
+sollen auch Gradle-Projekte ausgeführt und getestet werden.
+Für die Ausführung wird die
+Applikation-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
+vorausgesetzt.
+Die Anwendung kann durch eine REST-API angesprochen werden,
+stellt jedoch auch einen Endpunkt zur Verfügung, der eine Webseite zurückliefert.
+Diese Seite richtet sich nach dem Styleguide der
+Modularen Online Platform für Studierende (MOPS)\footnote{\url{https://mops.style}}
+der HHU. In ihr wird die Entwicklungsumgebung eingebunden.
 
 \section{Zusätzliche Funktionen}
 Zusätzlich zur oben beschrieben Anwendung
 wird auch eine einfache Entwicklungsumgebung entwickelt.
-In ihr können Studenten Dateien erstellen und ausführen.
-Jedoch liegt der Fokus der Arbeit auf das obige Backend.
+In ihr können Studenten Java-Projekte erstellen und ausführen.
+Jedoch liegt der Fokus der Arbeit auf das serverlose Backend.

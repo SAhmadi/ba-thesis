@@ -1,9 +1,157 @@
 \chapter{Entwicklung}
+Um das Serverless Konzept mit seinen Vor- und Nachteil
+besser zu verdeutlichen, wird eine prototypische Anwendung nach den Serverless-Prinzipien
+entwickelt. Dieses Kapitel beinhaltet die Architektur und Implementierung
+der Anwendung. Davor werden Dienste und Werkzeuge vorgestellt,
+die für die Realisierung verwendet wurden.
+
+Es soll den Korrektoren und Studenten des Moduls
+Programmierung der Heinrich-Heine-Universität
+möglich sein einfache Java Programme in einer einheitlichen und isolierten Umgebung
+auszuführen und zu testen.
+Studenten können dadurch ihre Aufgaben vor der Abgabe testen, um sicherzugehen,
+dass sie auch bei der Korrektur wie gewollt laufen.
+Korrektoren müssen sich keine Gedanken um die Sicherheit ihrer Systeme
+machen. Sie brauchen keine aufwändigen VMs starten, denn die Aufgaben werden
+bereits in einer abgesicherten Umgebung ausgeführt.
+
+Die serverlose Anwendung ermöglicht es einzelne Java Dateien auszuführen.
+Werden zusätzliche JUnit Testdateien mitgeliefert,
+können auch diese gestartet werden. Das Resultat der Tests wird wieder
+zurückgeliefert.
+Da die Aufgaben des Moduls Gradle benutzen,
+können auch Gradle-Projekte ausgeführt und getestet werden.
+Jedoch wird dafür das Applikation-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
+vorausgesetzt, sodass die Aufgaben des Moduls leicht angepasst werden müssen.
+Die Anwendung kann vollständig durch die Kommandozeile angesprochen werden, denn
+sie stellt eine REST-API bereit.
+Jedoch wird auch ein Endpunkt zur Verfügung gestellt, der eine Webseite zurückliefert.
+Das Layout der Seite richtet sich grob nach dem Styleguide der
+Modularen Online Platform für Studierende (MOPS)\footnote{\url{https://mops.style}}
+der HHU. In ihr wird das Frontend eingebunden.
+Es kann von den Studenten als Entwicklungsumgebung benutzt werden, um
+ihre Java-Projekte zu entwickeln und anschließend zu testen.
+Jedoch liegt der Fokus der Arbeit auf der serverlosen Backend-Anwendung.
+
 
 \section{Dienste und Tools}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
+\paragraph{Serverloser Dienst} Bei dem serverlosen Dienst wird auf Google Cloud Run zurückgegriffen.
+Es bietet mehr Freiheit als FaaS Dienste der Cloud-Provider an, da mittels Dockerfile die Laufzeitumgebung
+der Anwendung genaustens definiert und konfiguriert werden kann. Auch Open-Source
+Plattformen wurden in Erwägung gezogen, jedoch aufgrund der etwas komplexeren Bereitstellung nicht ausgewählt.
+Da die Anwendung für Studenten und Korrektoren
+des Moduls Programmierung ausgelegt ist und der Datenschutz für Universitäten eine wichtige Rolle
+spielt, wird der Punkt in \autoref{chap:conclusion_and_outlook} noch einmal aufgegriffen.
+
+\paragraph{Webserver} Die Anwendung selbst wird mit dem Web-Framework
+Flask\footnote{\url{https://palletsprojects.com/p/flask/}}
+entwickelt. Als Programmiersprache wird Python verwendet.
+Flask ermöglicht die schnelle und unkomplizierte Bereitstellung einer REST-API.
+Da MOPS auf Spring Boot\footnote{\url{https://spring.io/projects/spring-boot}} basiert und
+der Styleguide die Template-Engine Thymeleaf verwendet, welche in Flask nicht unterstützt wird,
+richtet sich die Anwendung nur an dem Styleguide und implementiert es nicht vollständig.
+
+\paragraph{Frontend Web-Framework} Für die grafische Entwicklungsumgebung
+wird mit Vue.js\footnote{\url{https://vuejs.org}} ebenfalls ein Web-Framework verwendet.
+Das Frontend wird in der Programmiersprache JavaScript geschrieben. Es dient als
+erweiterte Funktionalität und gehört nicht zum Kern der in dieser Arbeit entwickelten
+serverlosen Anwendung. Jedoch bietet sie eine bequemere Interaktion mit der Anwendung als
+die Kommandozeile. Das Frontend wird mit
+Firebase Hosting\footnote{\url{https://firebase.google.com/docs/hosting}}, einem weiteren Google Dienst,
+bereitgestellt. Bei Firebase Hosting kann das sichere Hosten von statischen Webseiten
+mit wenigen Befehlen bewältigt werden.
+
+\section{Architektur}
+Die Architektur in Abbildung~\ref{fig:architecture} besteht auf zwei
+Komponenten.
+Die Cloud Run Instanzen bilden das serverlose Backend.
+Eine Instanz stellt Endpunkte bereit die mit HTTP-Anfragen\footnote{\url{https://tools.ietf.org/html/rfc7540}}
+angesprochen werden
+können. Rufen Benutzer mittels einer HTTP-GET Anfrage den
+Root-Endpunkt auf \textbf{(1)} so wird
+die \texttt{index.html} Datei zurückgesendet \textbf{(2)}.
+Sie enthält die grafische Benutzeroberfläche. Das Layout richtet
+sich an dem Styleguide des MOPS. Durch ein
+HTML-iframe Element\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe}}
+wird das eigentliche Frontend eingebunden. Das Frontend dient als Entwicklungsumgebung für
+Studenten, um ihre Programme zu entwickeln. Die Aufteilung von Frontend und Backend
+ermöglicht eine einfache Verwaltung und Erweiterung beider Komponenten.
+Durch Interaktion mit der Entwicklungsumgebung \textbf{(3)} lassen sich einige
+der restlichen Endpunkte \textbf{(4)} aufrufen. 
+Da das Backend eine REST-API bereitstellt, ist auch ein direkter Zugriff \textbf{(5)} auf alle 
+Endpunkte über die Kommandozeile und HTTP-POST Anfragen möglich.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=10cm]{fig/architecture.pdf}
+  \caption{Architektur und Interaktion der Anwendung}
+  \label{fig:architecture}
+\end{figure}
+
+\section{Serverless Backend}
+Das Backend wird durch Cloud Run, dem Serverless Container Dienst von Google, zur Verfügung gestellt.
+Der Dienst bietet bei der Anwendungsentwicklung viel Freiheit, denn 
+neben dem eigentlichen Quellcode müssen in einer Dockerfile alle Abhängigkeiten der Anwendung
+definiert werden. Dies reicht für die Bereitstellung bereits aus.
+
+Für eine einfache Interaktion mit dem Dienst wird das
+\emph{Google Cloud SDK}\footnote{\url{https://cloud.google.com/sdk/docs?hl=de}} verwendet.
+Es stellt mit \texttt{gcloud} eine Kommandozeilen-Anwendung bereit.
+Mit ihr können viele der Google Cloud Dienste über die Kommandozeile angesprochen werden,
+was die Bereitstellung der Anwendung vereinfacht.
+Bevor die Anwendung auf Cloud Run bereitgestellt werden kann, muss in der
+Google Cloud Konsole ein Projekt erstellt und eingerichtet werden \cite{CloudRunInstructions}.\\
+
+\begin{lstlisting}[caption={Google Cloud SDK einrichten}, label={lst:gcloud_init}]
+$ gcloud init
+$ gcloud config set project [PROJECT_ID]
+$ gcloud services enable containerregistry.googleapis.com \            
+    cloudbuild.googleapis.com \
+    run.googleapis.com
+\end{lstlisting}
+
+Danach wird \texttt{gcloud} selbst initialisiert und autorisiert \textbf{(Zeile 1)}.
+Außerdem muss das zuvor erstellte Projekt als das aktuelle Projekt gekennzeichnet werden \textbf{(Zeile 2)}.
+Abschließend werden die für die serverlose Anwendung  benötigten Dienste aktiviert \textbf{(Zeile 3)}.
+Dabei handelt es sich neben dem eigentlichen Serverless Container Dienst um
+Google Container Registry\footnote{\url{https://cloud.google.com/container-registry?hl=de}}
+und Google Cloud Build\footnote{\url{https://cloud.google.com/cloud-build?hl=de}}.
+Cloud Build erzeugt aus der Dockerfile unter anderem das Dockerimage, während Container Registry
+es anschließend für Cloud Run bereitstellt.
+
+\subsection{Dockerfile}
+Für das Kompilieren und anschließende Ausführen der Java Dateien wird
+Zulu OpenJDK 11 von Azul benutzt, da die Installation auf
+Linux-Betriebssystem gut dokumentiert wurde \cite{AzulZuluJDK}.
+Das JDK stellt die zwei Befehle \texttt{javac} und \texttt{java} bereit.
+Übergeben Student oder Korrektoren ihren Java Quellcode, so muss das Backend in der Lage
+sein, den Befehl \texttt{javac} aufzurufen. Denn dadurch können die Java Dateien kompiliert werden.
+Nach der erfolgreichen Kompilation können durch den \texttt{java} Befehl die kompilierten Dateien
+ausgeführt werden.
+Um dem Backend dies zu Ermöglichen muss das JDK in die Laufzeitumgebung eingepackt werden,
+damit es während der Ausführung die zwei Befehle aufrufen kann.\\
+
+\begin{lstlisting}[caption={Ausschnitt aus der Dockerfile mit JDK}, label={lst:dockerfile}]
+# ... 
+
+# Get Azul's OpenJDK
+RUN wget https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub
+
+# ...
+
+# Install Zulu11
+RUN apk --no-cache add zulu11-jdk-headless
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm
+ENV PATH="$JAVA_HOME/bin:${PATH}"
+
+# Check if two commands are available
+RUN which javac
+RUN which java
+
+# ...
+\end{lstlisting}
+
+\subsection{Endpunkte}
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
 consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
@@ -11,32 +159,7 @@ dolore magna aliquyam erat, sed diam voluptua.
 At vero eos et accusam et justo duo dolores et ea rebum.
 Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
-\section{Architektur}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-\subsection{Frontend und Backend}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-\subsection{REST Endpunkte}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-\subsection{Ausführen eines Programms}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-\subsection{Testen eines Programms}
+\section{Frontend}
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
 consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
