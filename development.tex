@@ -162,13 +162,19 @@ zur Verfügung stehen \textbf{(Zeile 14, 15)}.
 
 \paragraph{Gradle} Um ein Gradle-Projekte auszuführen und zu testen,
 gibt es in der unter anderem zwei Möglichkeiten. Einem Gradle-Projekt
-kann der Gradle-Wrapper\footnote{\url{https://docs.gradle.org/current/userguide/gradle_wrapper.html}}
+kann der Gradle-Wrapper (Wrapper)\footnote{\url{https://docs.gradle.org/current/userguide/gradle_wrapper.html}}
 beigelegt sein. Dieser definiert welche Version von Gradle benutzt
 werden soll und läd sich die benötigten Komponenten für das Kompilieren
 und Bauen des Projekts selbstständig herunter \cite{GradleWrapper}.
 Normalerweise ist es empfohlen den Gradle-Wrapper zu benutzen,
 da dieser das Bauen und Kompilieren des Projektes standardisiert und
-somit weniger Fehler entstehen können \cite{GradleWrapper}
+somit weniger Fehler entstehen können \cite{GradleWrapper}.
+Jedoch ist der Wrapper für das serverlose Backend etwas ungünstig.
+Bei einer Anfrage, in der eine neue Cloud Run Container Instanz
+gestartet wird, läd sich der Wrapper erst einmal die benötigten
+Gradle-Komponenten herunter. Dadurch braucht die Bearbeitung der
+Anfrage
+
 
 
 \subsection{Endpunkte}
