@@ -120,7 +120,7 @@ Cloud Build erzeugt aus der Dockerfile unter anderem das Dockerimage, während C
 es anschließend für Cloud Run bereitstellt.
 
 \subsection{Dockerfile}
-Für das Kompilieren und anschließende Ausführen der Java Dateien wird
+\paragraph{Java Development Kit} Für das Kompilieren und anschließende Ausführen der Java Dateien wird
 Zulu OpenJDK 11 von Azul benutzt, da die Installation auf
 Linux-Betriebssystem gut dokumentiert wurde \cite{AzulZuluJDK}.
 Das JDK stellt die zwei Befehle \texttt{javac} und \texttt{java} bereit.
@@ -150,6 +150,26 @@ RUN which java
 
 # ...
 \end{lstlisting}
+
+In Auflistung~\ref{lst:dockerfile} ist ein Ausschnitt
+aus der Dockerfile zusehen, welche die Laufzeitumgebung
+der Cloud Run Instanzen definiert. Zuerst wird das JDK
+heruntergeladen \textbf{(Zeile 4)}. Dann wird es
+installiert \textbf{(Zeile 9)} und wichtige Umgebungsvariablen
+werden gesetzt \textbf{(Zeile 10, 11)}.
+Abschließend wird geprüft ob die beiden Befehle
+zur Verfügung stehen \textbf{(Zeile 14, 15)}.
+
+\paragraph{Gradle} Um ein Gradle-Projekte auszuführen und zu testen,
+gibt es in der unter anderem zwei Möglichkeiten. Einem Gradle-Projekt
+kann der Gradle-Wrapper\footnote{\url{https://docs.gradle.org/current/userguide/gradle_wrapper.html}}
+beigelegt sein. Dieser definiert welche Version von Gradle benutzt
+werden soll und läd sich die benötigten Komponenten für das Kompilieren
+und Bauen des Projekts selbstständig herunter \cite{GradleWrapper}.
+Normalerweise ist es empfohlen den Gradle-Wrapper zu benutzen,
+da dieser das Bauen und Kompilieren des Projektes standardisiert und
+somit weniger Fehler entstehen können \cite{GradleWrapper}
+
 
 \subsection{Endpunkte}
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
