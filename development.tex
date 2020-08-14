@@ -65,9 +65,10 @@ mit wenigen Befehlen bewältigt werden.
 Die Architektur in Abbildung~\ref{fig:architecture} besteht auf zwei
 Komponenten.
 Die Cloud Run Container Instanzen bilden das serverlose Backend.
-Eine Instanz stellt Endpunkte bereit die mit HTTP-Anfragen\footnote{\url{https://tools.ietf.org/html/rfc7540}}
-angesprochen werden
-können. Rufen Benutzer mittels einer HTTP-GET Anfrage den
+Eine Instanz stellt Endpunkte bereit die mit
+HTTP-Anfragen\footnote{\url{https://tools.ietf.org/html/rfc2616}}
+angesprochen werden können. Rufen Benutzer
+mittels einer HTTP-GET Anfrage den
 Root-Endpunkt auf \textbf{(1)} so wird
 die \texttt{index.html} Datei zurückgesendet \textbf{(2)}.
 Sie enthält die grafische Benutzeroberfläche. Das Layout richtet
@@ -89,13 +90,19 @@ Endpunkte über die Kommandozeile und HTTP-POST Anfragen möglich.
 \end{figure}
 
 \section{Serverless Backend}
-\subsection{Java Development Kit}
-Für das Kompilieren und anschließende Ausführen der Java Dateien wird
+Das Backend wird durch Endpunkte angesprochen.
+Der Java Quellcode kann mittels HTTP-POST Anfrage an das
+Backend gesendet werden und wird dort durch das Java Development Kit
+beziehungsweise Gradle ausgeführt oder getestet.
+
+
+\paragraph{Java Development Kit} Für das Kompilieren und
+anschließende Ausführen der Java Dateien wird
 Zulu OpenJDK 11 benutzt, da die Installation auf
 Alpine Linux-Betriebssystemen\footnote{\url{https://alpinelinux.org}}
 verständlich dokumentiert ist \cite{AzulZuluJDK}.
 Das JDK stellt die zwei Befehle \texttt{javac} und \texttt{java} bereit.
-Übergeben Student oder Korrektoren ihren Java Quellcode mittels HTTP-POST Anfrage an
+Übergeben Studenten oder Korrektoren ihren Java Quellcode mittels HTTP-POST Anfrage an
 das Backend, so muss es in der Lage sein, den Befehl \texttt{javac}
 aufzurufen. Denn dadurch können die Java Dateien kompiliert werden.
 Nach der erfolgreichen Kompilation können durch den \texttt{java} Befehl die kompilierten Dateien
@@ -103,13 +110,6 @@ ausgeführt werden. Um dem Backend dies zu Ermöglichen muss das JDK in die Lauf
 werden, damit die Anwendung während ihrer Ausführung die zwei Befehle aufrufen kann.\\
 
 \begin{lstlisting}[caption={Ausschnitt aus der Dockerfile. Herunterladen und Einrichten des JDK.}, label={lst:dockerfile}, escapechar=|]
-# ... 
-
-# Get Azul's OpenJDK
-RUN wget https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub |\label{line:downloadJDK}|
-
-# ...
-
 # Install Zulu11
 RUN apk --no-cache add zulu11-jdk-headless |\label{line:installJDK}|
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm |\label{line:javaHome}|
@@ -118,24 +118,21 @@ ENV PATH="$JAVA_HOME/bin:${PATH}" |\label{line:javaPath}|
 # Check if two commands are available
 RUN which javac |\label{line:testJavac}|
 RUN which java |\label{line:testJava}|
-
-# ...
 \end{lstlisting}
 
 In Auflistung~\ref{lst:dockerfile} ist ein Ausschnitt
 aus der Dockerfile zusehen, welche die Laufzeitumgebung
-der Cloud Run Container Instanzen definiert. Zuerst wird das JDK
-heruntergeladen \textbf{(Zeile~\ref{line:downloadJDK})}. Dann wird es
-installiert \textbf{(Zeile~\ref{line:installJDK})} und wichtige Umgebungsvariablen
-werden gesetzt \textbf{(Zeile~\ref{line:javaHome},~\ref{line:javaPath})}.
+der Cloud Run Container Instanzen definiert. Das JDK wird
+heruntergeladen und installiert \textbf{(Zeile~\ref{line:installJDK})}.
+Außerdem werden wichtige Umgebungsvariablen
+gesetzt \textbf{(Zeile~\ref{line:javaHome},~\ref{line:javaPath})}.
 Abschließend wird geprüft ob die beiden Befehle
 zur Verfügung stehen \textbf{(Zeile~\ref{line:testJavac},~\ref{line:testJava})}.
 
-\subsection{Gradle}
-Um ein Gradle-Projekte auszuführen und zu testen,
-gibt es unter anderem zwei Möglichkeiten. Einem Gradle-Projekt
-kann der Gradle-Wrapper (Wrapper) beigelegt sein.
-Dieser definiert welche Version von Gradle benutzt
+\paragraph{Gradle} Um ein Gradle-Projekte auszuführen und
+zu testen, gibt es unter anderem zwei Möglichkeiten.
+Einem Gradle-Projekt kann der Gradle-Wrapper (Wrapper)
+beigelegt sein. Dieser definiert welche Version von Gradle benutzt
 werden soll und lädt sich Gradle für das Bauen des Projekts selbstständig herunter.
 Normalerweise ist es empfohlen den Wrapper zu benutzen,
 da dieser das Bauen des Projektes standardisiert und
@@ -147,24 +144,68 @@ gestartet wird, verschwendet das Herunterladen von Gradle
 unnötig Zeit und Rechenressourcen, denn die verbrauchte Zeit und der Rechenaufwand
 werden bei serverlosen Diensten in Zahlung gestellt \cite{ServerlessTrends}.
 Zusätzlich müssen Studenten und Korrektoren warten bis die Anwendung mit dem eigentlichen
-Ausführen bzw. Testen des Gradle-Projekts weitermacht.
+Ausführen und Testen des Gradle-Projekts weitermacht.
 Eine bessere Lösung ist Gradle in die Laufzeitumgebung einzubinden.
 Wie in Auflistung~\ref{lst:gradle} zu sehen reicht es aus Gradle herunterzuladen
 \textbf{(Zeile~\ref{line:downloadGradle})}
 und zu entpacken \textbf{(Zeile~\ref{line:unzipGradle})}.
 Dadurch muss Gradle nicht immer wieder heruntergeladen werden.
-Die Anwendung braucht nur noch den \texttt{gradle test} bzw. \texttt{gradle run} Befehl
-aufrufen und das Gradle-Projekt kann getestet bzw. ausgeführt werden \cite{GradleCLI}.\\
+Die Anwendung braucht nur noch den \texttt{gradle test} oder \texttt{gradle run} Befehl
+aufrufen und das Gradle-Projekt kann getestet oder ausgeführt werden \cite{GradleCLI}.\\
 
 \begin{lstlisting}[caption={Ausschnitt aus der Dockerfile. Herunterladen und Entpacken von Gradle.}, label={lst:gradle}, escapechar=|]
-# ... 
 # Get Gradle distribution zip
 RUN wget https://downloads.gradle-dn.com/distributions/gradle-6.3-bin.zip |\label{line:downloadGradle}|
 RUN unzip gradle-6.3-bin.zip |\label{line:unzipGradle}|
-# ...
 \end{lstlisting}
 
 \subsection{Endpunkte}
+Die Endpunkte sind mit \texttt{/run} sowie
+\texttt{/test} in zwei Gruppen eingeteilt.
+Die erste Gruppe ist für das Kompilieren und anschließende
+Ausführen von Java Quellcode zuständig. Die zweite Gruppe ist
+für das Ausführen von JUnit-Tests verantwortlich. Die Anwendung
+sendet als Antwort ein JSON-Objekt zurück, welche das Resultat
+der Ausführung oder der Tests beinhaltet.
+
+\paragraph{/run/java Endpunkt} Ein beispielhafter Aufruf des
+Endpunktes mit curl\footnote{\url{https://curl.haxx.se}} ist in
+Auflistung~\ref{lst:curlRunJava} dargestellt.
+Die einzelnen Java Dateien werden im
+Entity-Body\footnote{\url{https://tools.ietf.org/html/rfc2616\#section-7.2}}
+der Anfrage mitgeliefert
+\textbf{(Zeile~\ref{line:javaFile1},~\ref{line:javaFile2})}.
+Zusätzlich muss der Name der Klasse
+angegeben werden, in der die Hauptmethode definiert ist
+\textbf{(Zeile~\ref{line:mainClass})}.
+Dieser Endpunkt soll den Studenten ermöglichen ihren Quellcode
+schnell und unkompliziert auszuführen.\\
+
+\begin{lstlisting}[
+  caption={HTTP-POST Anfrage an /run/java um einzelne Java Dateien zu kompilieren und auszuführen.},
+  label={lst:curlRunJava},
+  escapechar=|
+]
+curl -F main_file=MyMainClass \ |\label{line:mainClass}|
+  -F file=@MyMainClass.java \ |\label{line:javaFile1}|
+  -F file=@Calculator.java \ |\label{line:javaFile2}|
+  https://ba-serverless-testing-t6e6p4w6oa-ew.a.run.app/run/java
+\end{lstlisting}
+
+\paragraph{/run/gradle Endpunkt} Um eine Gradle-Projekt auszuführen
+ist es nötigt das Projekt vorher in ein Zip-Archiv zu komprimieren.
+Erst dann kann es ähnlich wie in Auflistung~\ref{lst:curlRunGradle}
+an das Backend versendet werden.\\
+
+\begin{lstlisting}[
+  caption={HTTP-POST Anfrage an /run/gradle um ein Gradle-Projekt auszuführen.},
+  label={lst:curlRunGradle},
+  escapechar=|
+]
+curl -F file=@gradle_project.zip \
+  https://ba-serverless-testing-t6e6p4w6oa-ew.a.run.app/run/gradle
+\end{lstlisting}
+
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
 consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
