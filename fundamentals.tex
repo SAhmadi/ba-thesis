@@ -280,7 +280,7 @@ der \texttt{activations}-Datenbank abgerufen werden
 Für Cloud-Provider ist es wichtig, dass die einzelnen
 Anwendungen ihrer zahlreichen Kunden sicher und abgekapselt
 voneinander laufen, sodass niemand unbefugten Zugriff auf
-andere Anwendungen hat. In diesem Abschnitt werden
+andere Anwendungen hat \cite{Firecracker}. In diesem Abschnitt werden
 Virtual-Machines und Container näher erläutert, um ein Verständnis zu bekommen,
 wie die einzelnen Anwendungen untereinander abgesichert 
 sind und ob sie für serverlose Anwendungen gut geeignet sind.
@@ -299,7 +299,7 @@ Ein großer Vorteil der Virtualisierung von Hardwareressourcen
 ist, dass jede Virtual-Machine ihr eigenes Betriebssystem
 benutzen kann. Somit können auf einer Maschine
 mehrere Betriebssysteme laufen, die vollständig voneinander abgekapselt sind
-\cite{RedHatVM} \cite{RedHatHypervisor}. Es wird unter zwei
+\cite{RedHatVM} \cite{RedHatHypervisor}. Es werden zwei
 Arten von Hypervisor unterschieden.
 
 \paragraph{Typ 1 Hypervisor} Ein nativer Hypervisor, auch
@@ -307,10 +307,10 @@ Arten von Hypervisor unterschieden.
 Hardware und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme.
 Der Hypervisor benötigt selbst kein zugrundeliegendes Betriebssystem.
 Gängige Typ 1 Hypervisor sind unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
-\cite{RedHatHypervisor} und die Kernel-basierte Virtual
-Machine (\emph{KVM}). Die KVM ist in den Linux-Kernel integriert und wandelt
-das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt
-Hardware-Virtualisierungserweiterungen. Diese Erweiterungen wurden eingeführt,
+\cite{RedHatHypervisor} und die Kernel-basierte Virtual-Machine
+(\emph{KVM}). Die KVM ist in den Linux-Kernel integriert und wandelt
+das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt Erweiterungen für
+Hardware-Virtualisierung. Diese Erweiterungen wurden eingeführt,
 um die Virtualisierung und die Entwicklung von Hypervisor
 zu beschleunigen. KVM kann auch mit einem weiteren
 Typ 2 Hypervisor benutzt werden, um diesen zu unterstützen und
@@ -333,16 +333,16 @@ Ein Nachteil ist jedoch, dass sie langsamer und ineffizienter sind, da sie nicht
 direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
 
 \subsection{Container}
-Virtualisierung ist auch mithilfe von Linux Container möglich,
+Virtualisierung ist auch mithilfe von Linux Containern möglich,
 was auch Containerisierung (engl. \emph{Containerization})
 genannt wird. Diese enthalten isolierte Prozesse.
 Container teilen sich den Host-Kernel. Durch eine
 Konfigurationsdatei (\emph{Image}) werden alle
 nötigen Ressourcen und Dateien definiert, die für das Ausführen
 der Prozesse benötigt werden. Dadurch spart man sich ein komplettes
-Betriebssystem zu laden, wodurch sie den Vorteil,
+Betriebssystem zu laden, wodurch sie den Vorteil haben,
 dass sie kompakter und sparsamer sind. Entwicklern stehen eine eindeutig
-definierte Laufzeitumgebung zur Verfügung. Darauf können sie ihre Anwendungen testen
+definierte Laufzeitumgebung zur Verfügung, worauf sie ihre Anwendungen testen können
 \cite{RedHatContainer}. Container bauen auf drei Komponenten
 des Linux-Kernels auf, den Namensräumen
 (\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}}),
@@ -368,7 +368,7 @@ PIDs. Eine Identifikationsnummer auf dem Host-Betriebssystem und eine
 innerhalb des namespaces, welche sich beide unterscheiden können
 \cite{LwnDotNetNamespaces}.
 
-Es gibt zwei Aufgaben, die cgroups erfüllen. Sie erlauben das Gruppieren
+Die cgroups erfüllen zwei Aufgaben. Sie erlauben das Gruppieren
 von Prozessen und können dynamisch Ressourcen für Gruppierungen begrenzen.
 Begrenzt werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
 Möglich wird dies durch \emph{subsystems},
@@ -394,7 +394,7 @@ auf hunderte Instanzen hochskaliert. Vor allem bei FaaS Diensten,
 wo eine Funktion nur eine ganz spezifische Aufgabe tätigt,
 kann es vorkommen, dass eine Anwendung aus mehreren hunderten
 von kleinen Funktionen aufgebaut ist. Diese können alle separat
-skaliert werden können. Traditionelle VMs bieten
+skaliert werden. Traditionelle VMs bieten
 eine robuste Isolation, denn jede VMs hat einen eigenen
 Guest-Kernel und ist durch den Hypervisor
 abgekapselt vom Host-Kernel und anderen VMs. Sie haben jedoch
@@ -455,7 +455,7 @@ Entfernen von Funktionen üblicher Hypervisor. Es werden nur wenige
 Geräte unterstützt. Geräte-Treiber für USB und
 GPUs wurden entfernt. Firecracker läuft als Prozess, der durch seccomp,
 cgroups und namespaces
-eingeschlossen ist und nur begrenzten Zugriff auch die
+eingeschlossen ist und nur begrenzten Zugriff auf die
 Hardware und das Dateisystem hat. 
 AWS hat Firecracker
 auch eine REST-API beigelegt. Mit ihr können die einzelnen

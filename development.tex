@@ -64,7 +64,7 @@ mit wenigen Befehlen bewältigt werden.
 \section{Architektur}
 Die Architektur in Abbildung~\ref{fig:architecture} besteht auf zwei
 Komponenten.
-Die Cloud Run Instanzen bilden das serverlose Backend.
+Die Cloud Run Container Instanzen bilden das serverlose Backend.
 Eine Instanz stellt Endpunkte bereit die mit HTTP-Anfragen\footnote{\url{https://tools.ietf.org/html/rfc7540}}
 angesprochen werden
 können. Rufen Benutzer mittels einer HTTP-GET Anfrage den
@@ -89,93 +89,80 @@ Endpunkte über die Kommandozeile und HTTP-POST Anfragen möglich.
 \end{figure}
 
 \section{Serverless Backend}
-Das Backend wird durch Cloud Run, dem Serverless Container Dienst von Google, zur Verfügung gestellt.
-Der Dienst bietet bei der Anwendungsentwicklung viel Freiheit, denn 
-neben dem eigentlichen Quellcode müssen in einer Dockerfile alle Abhängigkeiten der Anwendung
-definiert werden. Dies reicht für die Bereitstellung bereits aus.
-
-Für eine einfache Interaktion mit dem Dienst wird das
-\emph{Google Cloud SDK}\footnote{\url{https://cloud.google.com/sdk/docs?hl=de}} verwendet.
-Es stellt mit \texttt{gcloud} eine Kommandozeilen-Anwendung bereit.
-Mit ihr können viele der Google Cloud Dienste über die Kommandozeile angesprochen werden,
-was die Bereitstellung der Anwendung vereinfacht.
-Bevor die Anwendung auf Cloud Run bereitgestellt werden kann, muss in der
-Google Cloud Konsole ein Projekt erstellt und eingerichtet werden \cite{CloudRunInstructions}.\\
-
-\begin{lstlisting}[caption={Google Cloud SDK einrichten}, label={lst:gcloud_init}]
-$ gcloud init
-$ gcloud config set project [PROJECT_ID]
-$ gcloud services enable containerregistry.googleapis.com \            
-    cloudbuild.googleapis.com \
-    run.googleapis.com
-\end{lstlisting}
-
-Danach wird \texttt{gcloud} selbst initialisiert und autorisiert \textbf{(Zeile 1)}.
-Außerdem muss das zuvor erstellte Projekt als das aktuelle Projekt gekennzeichnet werden \textbf{(Zeile 2)}.
-Abschließend werden die für die serverlose Anwendung  benötigten Dienste aktiviert \textbf{(Zeile 3)}.
-Dabei handelt es sich neben dem eigentlichen Serverless Container Dienst um
-Google Container Registry\footnote{\url{https://cloud.google.com/container-registry?hl=de}}
-und Google Cloud Build\footnote{\url{https://cloud.google.com/cloud-build?hl=de}}.
-Cloud Build erzeugt aus der Dockerfile unter anderem das Dockerimage, während Container Registry
-es anschließend für Cloud Run bereitstellt.
-
-\subsection{Dockerfile}
-\paragraph{Java Development Kit} Für das Kompilieren und anschließende Ausführen der Java Dateien wird
-Zulu OpenJDK 11 von Azul benutzt, da die Installation auf
-Linux-Betriebssystem gut dokumentiert wurde \cite{AzulZuluJDK}.
+\subsection{Java Development Kit}
+Für das Kompilieren und anschließende Ausführen der Java Dateien wird
+Zulu OpenJDK 11 benutzt, da die Installation auf
+Alpine Linux-Betriebssystemen\footnote{\url{https://alpinelinux.org}}
+verständlich dokumentiert ist \cite{AzulZuluJDK}.
 Das JDK stellt die zwei Befehle \texttt{javac} und \texttt{java} bereit.
-Übergeben Student oder Korrektoren ihren Java Quellcode, so muss das Backend in der Lage
-sein, den Befehl \texttt{javac} aufzurufen. Denn dadurch können die Java Dateien kompiliert werden.
+Übergeben Student oder Korrektoren ihren Java Quellcode mittels HTTP-POST Anfrage an
+das Backend, so muss es in der Lage sein, den Befehl \texttt{javac}
+aufzurufen. Denn dadurch können die Java Dateien kompiliert werden.
 Nach der erfolgreichen Kompilation können durch den \texttt{java} Befehl die kompilierten Dateien
-ausgeführt werden.
-Um dem Backend dies zu Ermöglichen muss das JDK in die Laufzeitumgebung eingepackt werden,
-damit es während der Ausführung die zwei Befehle aufrufen kann.\\
+ausgeführt werden. Um dem Backend dies zu Ermöglichen muss das JDK in die Laufzeitumgebung eingepackt
+werden, damit die Anwendung während ihrer Ausführung die zwei Befehle aufrufen kann.\\
 
-\begin{lstlisting}[caption={Ausschnitt aus der Dockerfile mit JDK}, label={lst:dockerfile}]
+\begin{lstlisting}[caption={Ausschnitt aus der Dockerfile. Herunterladen und Einrichten des JDK.}, label={lst:dockerfile}, escapechar=|]
 # ... 
 
 # Get Azul's OpenJDK
-RUN wget https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub
+RUN wget https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub |\label{line:downloadJDK}|
 
 # ...
 
 # Install Zulu11
-RUN apk --no-cache add zulu11-jdk-headless
-ENV JAVA_HOME=/usr/lib/jvm/default-jvm
-ENV PATH="$JAVA_HOME/bin:${PATH}"
+RUN apk --no-cache add zulu11-jdk-headless |\label{line:installJDK}|
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm |\label{line:javaHome}|
+ENV PATH="$JAVA_HOME/bin:${PATH}" |\label{line:javaPath}|
 
 # Check if two commands are available
-RUN which javac
-RUN which java
+RUN which javac |\label{line:testJavac}|
+RUN which java |\label{line:testJava}|
 
 # ...
 \end{lstlisting}
 
 In Auflistung~\ref{lst:dockerfile} ist ein Ausschnitt
 aus der Dockerfile zusehen, welche die Laufzeitumgebung
-der Cloud Run Instanzen definiert. Zuerst wird das JDK
-heruntergeladen \textbf{(Zeile 4)}. Dann wird es
-installiert \textbf{(Zeile 9)} und wichtige Umgebungsvariablen
-werden gesetzt \textbf{(Zeile 10, 11)}.
+der Cloud Run Container Instanzen definiert. Zuerst wird das JDK
+heruntergeladen \textbf{(Zeile~\ref{line:downloadJDK})}. Dann wird es
+installiert \textbf{(Zeile~\ref{line:installJDK})} und wichtige Umgebungsvariablen
+werden gesetzt \textbf{(Zeile~\ref{line:javaHome},~\ref{line:javaPath})}.
 Abschließend wird geprüft ob die beiden Befehle
-zur Verfügung stehen \textbf{(Zeile 14, 15)}.
+zur Verfügung stehen \textbf{(Zeile~\ref{line:testJavac},~\ref{line:testJava})}.
 
-\paragraph{Gradle} Um ein Gradle-Projekte auszuführen und zu testen,
-gibt es in der unter anderem zwei Möglichkeiten. Einem Gradle-Projekt
-kann der Gradle-Wrapper (Wrapper)\footnote{\url{https://docs.gradle.org/current/userguide/gradle_wrapper.html}}
-beigelegt sein. Dieser definiert welche Version von Gradle benutzt
-werden soll und läd sich die benötigten Komponenten für das Kompilieren
-und Bauen des Projekts selbstständig herunter \cite{GradleWrapper}.
-Normalerweise ist es empfohlen den Gradle-Wrapper zu benutzen,
-da dieser das Bauen und Kompilieren des Projektes standardisiert und
-somit weniger Fehler entstehen können \cite{GradleWrapper}.
-Jedoch ist der Wrapper für das serverlose Backend etwas ungünstig.
+\subsection{Gradle}
+Um ein Gradle-Projekte auszuführen und zu testen,
+gibt es unter anderem zwei Möglichkeiten. Einem Gradle-Projekt
+kann der Gradle-Wrapper (Wrapper) beigelegt sein.
+Dieser definiert welche Version von Gradle benutzt
+werden soll und lädt sich Gradle für das Bauen des Projekts selbstständig herunter.
+Normalerweise ist es empfohlen den Wrapper zu benutzen,
+da dieser das Bauen des Projektes standardisiert und
+somit weniger Fehler entstehen \cite{GradleWrapper}.
+Jedoch hat sich beim ersten Ansatz der Implementierung herausgestellt, dass der
+Wrapper für das serverlose Backend etwas ungünstig ist.
 Bei einer Anfrage, in der eine neue Cloud Run Container Instanz
-gestartet wird, läd sich der Wrapper erst einmal die benötigten
-Gradle-Komponenten herunter. Dadurch braucht die Bearbeitung der
-Anfrage
+gestartet wird, verschwendet das Herunterladen von Gradle
+unnötig Zeit und Rechenressourcen, denn die verbrauchte Zeit und der Rechenaufwand
+werden bei serverlosen Diensten in Zahlung gestellt \cite{ServerlessTrends}.
+Zusätzlich müssen Studenten und Korrektoren warten bis die Anwendung mit dem eigentlichen
+Ausführen bzw. Testen des Gradle-Projekts weitermacht.
+Eine bessere Lösung ist Gradle in die Laufzeitumgebung einzubinden.
+Wie in Auflistung~\ref{lst:gradle} zu sehen reicht es aus Gradle herunterzuladen
+\textbf{(Zeile~\ref{line:downloadGradle})}
+und zu entpacken \textbf{(Zeile~\ref{line:unzipGradle})}.
+Dadurch muss Gradle nicht immer wieder heruntergeladen werden.
+Die Anwendung braucht nur noch den \texttt{gradle test} bzw. \texttt{gradle run} Befehl
+aufrufen und das Gradle-Projekt kann getestet bzw. ausgeführt werden \cite{GradleCLI}.\\
 
-
+\begin{lstlisting}[caption={Ausschnitt aus der Dockerfile. Herunterladen und Entpacken von Gradle.}, label={lst:gradle}, escapechar=|]
+# ... 
+# Get Gradle distribution zip
+RUN wget https://downloads.gradle-dn.com/distributions/gradle-6.3-bin.zip |\label{line:downloadGradle}|
+RUN unzip gradle-6.3-bin.zip |\label{line:unzipGradle}|
+# ...
+\end{lstlisting}
 
 \subsection{Endpunkte}
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
