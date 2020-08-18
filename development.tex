@@ -5,10 +5,10 @@ entwickelt. Dieses Kapitel beinhaltet die Architektur und Implementierung
 der Anwendung. Davor werden Dienste und Werkzeuge vorgestellt,
 die für die Realisierung verwendet wurden.
 
-Es soll den Korrektoren und Studenten des Moduls
-Programmierung der Heinrich-Heine-Universität
-möglich sein einfache Java Programme in einer einheitlichen und isolierten Umgebung
-auszuführen und zu testen.
+Es soll Benutzern der Anwendung möglich sein einfache, Kommandozeile-basierte
+Java Programme in einer einheitlichen und isolierten Umgebung
+auszuführen und zu testen. Der Dienst kann auch von Studenten und
+Korrektoren benutzt werden.
 Studenten können dadurch ihre Aufgaben vor der Abgabe testen, um sicherzugehen,
 dass sie auch bei der Korrektur wie gewollt laufen.
 Korrektoren müssen sich keine Gedanken um die Sicherheit ihrer Systeme
@@ -16,14 +16,15 @@ machen. Sie brauchen keine aufwändigen VMs starten, denn die Aufgaben werden
 bereits in einer abgesicherten Umgebung ausgeführt.
 
 Die serverlose Anwendung ermöglicht es einzelne Java Dateien auszuführen.
-Werden zusätzliche JUnit Testdateien mitgeliefert,
-können auch diese gestartet werden. Das Resultat der Tests wird wieder
-zurückgeliefert.
+Werden zusätzliche JUnit5\footnote{\url{https://junit.org/junit5/docs/current/user-guide/}}
+Testdateien mitgeliefert, können auch die Tests gestartet werden.
+Das Resultat der Tests wird wieder an den Benutzer zurückgeliefert.
 Da die Aufgaben des Moduls Gradle benutzen,
 können auch Gradle-Projekte ausgeführt und getestet werden.
-Jedoch wird dafür das Applikation-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
-vorausgesetzt, sodass die Aufgaben des Moduls leicht angepasst werden müssen.
-Die Anwendung kann vollständig durch die Kommandozeile angesprochen werden, denn
+Jedoch verwenden die Modulaufgaben keine JUnit Tests, sodass sie angepasst werden müssen.
+Außerdem wird für das Ausführen der Gradle-Projekte
+das Applikations-Plugin\footnote{\url{https://docs.gradle.org/current/userguide/application_plugin.html}}
+vorausgesetzt. Die Anwendung kann vollständig durch die Kommandozeile angesprochen werden, denn
 sie stellt eine REST-API bereit.
 Jedoch wird auch ein Endpunkt zur Verfügung gestellt, der eine Webseite zurückliefert.
 Das Layout der Seite richtet sich grob nach dem Styleguide der
@@ -57,15 +58,15 @@ Das Frontend wird in der Programmiersprache JavaScript geschrieben. Es dient als
 erweiterte Funktionalität und gehört nicht zum Kern der in dieser Arbeit entwickelten
 serverlosen Anwendung. Jedoch bietet sie eine bequemere Interaktion mit der Anwendung als
 die Kommandozeile. Das Frontend wird mit
-Firebase Hosting\footnote{\url{https://firebase.google.com/docs/hosting}}, einem weiteren Google Dienst,
+Firebase Hosting, einem weiteren Google Dienst,
 bereitgestellt. Bei Firebase Hosting kann das sichere Hosten von statischen Webseiten
-mit wenigen Befehlen bewältigt werden.
+mit wenigen Befehlen bewältigt werden \cite{FirebaseHosting}.
 
 \section{Architektur}
 Die Architektur in Abbildung~\ref{fig:architecture} besteht auf zwei
 Komponenten.
 Die Cloud Run Container Instanzen bilden das serverlose Backend.
-Eine Instanz stellt Endpunkte bereit die mit
+Es werden Endpunkte bereitgestellt, die mit
 HTTP-Anfragen\footnote{\url{https://tools.ietf.org/html/rfc2616}}
 angesprochen werden können. Rufen Benutzer
 mittels einer HTTP-GET Anfrage den
@@ -80,7 +81,7 @@ ermöglicht eine einfache Verwaltung und Erweiterung beider Komponenten.
 Durch Interaktion mit der Entwicklungsumgebung \textbf{(3)} lassen sich einige
 der restlichen Endpunkte \textbf{(4)} aufrufen. 
 Da das Backend eine REST-API bereitstellt, ist auch ein direkter Zugriff \textbf{(5)} auf alle 
-Endpunkte über die Kommandozeile und HTTP-POST Anfragen möglich.
+Endpunkte über die Kommandozeile durch HTTP-POST Anfragen möglich.
 
 \begin{figure}
   \centering
@@ -129,27 +130,22 @@ gesetzt \textbf{(Zeile~\ref{line:javaHome},~\ref{line:javaPath})}.
 Abschließend wird geprüft ob die beiden Befehle
 zur Verfügung stehen \textbf{(Zeile~\ref{line:testJavac},~\ref{line:testJava})}.
 
-\paragraph{Gradle} Um ein Gradle-Projekte auszuführen und
-zu testen, gibt es unter anderem zwei Möglichkeiten.
-Einem Gradle-Projekt kann der Gradle-Wrapper (Wrapper)
-beigelegt sein. Dieser definiert welche Version von Gradle benutzt
-werden soll und lädt sich Gradle für das Bauen des Projekts selbstständig herunter.
-Normalerweise ist es empfohlen den Wrapper zu benutzen,
-da dieser das Bauen des Projektes standardisiert und
-somit weniger Fehler entstehen \cite{GradleWrapper}.
-Jedoch hat sich beim ersten Ansatz der Implementierung herausgestellt, dass der
-Wrapper für das serverlose Backend etwas ungünstig ist.
-Bei einer Anfrage, in der eine neue Cloud Run Container Instanz
-gestartet wird, verschwendet das Herunterladen von Gradle
-unnötig Zeit und Rechenressourcen, denn die verbrauchte Zeit und der Rechenaufwand
-werden bei serverlosen Diensten in Zahlung gestellt \cite{ServerlessTrends}.
-Zusätzlich müssen Studenten und Korrektoren warten bis die Anwendung mit dem eigentlichen
-Ausführen und Testen des Gradle-Projekts weitermacht.
-Eine bessere Lösung ist Gradle in die Laufzeitumgebung einzubinden.
-Wie in Auflistung~\ref{lst:gradle} zu sehen reicht es aus Gradle herunterzuladen
+\paragraph{JUnit Console Launcher} Da der Endpunkt \texttt{/test/java} einzelne Javadateien
+und keine vollständigen Gradle-Projekte entgegennimmt, müssen die mitgelieferten Tests
+manuell gestartet werden. Es wird der JUnit Console Launcher benutzt. Mit diesem
+Kommandozeilen-Programm können JUnit Tests ausgeführt werden.
+Hierfür wird das eigenständige Console Launcher
+Jar-Archiv\footnote{\url{https://de.wikipedia.org/wiki/Java_Archive}} beim Ausführen
+des \texttt{java} Befehls mit eingebunden \cite{JunitConsoleLauncher}.
+Um dies zu ermöglichen, muss es der Anwendung zur Laufzeit bereitstehen.
+Deshalb wird auch das Jar-Archiv in die Laufzeitumgebung verpackt.
+
+\paragraph{Gradle} Damit Gradle-Projekte gestartet und getestet
+können wird, wie in Auflistung~\ref{lst:gradle} zu sehen, Gradle in die
+Laufzeitumgebung eingepackt. Es reicht aus Gradle herunterzuladen
 \textbf{(Zeile~\ref{line:downloadGradle})}
-und zu entpacken \textbf{(Zeile~\ref{line:unzipGradle})}.
-Dadurch muss Gradle nicht immer wieder heruntergeladen werden.
+und zu entpacken \textbf{(Zeile~\ref{line:unzipGradle})}. Somit
+hat die Anwendung während der Laufzeit Zugriff auf den \texttt{gradle} Befehl.
 Die Anwendung braucht nur noch den \texttt{gradle test} oder \texttt{gradle run} Befehl
 aufrufen und das Gradle-Projekt kann getestet oder ausgeführt werden \cite{GradleCLI}.\\
 
@@ -160,16 +156,17 @@ RUN unzip gradle-6.3-bin.zip |\label{line:unzipGradle}|
 \end{lstlisting}
 
 \subsection{Endpunkte}
-Die Endpunkte sind mit \texttt{/run} sowie
+Die Endpunkte sind mit \texttt{/run} und
 \texttt{/test} in zwei Gruppen eingeteilt.
 Die erste Gruppe ist für das Kompilieren und anschließende
 Ausführen von Java Quellcode zuständig. Die zweite Gruppe ist
 für das Ausführen von JUnit-Tests verantwortlich. Die Anwendung
-sendet als Antwort ein JSON-Objekt zurück, welche das Resultat
-der Ausführung oder der Tests beinhaltet.
+sendet das Result der Ausführung als eine HTML-Datei zurück. Es kann
+jedoch mit dem zusätzlichen Query-String\footnote{\url{https://wiki.selfhtml.org/wiki/Query_String}}
+\texttt{?return=json} auch ein JSON-Objekt zurückgesendet werden.
 
-\paragraph{/run/java Endpunkt} Ein beispielhafter Aufruf des
-Endpunktes mit curl\footnote{\url{https://curl.haxx.se}} ist in
+\paragraph{Ausführen und Testen einzelner Javadateien} Ein beispielhafter Aufruf des
+\texttt{/run/java} Endpunktes mit curl\footnote{\url{https://curl.haxx.se}} ist in
 Auflistung~\ref{lst:curlRunJava} dargestellt.
 Die einzelnen Java Dateien werden im
 Entity-Body\footnote{\url{https://tools.ietf.org/html/rfc2616\#section-7.2}}
@@ -182,7 +179,7 @@ Dieser Endpunkt soll den Studenten ermöglichen ihren Quellcode
 schnell und unkompliziert auszuführen.\\
 
 \begin{lstlisting}[
-  caption={HTTP-POST Anfrage an /run/java um einzelne Java Dateien zu kompilieren und auszuführen.},
+  caption={HTTP-POST Anfrage an \texttt{/run/java} um einzelne Java Dateien zu kompilieren und auszuführen.},
   label={lst:curlRunJava},
   escapechar=|
 ]
@@ -192,31 +189,95 @@ curl -F main_file=MyMainClass \ |\label{line:mainClass}|
   https://ba-serverless-testing-t6e6p4w6oa-ew.a.run.app/run/java
 \end{lstlisting}
 
-\paragraph{/run/gradle Endpunkt} Um eine Gradle-Projekt auszuführen
-ist es nötigt das Projekt vorher in ein Zip-Archiv zu komprimieren.
-Erst dann kann es ähnlich wie in Auflistung~\ref{lst:curlRunGradle}
-an das Backend versendet werden.\\
+Für das Ausführen von JUnit-Tests müssen die Testdateien, wie in Auflistung~\ref{lst:curlTestJava},
+mitgeliefert werden \textbf{(Zeile~\ref{line:testFile})}.
+Zusätzlich muss der Endpunkt zu \texttt{/test/java} umgeändert werden
+\textbf{(Zeile~\ref{line:testJavaUrl})}.\\
 
 \begin{lstlisting}[
-  caption={HTTP-POST Anfrage an /run/gradle um ein Gradle-Projekt auszuführen.},
+  caption={HTTP-POST Anfrage an \texttt{/test/java} um einzelne JUnit-Tests auszuführen.},
+  label={lst:curlTestJava},
+  escapechar=|
+]
+curl -F file=@Calculator.java|\label{line:javaFile}| -F file=@CalculatorTest.java \ |\label{line:testFile}|
+  https://ba-serverless-testing-t6e6p4w6oa-ew.a.run.app/test/java |\label{line:testJavaUrl}|
+\end{lstlisting}
+
+\paragraph{Ausführen und Testen eines Gradle-Projekts} Um ein Gradle-Projekt
+über dem Endpunkt \texttt{run/gradle} auszuführen,
+muss das Projekt vorher in ein Zip-Archiv komprimiert werden.
+Erst dann kann es der HTTP-POST Anfrage beigelegt \textbf{(Zeile~\ref{line:gradleZip})}
+und an das Backend versendet werden.\\
+
+\begin{lstlisting}[
+  caption={HTTP-POST Anfrage an \texttt{/run/gradle} um ein Gradle-Projekt auszuführen.},
   label={lst:curlRunGradle},
   escapechar=|
 ]
-curl -F file=@gradle_project.zip \
+curl -F file=@gradle_project.zip \ |\label{line:gradleZip}|
   https://ba-serverless-testing-t6e6p4w6oa-ew.a.run.app/run/gradle
 \end{lstlisting}
 
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Soll das Projekt getestet werden, sodass enthaltene JUnit-Tests ausgeführt werden,
+muss nur der Endpunkt des Befehls zu \texttt{/test/gradle} abgeändert werden.
+Diese beiden Endpunkte können für das Ausführen der Aufgaben im Modul Programmierung
+der HHU verwendet werden.
+
+\paragraph{Einbinden des Frontends} Es gibt noch einen weiteren Endpunk, welcher
+nicht primär für das Testen und Ausführen von Java-Quellcode zuständig ist.
+Durch eine GET-Anfrage an den \texttt{/} Endpunkt wird eine grafische Benutzeroberfläche zurückgesendet.
+Vor Beginn der Ausarbeitung war als eine mögliche Erweiterung definiert, dass die serverlose Anwendung an
+das MOPS System der HHU angebunden werden soll. Da das Einbinden an das System nicht
+das zentrale Thema der Arbeit ist, wurde nur das Layout nachgebaut.
+Jedoch wurde zusätzlich eine Entwicklungsumgebung gebaut.
+Die Entwicklungsumgebung ist das eigentliche Frontend und wird durch einen HTML-iframe
+in das nachgebaute MOPS Layout eingebunden. Somit kann sie auch vollkommen eigenständig benutzt werden.
+
+\subsection{Ablauf}
+\begin{figure}
+  \centering
+  \includegraphics[height=8cm]{fig/ablauf_run_java.pdf}
+  \caption{Ablauf einer Anfrage an \texttt{/run/java} Endpunkt.}
+  \label{fig:ablauf_run_java}
+\end{figure}
+
+In Abbildung~\ref{fig:ablauf_run_java} ist der Ablauf einer Anfrage an den Endpunkt
+\texttt{/run/java} abgebildet. Nachdem das Backend die Anfrage entgegennimmt,
+werden die enthaltenen Dateien in einem temporären Bereich gesichert.
+Von dort aus wird durch das Subprocess-Modul von Python der \texttt{javac} Befehl aufgerufen.
+Mit dem Subprocess-Modul lassen sich zusätzliche Prozesse startet und verwalten \cite{PythonSubprocess}.
+Wenn das Kompilieren des Quellcodes erfolgreich ist, wird mit dem \texttt{java} Befehl
+das Programm gestartet. Die Standardausgabe des Programms wird eingefangen und
+dem Benutzer als Antwort zurückgesendet. Für die beiden Gradle Endpunkte können
+ist der Ablauf ähnlich. Es können die beiden JDK Befehle durch den \texttt{gradle}
+Befehl ausgetauscht werden. Soll das übermittelte Gradle-Projekt gebaut und ausgeführt
+werden, wird der \texttt{gradle run} Befehl durch das Subprocess-Modul aufgerufen.
+Soll es gebaut und getestet werden, wird der \texttt{gradle test} Befehl aufgerufen.
 
 \section{Frontend}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Für das Erstellen der Entwicklungsumgebung wurde das Open Source Framework \emph{Vue.js}
+und der Texteditor \emph{Monaco Editor} verwendet. Monaco Editor wird unter anderem
+bei VS Code\footnote{\url{https://code.visualstudio.com}} verwendet. Es stellt einige übliche Funktionen,
+wie Syntax-Highlighting \cite{MonacoEditor} bereit.
+Jedoch wurde für eine angenehmere Benutzererfahrung eine zusätzliche Projektansicht
+entwickelt, sodass Benutzer zwischen unterschiedlichen Dateien wechseln können.
+Das Frontend setzt sich aus vier Komponenten zusammen. Die erste Komponente beinhaltet
+die Buttons für das Senden des Gradle-Projekts an das Backend. Die zweite Komponente
+ist die Projektansicht. Das Projekt wird als Baumstruktur dargestellt. Außerdem können
+Dateien und Ordner erstellt werden. Die dritte Komponente ist der Editor. Hier
+können Benutzer ihren Quellcode schreiben. Nach dem Ausführen oder Testen wird die Antwort
+des Backends in der Konsole, der vierten Komponente, ausgegeben.
+Das Frontend stellt den Benutzern das Grundgerüst eines Gradle-Projekts bereit.
+Benutzer können durch das Erstellen von neuen Dateien und Ordnern, ihre
+Anwendungslogik in das Projekt einfügen und das Gerüst ausbauen. Das Frontend bietet
+die nötigsten Funktionen, um Benutzern zu ermöglichen ihren Quellcode
+zu starten und zu testen. Es ist ein erster Ansatz einer Entwicklungsumgebung
+und ist noch ausbaufähig.
+
+Das Frontend wird durch Google Firebase Hosting, zur Verfügung gestellt.
+Mit wenigen Befehlen ermöglicht der Dienst das unkomplizierte Bereitstellen von statische Webseiten.
+Unter anderem ist SSL\footnote{\url{https://tools.ietf.org/html/rfc6101}}
+vorkonfiguriert, sodass beim Besuchen der Webseite eine sichere
+Verbindung aufgebaut wird \cite{FirebaseHosting}.
+
+

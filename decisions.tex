@@ -1,0 +1,79 @@
+\chapter{Probleme und Entscheidungen}
+Während der Entwicklung von Backend und Frontend sind
+einige Probleme aufgetreten, die zum Umdenken einiger Funktionen
+in beiden Komponenten verneigt haben. Außerdem wurden bei der Architektur
+und Funktionsweise der Anwendung kritische Entscheidungen getroffen.
+
+\section{JUnit Tests}
+Für das Testen von einzelnen Javadateien oder Gradle-Projekten werden
+JUnit5 Tests vorausgesetzt. JUnit Tests lassen sie sich leicht in ein Java-Projekt integrieren und 
+ausführen. Für das Ausführen von Tests der Übungsaufgaben des Moduls Programmierung
+hat die Entscheidung jedoch einige Nachteile. Neben einer älteren Gradle und Java Version
+verwenden die Übungsaufgaben aus dem Wintersemester 2018 keine JUnit Tests, sondern es werden
+mehrere Gradle Tasks\footnote{\url{https://docs.gradle.org/current/dsl/org.gradle.api.Task.html}}
+erstellt. Es werden nicht die Rückgabewerte und Zustände der Funktionen
+getestet, sondern der Zustand der Standardausgabe nach dem Ausführen des Programms.
+Die Übungsaufgaben müssten also angepasst werden, um von der entwickelten serverlosen 
+Anwendung getestet werden zu können.
+
+\section{Gradle Wrapper}
+Um ein Gradle-Projekte auszuführen und
+zu testen, gibt es unter anderem zwei Möglichkeiten.
+Einem Gradle-Projekt kann der Gradle-Wrapper (Wrapper)
+beigelegt sein. Dieser definiert welche Version von Gradle benutzt
+werden soll und lädt sich Gradle für das Bauen des Projekts selbstständig herunter.
+Normalerweise ist es empfohlen den Wrapper zu benutzen,
+da dieser das Bauen des Projektes standardisiert und
+somit weniger Fehler entstehen \cite{GradleWrapper}.
+Jedoch hat sich beim ersten Ansatz der Implementierung herausgestellt, dass der
+Wrapper für das serverlose Backend etwas ungünstig ist.
+Bei einer Anfrage, in der eine neue Cloud Run Container Instanz
+gestartet wird, verschwendet das Herunterladen von Gradle
+unnötig Zeit und Rechenressourcen, denn die verbrauchte Zeit und der Rechenaufwand
+werden bei serverlosen Diensten in Zahlung gestellt \cite{ServerlessTrends}.
+Zusätzlich müssen Studenten und Korrektoren warten bis die Anwendung mit dem eigentlichen
+Ausführen und Testen des Gradle-Projekts weitermacht.
+Besser ist es Gradle in die Laufzeitumgebung einzubinden.
+Dadurch muss Gradle nicht immer wieder heruntergeladen werden. Dies hat jedoch
+den Nachteil, dass die auszuführenden Programme der Benutzer
+kompatibel mit der verwendeten Gradle Version sein müssen.
+
+\section{Google Cloud Run Konfiguration}
+Google Cloud Run ermöglicht die Konfiguration von Ressourcen der
+Containerinstanzen. Es können unter anderem die Anzahl an zugewiesenen CPUs \cite{CloudRunCpuAlloc} und
+Speicher \cite{CloudRunMemLimits} angepasst werden.
+Den Containerinstanzen werden zwei vCPUs sowie zwei Gibibyte\footnote{\url{https://en.wikipedia.org/wiki/Gibibyte}}
+an Speicher zugewiesenen. Für die Anwendung wurde die höchste Konfiguration beider
+Ressourcen benutzt werden \cite{CloudRunCpuAlloc} \cite{CloudRunMemLimits},
+da bei einer geringeren Einstellung Gradle nicht genug Speicher zur Verfügung
+steht und Anfragen nicht bearbeitet werden. Der Nachteil ist, dass der Dienst dadurch
+teurer wird, da die Konfiguration der Ressourcen in den Kosten mit einberechnet wird \cite{CloudRunPricing}.
+
+\section{Endpunkte entfernt}
+Während der Entwicklung des Frontends wurde schnell ersichtlich,
+dass die Erstellung eines vollständigen Gradle-Projekts nicht immer benutzerfreundlich ist.
+In der Projektansicht verschwenden die Dateien und Ordner viel Platz.
+Außerdem können Benutzer nicht frei über ihre Ordnerstruktur entscheiden.
+Deshalb sollten die zusätzlichen Endpunkte \texttt{/run/zip} und \texttt{/test/zip}
+bereitgestellt werden. Sie sollten das Ausführen und Testen von Java-Projekten mit
+beliebiger Ordnerstruktur ermöglichen.
+Während der Endpunkt \texttt{/run/zip} sich leicht implementieren ließ, traten
+beim Kompilieren und Ausführen der JUnit Testdateien Schwierigkeiten auf.
+Der erste Ansatz war es alle Ordner und Unterordner des Projekts zu
+durchlaufen, um alle Dateien mit der Dateiendung \texttt{.java} einzusammeln.
+Dateien mit \emph{Test} im Namen wurden als JUnit Testdatei gewertet. Jedoch
+ist dieser Ansatz auch nicht benutzerfreundlich. Während Benutzer
+bei einem Gradle-Projekt keine freie Ordnerstruktur festlegen konnten,
+können sie bei dieser Methode nicht frei über Dateinamen entscheiden.
+
+Eine bessere Lösung wäre es durch den Inhalt der Dateien zu ermitteln,
+welche von ihnen JUnit Tests enthalten. Aufgrund der Unvollständigkeit
+des \texttt{/test/zip} Endpunkts wurde der implementierte
+\texttt{/run/zip} Endpunkt entfernt. Dadurch müssen Benutzer im
+Frontend zwar ein vollständiges Gradle-Projekt erstellen,
+um ihre Anwendung zu testen,
+jedoch wird die Benutzererfahrung klar und einheitlich.
+Als zusätzliche Hilfe wird den Benutzern im Frontend das Grundgerüst eines Gradle-Projekts
+automatisch bereitgestellt.
+
+
