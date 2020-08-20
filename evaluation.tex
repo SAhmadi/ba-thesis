@@ -1,12 +1,11 @@
 \chapter{Evaluation}
 In diesem Kapitel wird geprüft, ob die serverlose Anwendung
 für das Ausführen und Testen von einfachen Java Programmen verwendet
-werden kann. Zusätzlich wird geprüft, ob die Anwendung den Serverless Prinzipien folgt
-und wo noch Nachgebessert werden muss.
+werden kann oder wo noch nachgebessert werden muss.
 
 Für das Testen und die Analyse der serverlosen Anwendung werden zwei unterschiedliche
 Gradle-Projekte und drei Javadateien verwendet.
-Die Gradle-Projekte verwenden die JUnit5 Starter Gradle Vorlage \cite{JunitStarterGradle}.
+Die Gradle-Projekte verwenden das JUnit5 Starter Gradle als Vorlage \cite{JunitStarterGradle}.
 Die Messungen selbst werden primär durch das Ausführen von entwickelten Skripten
 ermittelt, jedoch zum Teil manuell ausgewertet und protokolliert.
 
@@ -14,7 +13,7 @@ Das erste Beispielprojekt ist eine einfache
 Hello World Applikation. Das Programm gibt den Text \emph{„Hello World“}
 in der Standardausgabe aus. Bei dem zweiten Projekt wird
 die Fibonacci-Folge\footnote{\url{https://de.wikipedia.org/wiki/Fibonacci-Folge}} berechnet.
-Durch die beigelegten JUnit Tests wird stichprobenartig geprüft, ob die Folge richtet berechnet wurde.
+Durch die beigelegten JUnit Tests wird stichprobenartig geprüft, ob die Folge richtig berechnet wurde.
 Während die beiden Beispielprojekte für das Testen der Gradle Endpunkte zuständig sind,
 werden die Javadateien für das Analysieren der Java Endpunkte verwendet.
 
@@ -40,7 +39,7 @@ Die Endpunkte \texttt{/run/gradle} und \texttt{/test/gradle} beider Beispielproj
 wurden insgesamt 500 Mal aufgerufen. Es wurden 10 Anfragen pro Sekunde gesendet.
 In Abbildung~\ref{fig:success_failure_fivehundred} ist deutlich zu sehen,
 dass die \texttt{/test/gradle} Endpunkte tatsächlich noch große Probleme
-aufweisen. Während die Endpunkte \texttt{/run/gradle} die Mehrheit der Anfragen erfolgreich
+aufweisen. Während die beiden \texttt{/run/gradle} Endpunkte die Mehrheit der Anfragen erfolgreich
 beantworten, werden mehr als 85\% der Anfragen an die Gradle Test-Endpunkte nicht
 erfolgreich beantwortet. Es wird größtenteils die wenig aussagende Fehlermeldung \emph{„Service Unavailable“}
 als Antwort zurückgesendet, was die Fehlersuche erschwert.
@@ -51,8 +50,8 @@ Verbesserung herbeiführt, wurden die Endpunkte bei der zweiten Testreihe nur 20
 Auch diesmal wieder mit 10 Anfragen pro Sekunde.
 Zwar ist in Abbildung~\ref{fig:success_failure_twohundred} eine Verbesserung zu sehen,
 aber nach einem Blick auf das Log des serverlosen Dienstes wurden Fehlermeldungen beim Löschen
-der temporären Ordner angezeigt. Mitgesendete Zip-Archive bei Anfragen werden
-in diesen Ordner abgespeichert. Für das Erzeugen der Ordner wird
+der temporären Ordner angezeigt. Die gesendeten Zip-Archive bei Anfragen werden
+in diesen Ordner entpackt und abgespeichert. Für das Erzeugen der Ordner wird
 Pythons \emph{tempfile.TemporaryDirectory} Funktion verwendet.
 Die Funktion sollte nach dem Austritt aus dem Kontext temporäre Ordner
 automatisch löschen \cite{PythonTempfile}.
@@ -87,7 +86,8 @@ gute Benutzererfahrung bieten.
 Eine gute Benutzererfahrung setzt auch voraus, dass die Anwendung die überreichten Programme in
 angemessener Zeit ausführt und testet. Somit sollten die Antwortzeiten möglichst gering sein.
 Aus diesem Grund wurden die durchschnittlichen Antwortzeiten der Endpunkte analysiert.
-Bei dieser Testreihe wurden nur erfolgreiche Antworten der vorherigen Testreihen verwendet.
+Bei dieser Testreihe wurden nur erfolgreiche Antworten der vorherigen Testreihen mit in die
+Berechnung eingeschlossen.
 In Abbildung~\ref{fig:avg_resp_60reqs_test_gradle} werden die wenigen erfolgreichen Antworten
 der \texttt{/test/gradle} betrachtet. Für das Testen der beiden Beispielprojekte vergehen
 im Durchschnitt mehr als 25 Sekunden.
@@ -99,12 +99,11 @@ im Durchschnitt mehr als 25 Sekunden.
   \label{fig:avg_resp_60reqs_test_gradle}
 \end{figure}
 
-Um sicherzustellen, dass die hohe Antwortzeit nicht an dem erwähnten Fehler liegt, wurden auch
-die erfolgreichen Antworten des \texttt{/run/gradle} Endpunkts hinzugezogen. Zwar
-ist Abbildung~\ref{fig:avg_resp_450reqs_run_gradle} eine kleine Verbesserung zu sehen,
-jedoch sind 20 bis 25 Sekunden Wartezeit immer noch sehr viel für eine produktionsreife
-Bereitstellung. Abschließend wurden auch die Antwortzeiten der Java
-Endpunkte analysiert.
+%Um sicherzustellen, dass die hohe Antwortzeit nicht an dem erwähnten Fehler liegt, wurden auch
+Bei den Antworten der beiden \texttt{/run/gradle} Endpunkte sind nur kleine Verbesserungen zu sehen.
+Wie in Abbildung~\ref{fig:avg_resp_450reqs_run_gradle} zu sehen ist, vergehen im Schnitt
+20 bis 25 Sekunden bis eine Antwort ankommt. Dies ist immer noch zu viel für eine produktionsreife
+Bereitstellung.
 
 \begin{figure}
   \centering
@@ -120,6 +119,9 @@ Endpunkte analysiert.
   \label{fig:avg_resp_500reqs_java}
 \end{figure}
 
+Abschließend wurden auch die Antwortzeiten der Java Endpunkte analysiert.
+Die Java Endpunkte könnten vielleicht zeigen, dass die lange Wartezeit der vorherigen
+Endpunkte durch den bereits erwähnten Fehler auftritt.
 Bei vereinzelten Tests auf dem eigenen lokalen System wurden die Anfragen
 sehr zügig bearbeitet. Abbildung~\ref{fig:avg_resp_500reqs_java} zeigt jedoch
 an, dass auch hier im Durchschnitt gut 20 Sekunden gewartet werden
@@ -127,7 +129,7 @@ muss. Ein möglicher Grund dafür könnte das konservative Starten
 neuer Containerinstanz von Seiten Googles sein.
 Nach näherem Betrachten der einzelnen Anfragen ist in
 Abbildung~\ref{fig:resp_of_ith_req_run_java} zu sehen, dass vor allem
-die späteren Anfragen viel Zeit brauchen. Es sieht so aus, als
+ab der dreihundertsten Anfrage viel Zeit vergeht. Es sieht so aus, als
 ob der Google Dienst zu Beginn genug Containerinstanz startet, um
 die Nachfrage zu bewältigen. Jedoch stagniert das Hochfahren neuer
 Instanzen bis zu einem gewissen Punkt. Möglicherweise geht Google davon aus, dass
@@ -145,11 +147,11 @@ Anwendung jedoch länger, könnte der Skalierungsfaktor verkleinert werden.
 \section{Modulaufgaben Programmierung WS 2018}
 Es wurden auch vereinzelt Aufgaben des Moduls Programmierung aus dem
 Wintersemester 2018 der HHU getestet.
-Die Aufgaben benutzen für das Testen Gradle-Tasks.
+Die Aufgaben benutzen für das Testen Gradle Tasks.
 Sie testen auch nicht Funktionszustände und Rückgabewerte, sondern es wird die
 Ausgabe auf der Standardausgabe kontrolliert.
 Da jedoch bei der ausgearbeiteten Anwendung JUnit Tests vorausgesetzt werden,
-müssen die Gradle-Tasks erst umgewandelt werden. Dies ist jedoch recht trivial,
+müssen die Gradle Tasks erst umgewandelt werden. Dies ist jedoch recht trivial,
 solange man auch bei den JUnit Tests nur die Ausgabe auf der Standardausgabe
 testet. Es müssen meist nur kleinere syntaktische Änderungen durchgeführt werden.
 Einige umgeschriebene Tests sind dem Quellcode im GitLab der Arbeitsgruppe

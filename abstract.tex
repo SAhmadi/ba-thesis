@@ -4,4 +4,51 @@
     \huge \IfLanguageName{ngerman}{Zusammenfassung}{Abstract}
 \end{center}
 
-TODO: <am Ende>
+Diese Arbeit beschäftigt sich mit der Entwicklung einer
+serverlosen Anwendung für das Ausführen und Testen einfacher Java
+Konsolenanwendungen in einer sicheren Umgebung.
+Um fremden Quellcode schnell und einfach zu testen,
+wird er häufig ungeachtet jeglicher Sicherheitsrisiken
+auf dem eigenen System ausgeführt. Der ausgeführte Code kann
+jedoch Sicherheitslücken ausnutzen und somit dem eigenen
+System schaden. Um den Quellcode von Java Konsolenanwendungen
+abgesichert zu kompilieren und zu starten, wurde eine Applikation entwickelt,
+die den Quellcode in einer sicheren Umgebung ausführen kann. Das
+Resultat wird dem Benutzer zurückgesendet. Die Applikation
+baut auf den Serverless-Prinzipien auf. Dabei handelt es
+sich um ein neues Cloud-Computing Konzept, mit dem
+skalierbare Anwendungen ohne komplexe Serververwaltung
+bereitgestellt werden können.
+Bevor die eigentliche Entwicklung beginnt, wird eine Einführung
+in das Thema Serverless-Computing gegeben. Es werden die
+wichtigsten Eigenschaften und unterschiedliche serverlose
+Dienstarten, wie FaaS, vorgestellt.
+
+Für die Entwicklung der Anwendung wurde Cloud Run
+benutzt, ein serverloser Dienst von Google. Die Anwendung
+stellt eine REST-API bereit. Über unterschiedliche Endpunkte können
+Benutzer ihren Java Quellcode oder ihr Gradle-Projekt versenden.
+Der Java Quellcode wird durch Pythons Subprocess-Modul und dem
+Java Development Kit erst kompiliert und danach ausgeführt.
+Bei den Gradle-Projekten wird durch den Subprocess-Modul und den
+passenden Gradle-Befehlen das Projekt gebaut und ausgeführt.
+Das Resultat wird dem Benutzer zurückgesendet. Werden
+zusätzlich JUnit Tests mitgesendet, können diese über
+weitere Endpunkte gestartet werden. Zusätzlich zur
+serverlosen Anwendung wurde ein Frontend entwickelt.
+Das Frontend stellt eine kleine Entwicklungsumgebung zur Verfügung,
+über die der Java Quellcode geschrieben und an das Backend versendet
+werden kann.
+
+Während der Evaluation traten einige Probleme auf.
+Das Ausführen von Gradle-Projekten funktioniert nicht immer.
+Bei großer Nachfrage werden ungefähr 85\% der Anfragen nicht erfolgreich
+beantwortet. Es wird angenommen, dass dies Aufgrund eines Fehlers
+bei dem temporären Speichern des gesendeten Zip-Archivs ist.
+Außerdem braucht die serverlose Anwendung im Durchschnitt zu lange
+für das Ausführen und Testen. Die Anwendung muss für eine
+produktionsreife Bereitstellung verbessert und erweitert werden.
+In Anbetracht der vielen Probleme kommt man zu dem Schluss,
+dass die Serverless-Prinzipien und serverlose Dienste
+für die entwickelte Anwendung nicht geeignet sind.
+

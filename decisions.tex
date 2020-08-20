@@ -14,7 +14,8 @@ mehrere Gradle Tasks\footnote{\url{https://docs.gradle.org/current/dsl/org.gradl
 erstellt. Es werden nicht die Rückgabewerte und Zustände der Funktionen
 getestet, sondern der Zustand der Standardausgabe nach dem Ausführen des Programms.
 Die Übungsaufgaben müssten also angepasst werden, um von der entwickelten serverlosen 
-Anwendung getestet werden zu können.
+Anwendung getestet werden zu können. Jedoch wird durch JUnit die Anwendung
+auch außerhalb der Universität nutzbar und leichter erweiterbar.
 
 \section{Gradle Wrapper}
 Um ein Gradle-Projekte auszuführen und
@@ -27,11 +28,11 @@ da dieser das Bauen des Projektes standardisiert und
 somit weniger Fehler entstehen \cite{GradleWrapper}.
 Jedoch hat sich beim ersten Ansatz der Implementierung herausgestellt, dass der
 Wrapper für das serverlose Backend etwas ungünstig ist.
-Bei einer Anfrage, in der eine neue Cloud Run Container Instanz
+Bei einer Anfrage, in der eine neue Cloud Run Containerinstanz
 gestartet wird, verschwendet das Herunterladen von Gradle
 unnötig Zeit und Rechenressourcen, denn die verbrauchte Zeit und der Rechenaufwand
 werden bei serverlosen Diensten in Zahlung gestellt \cite{ServerlessTrends}.
-Zusätzlich müssen Studenten und Korrektoren warten bis die Anwendung mit dem eigentlichen
+Zusätzlich müssen Benutzer warten bis die Anwendung mit dem eigentlichen
 Ausführen und Testen des Gradle-Projekts weitermacht.
 Besser ist es Gradle in die Laufzeitumgebung einzubinden.
 Dadurch muss Gradle nicht immer wieder heruntergeladen werden. Dies hat jedoch
@@ -56,13 +57,13 @@ Außerdem können Benutzer nicht frei über ihre Ordnerstruktur entscheiden.
 Deshalb sollten die zusätzlichen Endpunkte \texttt{/run/zip} und \texttt{/test/zip}
 bereitgestellt werden. Sie sollten das Ausführen und Testen von Java-Projekten mit
 beliebiger Ordnerstruktur ermöglichen.
-Während der Endpunkt \texttt{/run/zip} sich leicht implementieren ließ, traten
-beim Kompilieren und Ausführen der JUnit Testdateien Schwierigkeiten auf.
+Während der Endpunkt \texttt{/run/zip} sich leicht implementieren ließ, kamen
+beim Kompilieren und Ausführen der JUnit Tests Probleme hervor.
 Der erste Ansatz war es alle Ordner und Unterordner des Projekts zu
-durchlaufen, um alle Dateien mit der Dateiendung \texttt{.java} einzusammeln.
-Dateien mit \emph{Test} im Namen wurden als JUnit Testdatei gewertet. Jedoch
+durchlaufen, um alle Dateien mit der Dateiendung \emph{.java} einzusammeln.
+Dateien mit \emph{Test} im Namen wurden als JUnit Testdateien gewertet. Jedoch
 ist dieser Ansatz auch nicht benutzerfreundlich. Während Benutzer
-bei einem Gradle-Projekt keine freie Ordnerstruktur festlegen konnten,
+bei einem Gradle-Projekt keine freie Ordnerstruktur festlegen können,
 können sie bei dieser Methode nicht frei über Dateinamen entscheiden.
 
 Eine bessere Lösung wäre es durch den Inhalt der Dateien zu ermitteln,

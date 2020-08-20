@@ -1,8 +1,7 @@
 \chapter{Grundlagen}
 Für das Verständnis der Ausarbeitung werden einige Grundlagen benötigt.
 In diesem Kapitel werden diese Grundlagen übermittelt.
-Es werden die wichtigsten Eigenschaften des Serverless-Computing erläutert,
-sowie gängige serverlose Dienste vorgestellt.
+Es werden die wichtigsten Eigenschaften des Serverless-Computing erläutert.
 
 \section{Serverless-Computing}
 Serverless-Computing (Serverless) ist ein Konzept, mit dem man skalierbare Anwendungen
@@ -21,12 +20,10 @@ AWS Lambda\footnote{\url{https://aws.amazon.com/de/lambda/}}.
 Serverless ist ein relativ neues Thema, sodass
 der Begriff immer weiter ausgebaut wird \cite{ServerlessTrends}.
 So haben Cloud-Provider mit \emph{Serverless Containers}
-eine weitere serverlose Dienstarten eingeführt.
-Google Cloud Run\footnote{\url{https://cloud.google.com/run}}
-gibt Entwicklern die Freiheit die Laufzeitumgebung ihrer Anwendung
+eine weitere serverlose Dienstarten eingeführt \cite{ServerlessContainers}.
+Googles serverloser Container Dienst, Cloud Run \cite{CloudRun}, gibt Entwicklern die Freiheit die Laufzeitumgebung ihrer Anwendung
 selbst zu definieren, denn für die Bereitstellung erwartet es
-ein Dockerimage\footnote{\url{https://docs.docker.com/get-started/overview/}}.
-Ein Dockerimage ist eine mehrschichtige Schablone, welche
+ein Dockerimage. Ein Dockerimage ist eine mehrschichtige Schablone, welche
 alle nötigen Abhängigkeiten und Instruktionen für das
 Erzeugen eines Containers enthält
 \cite{DockerDocs} \cite{RedHatDockerImage}.
@@ -37,13 +34,13 @@ sondern können auch eine übliche komplexere Applikation bereitstellen
 \cite{ServerlessTrends}.
 
 \subsection{Function as a Service}
-Häufig wird der Begriff serverless mit einer ganz bestimmten serverlosen Dienstart
-assoziiert, den Function-as-a-Service (FaaS).
+Häufig wird der Begriff Serverless mit einer ganz bestimmten serverlosen Dienstart
+assoziiert, den Function-as-a-Service (FaaS) \cite{ServerlessTrends}.
 Die Idee ist, dass Entwickler ihre Anwendungslogik aus isolierten und 
 zustandslosen Funktionen aufbauen.
 Es ist vorgesehen, dass jede Funktion nur für eine
 ganz spezifische Aufgabe zuständig ist. Die Funktionen können
-durch Ereignisse (engl. \emph{Events}) ausgelöst werden.
+durch Ereignisse (englisch \emph{Events}) ausgelöst werden.
 Durch Events können einzelnen Funktionen miteinander oder mit
 weiteren Diensten der Architektur verbunden werden. 
 Treffen solche Ereignisse ein, provisioniert der
@@ -60,12 +57,12 @@ Ressourcen in Zahlung gestellt werden die nicht gebraucht wurden
 \cite{WhatIsServerless} \cite{ServerlessTrends}.
 
 \subsection{Serverless Containers}
-Eine weitere serverlose Dienstart sind die Serverless Containers.
+Eine weitere serverlose Dienstart sind die Serverless Containers \cite{ServerlessContainers}.
 Ein großer Nachteil von FaaS Diensten der Cloud-Provider ist,
 dass man die Laufzeitumgebung nicht erweitern kann. Bei der
 Entwicklung seiner Funktionen muss man aus einer geringen Auswahl
 an Programmiersprachen und Laufzeiten auswählen. Serverlose Container
-bieten hier einen großen Vorteil, denn sie erwarten ein Dockerimage.
+bieten hier einen großen Vorteil, denn sie erwarten ein Dockerimage \cite{ServerlessContainers}.
 Dadurch haben Entwickler mehr Kontrolle und Freiheit bei der
 Anwendungsentwicklung. Zusätzlich bleiben 
 die Vorteile der FaaS Dienste erhalten.
@@ -73,7 +70,7 @@ die Vorteile der FaaS Dienste erhalten.
 \subsection{Eigenschaften von Serverless}
 Damit ein Dienst dem Serverless-Prinzip folgt, sollte es
 gewisse Charakteristiken aufweisen \cite{ShafKhonMou}. Diese Eigenschaften gelten
-für FaaS sowie für Serverless Containers, können jedoch von Cloud-Provider zu
+für FaaS sowie für Serverless Containers können jedoch von Cloud-Provider zu
 Cloud-Provider leicht abweichen.
 
 \paragraph{Einfache Bereitstellung} Eine Anwendung sollte so einfach
@@ -86,14 +83,14 @@ bereitgestellt werden können \cite{ServerlessTrends}.
 
 \paragraph{Einfache Verwaltung und Wartung} 
 Nach dem Aufsetzen sollte die weitere Verwaltung der Anwendung, wie das Aktualisieren,
-ohne Komplexität möglich sein. Google Cloud Run gibt Entwicklern die Option
+ohne Komplexität möglich sein. Google Cloud Run gibt Entwicklern die Möglichkeit
 Containerressourcen, wie beispielsweise die Speicherkapazität \cite{CloudRunMemLimits}
 und CPU-Anzahl \cite{CloudRunCpuAlloc}, anzupassen. Die Dienste und darunterliegende
 Infrastruktur wird von den Cloud-Providern selbst auf Sicherheitslücken überwacht \cite{ServerlessTrends}.
 
 \paragraph{Automatisches Skalieren} Bei erhöhter Nachfrage sollten weitere Instanzen der Anwendung
 schnell genug gestartet werden, sodass die Nachfrage gedeckt wird.
-Verringern sich die Anfrage, so sollten die zusätzlich gestarteten Instanzen wieder abgebaut werden.
+Verringern sich die Anfragen, sollten die zusätzlich gestarteten Instanzen wieder abgebaut werden.
 Durch das automatische Skalieren passt sich der Dienst an die aktuelle Nachfrage der Anwendung an.
 Werden gar keine Anfragen an die Anwendung getätigt, soll keine Instanz laufen.
 Dies wird auch \emph{scale-to-zero} genannt \cite{ServerlessTrends}.
@@ -116,7 +113,7 @@ Auch wenn bereits stark auf andere Services eines Cloud-Providers
 zurückgegriffen wird, sind die serverlosen Dienste
 gut für das Verknüpfen der Services geeignet. Da die einzelnen Funktionen durch Events
 aktiviert werden, können Daten in eine Funktion eingeführt werden, um
-dann an die benötigten Komponenten, in passendem Format, wieder ausgeführt zu werden
+dann an die benötigten Komponenten in passendem Format wieder ausgeführt zu werden
 \cite{ServerlessTrends} \cite{HpcServerless}.
 
 \subsection{Nachteile von Serverless}
@@ -125,7 +122,7 @@ Auch die Nachteile gelten, mit einer Ausnahme, für FaaS sowie für
 Serverless Containers Dienste.
 
 \paragraph{Abhängigkeit der Cloud-Provider} Das Verwenden von vielen serverlosen Diensten kann zur Abhängigkeit der
-Cloud-Provider (engl. \emph{vendor lock-in}) führen. Die einzelnen
+Cloud-Provider (englisch \emph{vendor lock-in}) führen. Die einzelnen
 Services lassen sich leicht miteinander verbinden,
 was weiter die Komplexität der gesamten Anwendungsarchitektur verringert. Jedoch erwarten
 FaaS Dienste unterschiedliche Funktionsschreibweisen, sodass der Wechsel zu einem
@@ -135,9 +132,9 @@ Deren Laufzeitumgebung wird durch ein Dockerimage festgelegt.
 Somit ist der Wechsel zu anderen Diensten ohne großen Aufwand
 möglich.
 
-\paragraph{Flüchtig und zustandslos} Die gestarteten Instanzen sind flüchtig (engl. \emph{ephemeral}). Dadurch
+\paragraph{Flüchtig und zustandslos} Die gestarteten Instanzen sind flüchtig (englisch \emph{ephemeral}). Dadurch
 eignet sich Serverless nicht für alle Anwendungen. Einige Dienste, wie Google Cloud Run,
-haben auch eine maximale Zeitspanne (engl. \emph{timeout}), in der eine Anfrage abgearbeitet werden muss.
+haben auch eine maximale Zeitspanne (englisch \emph{timeout}), in der eine Anfrage abgearbeitet werden muss.
 Dauert es länger, wird die Bearbeitung abgebrochen \cite{CloudRunTimeout}.
 Auch dürfen Anfragen nicht davon ausgehen, dass sie von der
 gleichen Instanz bearbeitet werden.
@@ -146,7 +143,7 @@ gleichen Instanz bearbeitet werden.
 Bei einer eintretenden Anfrage, braucht das Hochfahren einer neuen Anwendungsinstanz
 gewisse Zeit, denn Anwendungslogik und Laufzeitumgebung müssen erst initialisiert werden.
 Cloud-Provider versuchen diese Zeit zu minimieren \cite{Firecracker}. Wird eine Instanz mit der Bearbeitung einer Anfrage
-fertig, so wird sie nicht sofort herunterfahren, sondern erst nach einer gewissen Zeit.
+fertig so wird sie nicht sofort herunterfahren, sondern erst nach einer gewissen Zeit.
 Dadurch kann sie bei erneuter Anfrage während diese Zeit wiederverwendet werden, denn Laufzeitumgebung und
 Anwendungslogik sind bereits geladen \cite{ColdStartComp}.
 
@@ -154,9 +151,7 @@ Anwendungslogik sind bereits geladen \cite{ColdStartComp}.
 
 Neben den serverlosen Diensten der Cloud-Provider stehen
 auch Open-Source Lösungen zur Verfügung. Platformen wie
-OpenFaaS\footnote{\url{https://www.openfaas.com/}},
-Apache OpenWhisk\footnote{\url{https://openwhisk.apache.org/}} und
-Oracle Fn Project\footnote{\url{https://fnproject.io/}} geben
+Apache OpenWhisk \cite{OpenWhiskGithub} geben
 Entwicklern die Möglichkeit ihre Applikationen
 nach dem Serverless Konzept bereitzustellen und
 von den Vorteilen zu profitieren. Wie bei Serverless
@@ -164,12 +159,12 @@ Container Diensten, haben sie den Vorteil,
 dass die Laufzeitumgebung der Instanzen durch
 eine Dockerfile konfiguriert werden kann.
 Jedoch werden einzelne ereignisgesteuerte Funktionen benutzt,
-um Anwendungen zu entwickeln, ähnlich den FaaS Diensten der
-Cloud-Provider \cite{OpenFaasGithub} \cite{OpenWhiskGithub}.
+um Anwendungen zu entwickeln ähnlich den FaaS Diensten der
+Cloud-Provider \cite{OpenWhiskGithub}.
 Einen großen Nachteil haben sie dennoch.
 Für das Ausführen in einer Produktionsumgebung setzen einige
 der Platformen Werkzeuge für Container-Orchestrierung voraus.
-Dieser muss erst aufgesetzt werden oder Entwickler greifen auf
+Diese Werkzeuge müssen erst aufgesetzt werden oder Entwickler greifen auf
 einen verwalteten Dienst der Cloud-Provider zurück. Jedoch fallen
 dann stündliche bzw. monatliche Fixkosten an und die
 Verwaltung der Anwendung steigt, sodass die Vorteile
@@ -199,7 +194,7 @@ function main(params) {
 \end{lstlisting}
 
 Die Funktion in Auflistung~\ref{lst:openwhisk_action},
-die nach Ausführung den Text \texttt{Hello World}
+die nach Ausführung den Text \emph{Hello World}
 in der Standardausgabe ausgibt und selbigen Text
 auch als JSON-Objekt zurücksendet, erfüllt alle Voraussetzungen
 für die Umwandlung zu einer Action.\\
@@ -240,15 +235,14 @@ OpenWhisk abgebildet.
 Sie baut auf unterschiedliche Komponenten auf,
 um eine Anfrage zu bearbeiten. Bei einem eintretenden Event \textbf{(1)}
 ist \emph{Nginx}\footnote{\url{https://www.nginx.com/}} \textbf{(2)} die erste
-Station. Diese wird zur SSL-Terminierung und Weiterleitung verwendet.
+Station. Diese wird zur SSL-Terminierung und Weiterleitung verwendet \cite{OpenWhiskGithub}.
 Nginx leitet den Aufruf weiter an den \emph{Controller} \textbf{(3)}.
 Der Controller implementiert die Rest-API und filtert die
 eintretenden Anfragen durch, um die passende Action und
 den weiteren Verlauf zu ermitteln.
-Er autorisiert die Anfrage und schaut auf nötigen Authentifizierungen.
+Er autorisiert die Anfrage und schaut auf nötige Authentifizierungen.
 Dafür befragt er CouchDB\footnote{\url{https://couchdb.apache.org/}}
-\textbf{(4)},
-eine Dokumenten-basierte Datenbank. Nachdem Autorisierung
+\textbf{(4)}. Nachdem Autorisierung
 und Authentifizierung erfolgreich abschließen,
 wird die Actions-Logik aus der Datenbank entnommen \textbf{(4)} und an den
 Load-Balancer weitergeleitet. Der Load-Balancer ist Bestandteil
@@ -258,9 +252,8 @@ In der Theorie würde der Load-Balancer sich einen freien Invoker suchen
 und ihm die Action-Logik übergeben. Jedoch kann es zu unerwarteten
 Störungen kommen oder es lässt sich kein freier
 Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
-Apache Kafka\footnote{\url{https://kafka.apache.org/}} \textbf{(5)},
-einer verteilten Streaming-Platform. Kafka speichert seine
-einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
+Apache Kafka\footnote{\url{https://kafka.apache.org/}} \textbf{(5)}.
+Kafka speichert seine einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
 Nachrichten vorhanden sind. Die Nachricht enthält welcher
 Invoker die Action ausführen soll, auch wenn dieser momentan
 beschäftigt ist. Kafka verarbeitet die Nachricht und sendet eine
@@ -272,8 +265,8 @@ welcher eine passende Laufzeitumgebung für die Action zur Verfügung
 stellt. Die Action-Logik wird in den Container geladen und ausgeführt.
 Das Resultat wird entnommen und der Container wird heruntergefahren.
 Das Resultat sowie die \texttt{activationId} werden in die
-\texttt{activations}-Datenbank \textbf{(7)} gespeichert. Nun kann, wie bereits zu Beginn,
-über den Endpunkt und der neugewonnen \texttt{activationId} das Resultat aus
+\emph{activations-Datenbank} \textbf{(7)} gespeichert. Nun kann, wie bereits zu Beginn,
+über den Endpunkt und der neugewonnenen \texttt{activationId} das Resultat aus
 der \texttt{activations}-Datenbank abgerufen werden
 \cite{OpenWhiskGithub}.
 
@@ -289,7 +282,7 @@ sind und ob sie für serverlose Anwendungen gut geeignet sind.
 \subsection{Virtual-Machine}
 Bei einer Virtual-Machine handelt es sich um eine virtuelle Umgebung, mit 
 eigenen virtuellen Ressourcen, wie unter anderem CPU und Speicher.
-Ein \emph{Virtual Machine Monitor} (VMM), auch \emph{Hypervisor} genannt
+Ein \emph{Virtual Machine Monitor} (VMM), auch \emph{Hypervisor} genannt, 
 ist ein Softwarestück, das dafür zuständig ist die 
 virtuellen Umgebungen einschließlich seiner virtuellen Ressourcen zu verwalten
 und Instruktionen auf die physischen Ressourcen abzubilden.
@@ -308,22 +301,18 @@ Arten von Hypervisor unterschieden.
 Hardware und verwaltet die virtuellen Umgebungen und ihre Betriebssysteme.
 Der Hypervisor benötigt selbst kein zugrundeliegendes Betriebssystem.
 Gängige Typ 1 Hypervisor sind unter anderem Microsoft Hyper-V\footnote{\url{https://docs.microsoft.com/de-de/virtualization/hyper-v-on-windows/}}
-\cite{RedHatHypervisor} und die Kernel-basierte Virtual-Machine
-(\emph{KVM}). Die KVM ist in den Linux-Kernel integriert und wandelt
+und die Kernel-basierte Virtual-Machine (\emph{KVM}). Die KVM \cite{RedHatKVM} ist in den Linux-Kernel integriert und wandelt
 das Linux-Betriebssystem in einen Typ 1 Hypervisor. Sie unterstützt Erweiterungen für
 Hardware-Virtualisierung. Diese Erweiterungen wurden eingeführt,
 um die Virtualisierung und die Entwicklung von Hypervisor
 zu beschleunigen. KVM kann auch mit einem weiteren
 Typ 2 Hypervisor benutzt werden, um diesen zu unterstützen und
-zu beschleunigen \cite{IBMHypervisor} \cite{RedHatKVM}.
+zu beschleunigen \cite{IBMHypervisor}.
 
 \paragraph{Typ 2 Hypervisor} Ein hosted Hypervisor, auch
 \emph{Typ 2 Hypervisor}  genannt, läuft als übliche
-Applikation auf dem Host-Betriebssystem. Beispiel hierfür wäre
-Oracle VirtualBox\footnote{\url{https://www.virtualbox.org/}},
-welches auch in der Informatik
-an der Heinrich-Heine-Universität (HHU) verwendet wird \cite{HHUFachschaft}.
-Der hosted Hypervisor kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
+Applikation auf dem Host-Betriebssystem. Der hosted Hypervisor
+kommuniziert mit dem Host-Betriebssystem und hat keinen direkten Zugriff auf die
 physischen Ressourcen. Erst in Zusammenarbeit mit ihm
 werden die Instruktionen an die physischen Hardwareressourcen weitergeleitet.
 Somit laufen die virtuellen Umgebungen auf dem Host-Betriebssystem,
@@ -335,7 +324,7 @@ direkt mit der Hardware kommunizieren \cite{IBMHypervisor}.
 
 \subsection{Container}
 Virtualisierung ist auch mithilfe von Linux Containern möglich,
-was auch Containerisierung (engl. \emph{Containerization})
+was auch Containerisierung (englisch \emph{Containerization})
 genannt wird. Diese enthalten isolierte Prozesse.
 Container teilen sich den Host-Kernel. Durch eine
 Konfigurationsdatei (\emph{Image}) werden alle
@@ -346,10 +335,10 @@ dass sie kompakter und sparsamer sind. Entwicklern stehen eine eindeutig
 definierte Laufzeitumgebung zur Verfügung, worauf sie ihre Anwendungen testen können
 \cite{RedHatContainer}. Container bauen auf drei Komponenten
 des Linux-Kernels auf, den Namensräumen
-(\emph{namespaces}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man7/namespaces.7.html}}),
+(\emph{namespaces}),
 den Kontrollgruppen
-(\emph{cgroups}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/en/man7/cgroups.7.html}})
-und den Filtern (\emph{seccomp-bpf}\footnote{\url{http://manpages.ubuntu.com/manpages/focal/man2/seccomp.2.html}}).
+(\emph{cgroups})
+und den Filtern (\emph{seccomp-bpf}).
 
 Mithilfe von namespaces stellt der Kernel eine Möglichkeit zur Isolation
 für Prozesse bereit. Mit ihnen können globale Ressourcen abstrahiert werden.
@@ -361,7 +350,7 @@ Es existieren unterschiedliche namespaces, wie beispielsweise
 \emph{mount namespaces}, \emph{network namespaces}
 und \emph{pid namespaces}.
 Durch mount namespaces kann die Sicht auf das Dateisystem
-(engl. \emph{filesystem}) für Prozesse beschränkt werden.
+(englisch \emph{filesystem}) für Prozesse beschränkt werden.
 Mit network namespaces lassen sich IP-Adressen, Ports
 und Routing Tabellen isolieren. PID (Prozess-ID) namespaces teilen
 den Identifikationsbereich. Ein Prozess hat dadurch zwei
@@ -445,7 +434,7 @@ eine Instanz nur die nötigen Ressourcen in Anspruch nehmen
 \cite{Firecracker}.
 
 \subsection{AWS Firecracker}
-Nach diesem theoretischen Ideal hat AWS mit Firecracker
+Nach diesem theoretischen Ideal hat AWS mit Firecracker \cite{Firecracker}
 eine eigene Virtualisierungsmethode aufgebaut, um ihre
 serverlosen Dienste zu verbessern.
 Firecracker ist ein Typ 2 Hypervisor optimiert für Serverless
@@ -468,16 +457,10 @@ ihre Infrastruktur nachgebessert. Google gVisor ist ein
 Applikationskernel \cite{gVisor}. Es reimplementiert viele
 Aspekte des Linux-Kernel in Go\footnote{\url{https://golang.org}}.
 Es läuft als Prozess und nimmt den Platz des Guest-Kernels ein
-auf den üblichen Anwendungen laufen können, unter anderem auch
+auf dem übliche Anwendungen laufen können, unter anderem auch
 isolierte Container.
 Ähnlich wie seccomp fängt gVisor alle Systemaufrufe der
 Anwendungen ab und versucht viele diese Aufrufe selbst zu bearbeiten.
 Nur wenige werden an den Host-Kernel weitergeleitet. Da gVisor
-nicht alle Systemaufrufe implementiert wie der Linux-Kernel
-kann es für bestimmte Anwendungen zu Kompatibilitätsproblemen
+nicht alle Systemaufrufe implementiert kann es für bestimmte Anwendungen zu Kompatibilitätsproblemen
 führen \cite{gVisor}.
-
-% \section{Eigenschaften serverloser Architekturen}
-% -- Architekturdartstellung einer simplen Webanwendung, Frontend + Backend + Datenbank
-% -- Vier eigenschaften des Serverless Computing bei jedem der Services deutlich machen
-% -- Serverless sieht vor soviel wie möglich die Dienste der Cloud-Provider zuverwenden

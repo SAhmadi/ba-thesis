@@ -1,6 +1,5 @@
-\chapter{Fazit und Ausblick}
+\chapter{Fazit}
 
-\section{Fazit}
 Im Rahmen dieser Arbeit wurde eine serverlose Anwendung entwickelt,
 die es Benutzern ermöglicht einfache Java Konsolenanwendungen in
 einer sicheren Umgebung auszuführen und zu testen. Sie
@@ -26,11 +25,10 @@ Umstände möglich. Anders ist dies bei der konstanten Verbindung zu
 einer VM in der Cloud. Der Quellcode kann auf der Maschine
 liegen und muss deshalb nicht immer wieder versendet werden.
 Durch die direkte Verbindung können auch mit den ausgeführten Programmen
-interagiert werden. Nach Anpassung der Tests kann die entwickelte
-Anwendung auch für das Ausführen und Testen von 
-einigen Übungsaufgaben des Moduls Programmierung benutzt werden.
-Als Erweiterung kann das Ausführen von Gradle-Tasks implementiert
-werden.
+interagiert werden. Der Sicherheitsaspekt der Arbeit ist auch mit einer VM basierten
+Cloud Lösung gegeben, ähnlich wie Repl.it oder GitHub Codespaces.
+Die Entwicklung der Applikation hat deutlich gemacht,
+dass die Serverless Prinzipien nicht für alle Anwendungen vorteilhaft sind.
 
 Der Dienst hat aber nicht nur Nachteile.
 Bei serverlose Anwendungen wird nur der eigentliche Verbrauch
@@ -38,14 +36,20 @@ in Zahlung gestellt. Da die entwickelte Anwendung auch
 auf null aktive Instanzen herunterskalieren kann, fallen bei nicht Benutzen
 der Anwendung keine kosten an. Hier hat die serverlose Anwendung einen
 Vorteil gegenüber VM basierten Lösungen, wie Repl.it oder
-GitHub Codespaces.
+GitHub Codespaces. Nach Anpassung der Tests kann die entwickelte
+Anwendung auch für das Ausführen und Testen von 
+einigen Übungsaufgaben des Moduls Programmierung benutzt werden.
+Als Erweiterung kann das Ausführen von Gradle Tasks implementiert
+werden.
 
 Das entwickelte Frontend ist ein erster Ansatz und noch sehr
 ausbaufähig. Um eine vollständige Entwicklungsumgebung zu bieten,
 müssen noch nützliche Funktionen implementiert werden.
 Da das Backend eine REST-API bereitstellt, können
 alternativ auch etablierte Texteditoren benutzt werden und ein passendes
-Plugin entwickelt werden.
+Plugin entwickelt werden. Das hätte den großen Vorteil, dass Benutzer ihren
+Quellcode in einer familiären Umgebung und mit nützlichen Werkzeugen entwickeln,
+wie es bei GitHub Codespaces der Fall ist.
 
 
  
