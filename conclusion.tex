@@ -1,36 +1,51 @@
 \chapter{Fazit und Ausblick}
-\label{chap:conclusion_and_outlook}
 
 \section{Fazit}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Im Rahmen dieser Arbeit wurde eine serverlose Anwendung entwickelt,
+die es Benutzern ermöglicht einfache Java Konsolenanwendungen in
+einer sicheren Umgebung auszuführen und zu testen. Sie
+lässt sich primär durch eine REST-API steuern, kann aber auch
+zum Teil über die grafische Entwicklungsumgebung angesprochen
+werden. Um einen Überblick über das relativ neue Konzept des
+Serverless-Computing zu geben, wurden die wichtigsten Eigenschaften,
+sowie Vor- und Nachteile erläutert.
 
-\section{Ausblick}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
+Das Serverless Prinzip ist für die Anwendung nicht ganz
+geeignet. Während der Evaluation der Anwendung wurden einige Probleme
+ersichtlich. Die Anwendung weist bei den Gradle Endpunkten noch
+einen Fehler auf, sodass bei großer Nachfrage viele Anfragen
+nicht erfolgreich beantwortet werden. Der Vorteil der
+einfachen Skalierung von Serverless wird hier nicht ausgenutzt und
+muss noch verbessert werden. Die Antwortzeit der Anwendung ist noch zu groß,
+um eine angenehme Benutzererfahrung zu bieten. Das
+auszuführende Programm muss bei jeglichen Änderungen
+komprimiert und immer wieder an den Dienst versendet
+werden. Außerdem sind serverlose Anwendungen zustandslos.
+Eine Interaktion mit den ausgeführten Programmen wird nur durch
+Umstände möglich. Anders ist dies bei der konstanten Verbindung zu
+einer VM in der Cloud. Der Quellcode kann auf der Maschine
+liegen und muss deshalb nicht immer wieder versendet werden.
+Durch die direkte Verbindung können auch mit den ausgeführten Programmen
+interagiert werden. Nach Anpassung der Tests kann die entwickelte
+Anwendung auch für das Ausführen und Testen von 
+einigen Übungsaufgaben des Moduls Programmierung benutzt werden.
+Als Erweiterung kann das Ausführen von Gradle-Tasks implementiert
+werden.
+
+Der Dienst hat aber nicht nur Nachteile.
+Bei serverlose Anwendungen wird nur der eigentliche Verbrauch
+in Zahlung gestellt. Da die entwickelte Anwendung auch
+auf null aktive Instanzen herunterskalieren kann, fallen bei nicht Benutzen
+der Anwendung keine kosten an. Hier hat die serverlose Anwendung einen
+Vorteil gegenüber VM basierten Lösungen, wie Repl.it oder
+GitHub Codespaces.
+
+Das entwickelte Frontend ist ein erster Ansatz und noch sehr
+ausbaufähig. Um eine vollständige Entwicklungsumgebung zu bieten,
+müssen noch nützliche Funktionen implementiert werden.
+Da das Backend eine REST-API bereitstellt, können
+alternativ auch etablierte Texteditoren benutzt werden und ein passendes
+Plugin entwickelt werden.
 
 
-\section{Weitere Anwendungsfälle}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-
-\subsection{Email}
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-
-\subsection{Dokumente}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.
-
-\subsection{Webbrowser}
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+ 

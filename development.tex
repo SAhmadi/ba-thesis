@@ -31,7 +31,7 @@ Das Layout der Seite richtet sich grob nach dem Styleguide der
 Modularen Online Platform für Studierende (MOPS)\footnote{\url{https://mops.style}}
 der HHU. In ihr wird das Frontend eingebunden.
 Es kann von den Studenten als Entwicklungsumgebung benutzt werden, um
-ihre Java-Projekte zu entwickeln und anschließend zu testen.
+kleinere Java-Programme zu entwickeln und anschließend zu testen.
 Jedoch liegt der Fokus der Arbeit auf der serverlosen Backend-Anwendung.
 
 
@@ -40,17 +40,13 @@ Jedoch liegt der Fokus der Arbeit auf der serverlosen Backend-Anwendung.
 Es bietet mehr Freiheit als FaaS Dienste der Cloud-Provider an, da mittels Dockerfile die Laufzeitumgebung
 der Anwendung genaustens definiert und konfiguriert werden kann. Auch Open-Source
 Plattformen wurden in Erwägung gezogen, jedoch aufgrund der etwas komplexeren Bereitstellung nicht ausgewählt.
-Da die Anwendung für Studenten und Korrektoren
-des Moduls Programmierung ausgelegt ist und der Datenschutz für Universitäten eine wichtige Rolle
-spielt, wird der Punkt in \autoref{chap:conclusion_and_outlook} noch einmal aufgegriffen.
 
 \paragraph{Webserver} Die Anwendung selbst wird mit dem Web-Framework
 Flask\footnote{\url{https://palletsprojects.com/p/flask/}}
-entwickelt. Als Programmiersprache wird Python verwendet.
-Flask ermöglicht die schnelle und unkomplizierte Bereitstellung einer REST-API.
-Da MOPS auf Spring Boot\footnote{\url{https://spring.io/projects/spring-boot}} basiert und
-der Styleguide die Template-Engine Thymeleaf verwendet, welche in Flask nicht unterstützt wird,
-richtet sich die Anwendung nur an dem Styleguide und implementiert es nicht vollständig.
+und Python entwickelt. Flask ermöglicht die schnelle und
+unkomplizierte Bereitstellung einer REST-API. Falls eine ähnliche Anwendung in Zukunft
+für Studenten und Korrektoren bereitgestellt werden soll, würden die üblichen Werkzeuge und
+Bibliotheken der Modularen Platform die Implementierung vereinfachen.
 
 \paragraph{Frontend Web-Framework} Für die grafische Entwicklungsumgebung
 wird mit Vue.js\footnote{\url{https://vuejs.org}} ebenfalls ein Web-Framework verwendet.

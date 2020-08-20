@@ -43,11 +43,10 @@ Google Cloud Run ermöglicht die Konfiguration von Ressourcen der
 Containerinstanzen. Es können unter anderem die Anzahl an zugewiesenen CPUs \cite{CloudRunCpuAlloc} und
 Speicher \cite{CloudRunMemLimits} angepasst werden.
 Den Containerinstanzen werden zwei vCPUs sowie zwei Gibibyte\footnote{\url{https://en.wikipedia.org/wiki/Gibibyte}}
-an Speicher zugewiesenen. Für die Anwendung wurde die höchste Konfiguration beider
-Ressourcen benutzt werden \cite{CloudRunCpuAlloc} \cite{CloudRunMemLimits},
-da bei einer geringeren Einstellung Gradle nicht genug Speicher zur Verfügung
-steht und Anfragen nicht bearbeitet werden. Der Nachteil ist, dass der Dienst dadurch
-teurer wird, da die Konfiguration der Ressourcen in den Kosten mit einberechnet wird \cite{CloudRunPricing}.
+an Speicher zugewiesenen, da bei einer geringeren Einstellung Gradle
+nicht genug Speicher zur Verfügung steht und Anfragen nicht bearbeitet werden.
+Der Nachteil ist, dass der Dienst dadurch teurer wird,
+da die Konfiguration der Ressourcen in den Kosten mit einberechnet wird \cite{CloudRunPricing}.
 
 \section{Endpunkte entfernt}
 Während der Entwicklung des Frontends wurde schnell ersichtlich,
@@ -76,4 +75,16 @@ jedoch wird die Benutzererfahrung klar und einheitlich.
 Als zusätzliche Hilfe wird den Benutzern im Frontend das Grundgerüst eines Gradle-Projekts
 automatisch bereitgestellt.
 
-
+\section{Zustandslosigkeit}
+Bereits vor Beginn der Arbeit war eine mögliche Schwierigkeit
+der Anwendung bekannt. Da die Anwendung einen serverlosen Dienst
+benutzt, kann mit den auszuführenden Programmen nicht
+interagiert werden. Die Containerinstanzen sind zustandslos.
+Anfragen werden nicht immer von der gleichen Instanz bearbeitet.
+Alle Programme, die vom Benutzer eine Eingabe einfordern,
+können nicht erfolgreich ausgeführt werden. Alternativ
+kann der Programmzustand in eine Datenbank ausgelagert werden
+und bei der nächsten Interaktion eingelesen werden.
+Jedoch wurde beschlossen die Funktion nicht in dieser Arbeit zu
+implementieren. Sie kann als mögliche Erweiterung entwickelt
+werden.

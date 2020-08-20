@@ -135,11 +135,12 @@ Deren Laufzeitumgebung wird durch ein Dockerimage festgelegt.
 Somit ist der Wechsel zu anderen Diensten ohne großen Aufwand
 möglich.
 
-\paragraph{Flüchtige Instanzen} Die gestarteten Instanzen sind flüchtig (engl. \emph{ephemeral}). Dadurch
-eignet sich Serverless nicht für alle Anwendungen. Anfragen dürfen nicht davon ausgehen, dass sie von der
-gleichen Instanz bearbeitet werden. Einige Dienste, wie Google Cloud Run,
+\paragraph{Flüchtig und zustandslos} Die gestarteten Instanzen sind flüchtig (engl. \emph{ephemeral}). Dadurch
+eignet sich Serverless nicht für alle Anwendungen. Einige Dienste, wie Google Cloud Run,
 haben auch eine maximale Zeitspanne (engl. \emph{timeout}), in der eine Anfrage abgearbeitet werden muss.
 Dauert es länger, wird die Bearbeitung abgebrochen \cite{CloudRunTimeout}.
+Auch dürfen Anfragen nicht davon ausgehen, dass sie von der
+gleichen Instanz bearbeitet werden.
 
 \paragraph{Cold-Starts} Ein weiteres Problem von Serverless sind die \emph{Cold-Starts}.
 Bei einer eintretenden Anfrage, braucht das Hochfahren einer neuen Anwendungsinstanz

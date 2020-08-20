@@ -1,64 +1,156 @@
 \chapter{Evaluation}
 In diesem Kapitel wird geprüft, ob die serverlose Anwendung
 für das Ausführen und Testen von einfachen Java Programmen verwendet
-werden kann. Zusätzlich wird die Anwendung geprüft,
-ob die Anwendung den Serverless Prinzipien folgt.
+werden kann. Zusätzlich wird geprüft, ob die Anwendung den Serverless Prinzipien folgt
+und wo noch Nachgebessert werden muss.
 
 Für das Testen und die Analyse der serverlosen Anwendung werden zwei unterschiedliche
-Gradle-Projekte verwendet, welche die JUnit5 Starter Gradle Vorlage verwenden \cite{JunitStarterGradle}.
+Gradle-Projekte und drei Javadateien verwendet.
+Die Gradle-Projekte verwenden die JUnit5 Starter Gradle Vorlage \cite{JunitStarterGradle}.
+Die Messungen selbst werden primär durch das Ausführen von entwickelten Skripten
+ermittelt, jedoch zum Teil manuell ausgewertet und protokolliert.
+
 Das erste Beispielprojekt ist eine einfache
 Hello World Applikation. Das Programm gibt den Text \emph{„Hello World“}
 in der Standardausgabe aus. Bei dem zweiten Projekt wird
 die Fibonacci-Folge\footnote{\url{https://de.wikipedia.org/wiki/Fibonacci-Folge}} berechnet.
-Die beigelegten Tests prüfen stichprobenartig, ob die Folge richtet berechnet wurde.
+Durch die beigelegten JUnit Tests wird stichprobenartig geprüft, ob die Folge richtet berechnet wurde.
+Während die beiden Beispielprojekte für das Testen der Gradle Endpunkte zuständig sind,
+werden die Javadateien für das Analysieren der Java Endpunkte verwendet.
 
 \section{Google Cloud Run Konfiguration}
 Für die Analyse werden den Cloud Run Containerinstanzen zwei vCPUs sowie zwei Gibibyte Speicher
-zugewiesen. Anfragen werden nach maximal 200 Sekunden automatisch abgebrochen.
-Zusätzlich wird auch die maximale Anzahl an gleichzeitigen Anfragen, welche eine Containerinstanz
-entgegennehmen kann, auf 80 eingestellt.
+zugewiesen. Anfragen werden nach maximal 300 Sekunden automatisch abgebrochen.
+Die maximale Anzahl an gleichzeitigen Anfragen, welche eine Containerinstanz
+entgegennehmen kann, wird auf 80 eingestellt. Außerdem wird die maximale Anzahl an Containerinstanzen
+auf 1000 begrenzt.
 
-\section{Ausführen der Programme}
-Bei diesem Test werden die Beispielprojekte jeweils 10 Mal an
-den Endpunkt \texttt{/run/gradle} geschickt und ausgewertet.
+\section{Probleme der Gradle Endpunkte}
+\begin{figure}
+  \centering
+  \includegraphics[height=7cm]{fig/success_failure_500reqs.pdf}
+  \caption{Anzahl der erfolgreichen und fehlerhaften Antworten nach insgesamt 500 Anfragen (bei 10 Anfragen pro Sekunde)}
+  \label{fig:success_failure_fivehundred}
+\end{figure}
 
+Da die Anwendung auf dem lokalen System bei vereinzelten Tests des \texttt{/test/gradle} Endpunkts oft
+mehrere Sekunden für die Bearbeitung brauchte, wurde in der ersten
+Testreihe schlicht die Anzahl an erfolgreichen und fehlerhaften Antworten betrachtet.
+Die Endpunkte \texttt{/run/gradle} und \texttt{/test/gradle} beider Beispielprojekte
+wurden insgesamt 500 Mal aufgerufen. Es wurden 10 Anfragen pro Sekunde gesendet.
+In Abbildung~\ref{fig:success_failure_fivehundred} ist deutlich zu sehen,
+dass die \texttt{/test/gradle} Endpunkte tatsächlich noch große Probleme
+aufweisen. Während die Endpunkte \texttt{/run/gradle} die Mehrheit der Anfragen erfolgreich
+beantworten, werden mehr als 85\% der Anfragen an die Gradle Test-Endpunkte nicht
+erfolgreich beantwortet. Es wird größtenteils die wenig aussagende Fehlermeldung \emph{„Service Unavailable“}
+als Antwort zurückgesendet, was die Fehlersuche erschwert.
 
-\section{Modulaufgaben Programmierung WS 2019}
-Für das Testen der Anwendung werden Übungsaufgaben des Moduls Programmierung
-der HHU aus dem Wintersemester 2019 verwendet. 
+In erster Annahme wurde vermutetet, dass der serverlose Dienst Schwierigkeiten hat die
+Anwendung zu Skalieren. Um zu Prüfen, ob eine Minderung der Gesamtaufrufe eine
+Verbesserung herbeiführt, wurden die Endpunkte bei der zweiten Testreihe nur 200 Mal aufgerufen.
+Auch diesmal wieder mit 10 Anfragen pro Sekunde.
+Zwar ist in Abbildung~\ref{fig:success_failure_twohundred} eine Verbesserung zu sehen,
+aber nach einem Blick auf das Log des serverlosen Dienstes wurden Fehlermeldungen beim Löschen
+der temporären Ordner angezeigt. Mitgesendete Zip-Archive bei Anfragen werden
+in diesen Ordner abgespeichert. Für das Erzeugen der Ordner wird
+Pythons \emph{tempfile.TemporaryDirectory} Funktion verwendet.
+Die Funktion sollte nach dem Austritt aus dem Kontext temporäre Ordner
+automatisch löschen \cite{PythonTempfile}.
 
-\section{Optimierungen}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-\subsection{Docker-Image}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-\subsection{Cold Starts}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-\subsection{Gradle Daemon}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-\subsection{vCPU und Speicher Konfiguration}
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
+\begin{figure}
+  \centering
+  \includegraphics[height=7cm]{fig/success_failure_200reqs.pdf}
+  \caption{Anzahl der erfolgreichen und fehlerhaften Antworten nach insgesamt 200 Anfragen (bei 10 Anfragen pro Sekunde)}
+  \label{fig:success_failure_twohundred}
+\end{figure}
 
-\section{Skalierbarkeit}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Auch die beiden Endpunkte \texttt{/run/java} und \texttt{/test/java} wurden auf den Fehler geprüft.
+Ähnlich wie zuvor wurden die Endpunkte mit 10 Anfragen pro Sekunde angesprochen, bis
+500 Anfragen gestellt wurden. In Abbildung~\ref{fig:success_failure_java_endpoint} sieht
+man, dass alle Anfragen erfolgreich
+und korrekt beantwortet wurden. Interessanterweise verwenden die beiden Java Endpunkte
+die gleiche Python Funktion. Als weitere Fehlerquelle wird das Speichern
+und Entpacken des Zip-Archivs vermutet. Das ist der größte Unterschied zu den Java Endpunkten und könnte
+möglicherweise der Grund sein, wieso der Fehler bei den Java Endpunkte nicht auftritt.
+Für eine produktionsreife Bereitstellung der Anwendung
+muss der Fehler gefunden werden, da bei großer Nachfrage die zahlreichen fehlerhaften Antworten keine
+gute Benutzererfahrung bieten.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=7cm]{fig/success_failure_java_endpoint.pdf}
+  \caption{Anzahl der erfolgreichen und fehlerhaften Antworten nach insgesamt 500 Anfragen an Java Endpunkte}
+  \label{fig:success_failure_java_endpoint}
+\end{figure}
+
+\section{Antwortzeiten}
+Eine gute Benutzererfahrung setzt auch voraus, dass die Anwendung die überreichten Programme in
+angemessener Zeit ausführt und testet. Somit sollten die Antwortzeiten möglichst gering sein.
+Aus diesem Grund wurden die durchschnittlichen Antwortzeiten der Endpunkte analysiert.
+Bei dieser Testreihe wurden nur erfolgreiche Antworten der vorherigen Testreihen verwendet.
+In Abbildung~\ref{fig:avg_resp_60reqs_test_gradle} werden die wenigen erfolgreichen Antworten
+der \texttt{/test/gradle} betrachtet. Für das Testen der beiden Beispielprojekte vergehen
+im Durchschnitt mehr als 25 Sekunden.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=6cm]{fig/avg_resp_60reqs_test_gradle.pdf}
+  \caption{Durchschnittliche Antwortzeit von 60 Anfragen an /test/gradle}
+  \label{fig:avg_resp_60reqs_test_gradle}
+\end{figure}
+
+Um sicherzustellen, dass die hohe Antwortzeit nicht an dem erwähnten Fehler liegt, wurden auch
+die erfolgreichen Antworten des \texttt{/run/gradle} Endpunkts hinzugezogen. Zwar
+ist Abbildung~\ref{fig:avg_resp_450reqs_run_gradle} eine kleine Verbesserung zu sehen,
+jedoch sind 20 bis 25 Sekunden Wartezeit immer noch sehr viel für eine produktionsreife
+Bereitstellung. Abschließend wurden auch die Antwortzeiten der Java
+Endpunkte analysiert.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=6cm]{fig/avg_resp_450reqs_run_gradle.pdf}
+  \caption{Durchschnittliche Antwortzeit von 450 Anfragen an /run/gradle}
+  \label{fig:avg_resp_450reqs_run_gradle}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=6cm]{fig/avg_resp_500reqs_java.pdf}
+  \caption{Durchschnittliche Antwortzeit von 500 Anfragen an /run/java und /test/java}
+  \label{fig:avg_resp_500reqs_java}
+\end{figure}
+
+Bei vereinzelten Tests auf dem eigenen lokalen System wurden die Anfragen
+sehr zügig bearbeitet. Abbildung~\ref{fig:avg_resp_500reqs_java} zeigt jedoch
+an, dass auch hier im Durchschnitt gut 20 Sekunden gewartet werden
+muss. Ein möglicher Grund dafür könnte das konservative Starten
+neuer Containerinstanz von Seiten Googles sein.
+Nach näherem Betrachten der einzelnen Anfragen ist in
+Abbildung~\ref{fig:resp_of_ith_req_run_java} zu sehen, dass vor allem
+die späteren Anfragen viel Zeit brauchen. Es sieht so aus, als
+ob der Google Dienst zu Beginn genug Containerinstanz startet, um
+die Nachfrage zu bewältigen. Jedoch stagniert das Hochfahren neuer
+Instanzen bis zu einem gewissen Punkt. Möglicherweise geht Google davon aus, dass
+die meisten Anwendungen auf den Containerinstanzen nur kurzlebig sind.
+Deshalb könnte die Skalierung zu Beginn höher sein. Läuft die
+Anwendung jedoch länger, könnte der Skalierungsfaktor verkleinert werden.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=15cm]{fig/resp_of_ith_req_run_java.png}
+  \caption{Antwortzeit des i-ten Aufrufs von /run/java}
+  \label{fig:resp_of_ith_req_run_java}
+\end{figure}
+
+\section{Modulaufgaben Programmierung WS 2018}
+Es wurden auch vereinzelt Aufgaben des Moduls Programmierung aus dem
+Wintersemester 2018 der HHU getestet.
+Die Aufgaben benutzen für das Testen Gradle-Tasks.
+Sie testen auch nicht Funktionszustände und Rückgabewerte, sondern es wird die
+Ausgabe auf der Standardausgabe kontrolliert.
+Da jedoch bei der ausgearbeiteten Anwendung JUnit Tests vorausgesetzt werden,
+müssen die Gradle-Tasks erst umgewandelt werden. Dies ist jedoch recht trivial,
+solange man auch bei den JUnit Tests nur die Ausgabe auf der Standardausgabe
+testet. Es müssen meist nur kleinere syntaktische Änderungen durchgeführt werden.
+Einige umgeschriebene Tests sind dem Quellcode im GitLab der Arbeitsgruppe
+Rechnernetze der HHU beigelegt.
