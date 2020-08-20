@@ -3,16 +3,16 @@ In diesem Kapitel wird die Problemstellung und das Ziel der Arbeit vorgestellt.
 Außerdem wird ein Überblick über die einzelnen Kapitel gegeben.
 
 \section{Motivation}
-Während meiner Korrektor-Tätigkeit neigte ich schnell den Quellcode der Studenten sofort zu kompilieren
+Während meiner Korrektor-Tätigkeit neigte ich schnell dazu den Quellcode der Studenten sofort zu kompilieren
 und das resultierende Programm auszuführen, 
 weil dadurch bereits ein sehr aussagekräftiger Eindruck über die Qualität der Abgabe ersichtlich wird. 
 Jedoch bringt das Ausführen von fremden und ungeprüften Programmen einige Gefahren mit sich.
 Es können Sicherheitslücken der \textit{Java Runtime Environment} (JRE) \cite{Jre}
 oder des eigenen Systems ausgenutzt werden, wodurch Schadprogramme eingeschleust
-werden können \cite{CveJreVuln}.
+werden könnte \cite{CveJreVuln}.
 Um dies zu verhindern, kann man das Programm in einer isolierten Umgebung laufen lassen.
 Das manuelle Aufsetzen einer \textit{Virtual-Machine} (VM) \cite{RedHatVM} auf dem eigenen Computer
-benötigt relativ viele Ressourcen und ist zugleich auch viel Aufwand nur um ein kleines Programm auszuführen.
+benötigt relativ viele Ressourcen und ist zugleich auch aufwendiger nur um ein kleines Programm auszuführen.
 Das Ausweichen auf traditionelle externe Dienste von \textit{Cloud-Providern} hat den Nachteil,
 dass man einen stündlichen bzw. monatlichen festen Betrag zahlen muss,
 auch wenn der Dienst nicht genutzt wird. Man muss im Vorhinein grob die Auslastung abschätzen,
@@ -25,25 +25,28 @@ Das Konzept des \textit{Serverless-Computing} beinhaltet das Entwickeln und Bere
 von skalierbaren Anwendungen ohne komplexe Serververwaltung, bei der nur der eigentliche Verbrauch
 in Zahlung gestellt wird \cite{CioGov}.
 Dafür bieten Cloud-Provider Dienste an, welche sie selbst
-verwalten. Entwickler brauchen sich nur um ihre Programme sowie neue Erweiterungen kümmern,
+verwalten. Entwickler brauchen sich nur um ihre Programme und neue Erweiterungen zu kümmern,
 da die mühselige Arbeit der Skalierung, Provisionierung und Instandhaltung
-bereits von den Cloud-Providern übernommen wird.
+bereits von den Cloud-Providern übernommen werden.
 
 \section{Ziel der Arbeit}
 Das Ziel dieser Arbeit ist es eine serverlose Anwendung für das sichere Ausführen und Testen
 von einfachen \textit{Java}\footnote{\url{https://www.oracle.com/de/java/}} und
 \textit{Gradle}\footnote{\url{https://gradle.org/}} Konsolenanwendungen zu entwickeln.
+Der Quellcode soll über eine
+REST-API an den Dienst gesendet werden, wo er anschließend gebaut und ausgeführt oder getestet
+wird.
 
 \section{Aufbau der Arbeit}
-\paragraph{Kapitel 2 - Grundlagen} Zu Beginn werden die nötigen Grundlagen und Eigenschaften von Serverless erklärt.
+\paragraph{Kapitel 2 - Grundlagen} Zu Beginn werden die nötigen Grundlagen und Eigenschaften von Serverless erläutert.
 Ein wesentlicher Bestandteil dieser Arbeit ist, dass die Programme in einer sicheren Umgebung,
 getrennt voneinander ausgeführt werden. Dafür werden
 \textit{Container} und Virtual-Machines 
 näher erkundet. Diese zwei Konzepte sind das Fundament der Umgebungen, in denen Cloud-Provider die 
 Anwendungen ihrer Kunden sicher und getrennt voneinander ausführen.
 Es werden zwei unterschiedliche serverlose Dienstarten vorgestellt, die den Entwicklern zur Verfügung stehen.
-Außerdem werden aktuell verfügbare serverlose Open Source Lösungen vorgestellt.
-Abschließend wird der Aufbau und die Architektur einer serverlosen Platform erläutert.
+Außerdem werden aktuell verfügbare serverlose Open Source Lösungen erwähnt.
+Abschließend wird der Aufbau und die Architektur einer serverlosen Plattform erläutert.
 
 \paragraph{Kapitel 3 - Entwicklung} In diesem Kapitel wird die eigentliche Architektur
 und Implementierung der entwickelten Anwendung präsentiert. Davor werden kurz die benötigten Werkzeuge

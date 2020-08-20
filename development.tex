@@ -1,7 +1,7 @@
 \chapter{Entwicklung}
 In diesem Kapitel wird die serverlose Anwendung entwickelt.
 Sie soll Benutzer ermöglichen Quellcode von Java Konsolenanwendungen und Gradle-Projekten
-in einer sicheren Umgebung zu bauen, starten und zu testen. Durch die Entwicklung sollen auch Vor- und Nachteil
+in einer sicheren Umgebung zu bauen, zu starten und zu testen. Durch die Entwicklung sollen auch Vor- und Nachteil
 von Serverless besser eingeschätzt werden.
 Dieses Kapitel beinhaltet die Architektur und Implementierung
 der Anwendung. Davor werden Dienste und Werkzeuge vorgestellt,
@@ -11,8 +11,8 @@ Die serverlose Anwendung ermöglicht es einzelne Javadateien auszuführen.
 Werden zusätzliche JUnit5\footnote{\url{https://junit.org/junit5/docs/current/user-guide/}}
 Testdateien mitgeliefert, können auch die Tests gestartet werden.
 Das Resultat der Tests wird wieder an den Benutzer zurückgeliefert.
-Der Dienst kann auch von Studenten und
-Korrektoren benutzt werden. Da die Aufgaben des Moduls Programmierung der HHU Gradle benutzen,
+Der Dienst kann auch von Studenten und Korrektoren benutzt werden.
+Da die Aufgaben des Moduls Programmierung der HHU Gradle benutzen,
 können auch Gradle-Projekte ausgeführt und getestet werden.
 Jedoch verwenden die Modulaufgaben keine JUnit Tests, sodass sie angepasst werden müssen.
 Außerdem wird für das Ausführen der Gradle-Projekte
@@ -21,7 +21,7 @@ vorausgesetzt. Die Anwendung kann vollständig durch die Kommandozeile angesproc
 sie stellt eine REST-API bereit.
 Jedoch wird auch ein Endpunkt zur Verfügung gestellt, der eine Webseite zurückliefert.
 Das Layout der Seite richtet sich grob nach dem Styleguide der
-Modularen Online Platform für Studierende (MOPS)\footnote{\url{https://mops.style}}
+Modularen-Online-Plattform für Studierende (MOPS)\footnote{\url{https://mops.style}}
 der HHU. In ihr wird das Frontend eingebunden.
 Es kann von den Studenten als Entwicklungsumgebung benutzt werden, um
 kleinere Java-Programme zu entwickeln und anschließend zu testen.
@@ -39,7 +39,7 @@ Flask \cite{Flask}
 und Python entwickelt. Flask ermöglicht die schnelle und
 unkomplizierte Bereitstellung einer REST-API. Sollte jedoch eine ähnliche Anwendung in Zukunft
 für Studenten und Korrektoren bereitgestellt werden soll, würden die üblichen Werkzeuge und
-Bibliotheken der Modularen Platform die Implementierung vereinfachen.
+Bibliotheken der Modularen-Plattform die Implementierung vereinfachen.
 
 \paragraph{Frontend Web-Framework} Für die grafische Entwicklungsumgebung
 wird mit Vue.js\footnote{\url{https://vuejs.org}} ebenfalls ein Web-Framework verwendet.
@@ -212,7 +212,7 @@ curl -F file=@gradle_project.zip \ |\label{line:gradleZip}|
 Sollen enthaltene JUnit-Tests ausgeführt werden,
 muss nur der Endpunkt des Befehls zu \texttt{/test/gradle} abgeändert werden.
 
-\paragraph{Einbinden des Frontends} Es gibt noch einen weiteren Endpunk, welcher
+\paragraph{Einbinden des Frontends} Es gibt noch einen weiteren Endpunkt, welcher
 nicht primär für das Testen und Ausführen von Java Quellcode zuständig ist.
 Durch eine GET-Anfrage an den Root-Endpunkt wird eine grafische Benutzeroberfläche zurückgesendet.
 Vor Beginn der Ausarbeitung war als eine mögliche Erweiterung definiert, dass die serverlose Anwendung an
@@ -234,7 +234,7 @@ In Abbildung~\ref{fig:ablauf_run_java} ist der Ablauf einer Anfrage an den Endpu
 \texttt{/run/java} abgebildet. Nachdem das Backend die Anfrage entgegennimmt,
 werden die enthaltenen Dateien in einem temporären Bereich gesichert.
 Von dort aus wird durch das Subprocess-Modul von Python der \texttt{javac} Befehl aufgerufen.
-Mit dem Subprocess-Modul lassen sich zusätzliche Prozesse startet und verwalten \cite{PythonSubprocess}.
+Mit dem Subprocess-Modul lassen sich zusätzliche Prozesse starten und verwalten \cite{PythonSubprocess}.
 Wenn das Kompilieren des Quellcodes erfolgreich ist, wird mit dem \texttt{java} Befehl
 das Programm gestartet. Die Standardausgabe des Programms wird eingefangen und
 dem Benutzer als Antwort zurückgesendet. Für die beiden Gradle Endpunkte ist der Ablauf ähnlich.
@@ -261,7 +261,9 @@ Benutzer können durch das Erstellen von neuen Dateien und Ordnern ihre
 Anwendungslogik in das Projekt einfügen und das Gerüst ausbauen. Das Frontend bietet
 die nötigsten Funktionen, um Benutzern zu ermöglichen ihren Quellcode
 zu starten und zu testen. Es ist ein erster Ansatz einer Entwicklungsumgebung
-und ist noch ausbaufähig.
+und ist noch sehr ausbaufähig. Es fehlen noch wichtige Eigenschaften von
+Webanwendungen, wie das temporäre Speichern des eingetippten Quellcodes nach
+der Aktualisierung der Webseite.
 
 Das Frontend wird durch Google Firebase Hosting, zur Verfügung gestellt.
 Mit wenigen Befehlen ermöglicht der Dienst das unkomplizierte Bereitstellen von statische Webseiten.

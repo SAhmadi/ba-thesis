@@ -49,7 +49,7 @@ Aufgrund des geringen Aufgabenbereichs und der Zustandslosigkeit einer Funktion,
 sind Cloudanbieter in der Lage sehr schnell mehrere Instanzen einer Funktion zu starten,
 um eine erhöhte Nachfrage zu bewältigen.
 Verringert sich die Nachfrage wieder, werden die Instanzen abgebaut. Anders ist 
-es bei traditionellen selbstverwalteten Diensten. Dort müssen Entwickler die Nachfrage grob
+es bei traditionellen selbstverwalteten Diensten, denn dort müssen Entwickler die Nachfrage grob
 abschätzen und bei zu hoher Nachfrage die Kapazitäten rechtzeitig
 erhöhen. Verringert sich die Nachfrage wieder muss daran
 gedacht werden die Kapazitäten zu verkleinern, da sonst
@@ -68,21 +68,21 @@ Anwendungsentwicklung. Zusätzlich bleiben
 die Vorteile der FaaS Dienste erhalten.
 
 \subsection{Eigenschaften von Serverless}
-Damit ein Dienst dem Serverless-Prinzip folgt, sollte es
+Damit ein Dienst dem Serverless Prinzip folgt, sollte es
 gewisse Charakteristiken aufweisen \cite{ShafKhonMou}. Diese Eigenschaften gelten
 für FaaS sowie für Serverless Containers können jedoch von Cloud-Provider zu
 Cloud-Provider leicht abweichen.
 
 \paragraph{Einfache Bereitstellung} Eine Anwendung sollte so einfach
 wie möglich bereitgestellt werden können.
-FaaS und Serverless Container Dienste erwarten meist nur die
+FaaS und Serverless Container Dienste erwarten meist nur eine
 Anwendungslogik und eine Dockerfile.
 Mit nur wenigen Kommandos und Interaktionen in der Kommandozeile oder
 der grafischen Benutzeroberfläche sollte die Anwendung
 bereitgestellt werden können \cite{ServerlessTrends}.
 
 \paragraph{Einfache Verwaltung und Wartung} 
-Nach dem Aufsetzen sollte die weitere Verwaltung der Anwendung, wie das Aktualisieren,
+Nach dem Aufsetzen sollte die weitere Verwaltung der Anwendung, wie das Aktualisieren
 ohne Komplexität möglich sein. Google Cloud Run gibt Entwicklern die Möglichkeit
 Containerressourcen, wie beispielsweise die Speicherkapazität \cite{CloudRunMemLimits}
 und CPU-Anzahl \cite{CloudRunCpuAlloc}, anzupassen. Die Dienste und darunterliegende
@@ -92,7 +92,7 @@ Infrastruktur wird von den Cloud-Providern selbst auf Sicherheitslücken überwa
 schnell genug gestartet werden, sodass die Nachfrage gedeckt wird.
 Verringern sich die Anfragen, sollten die zusätzlich gestarteten Instanzen wieder abgebaut werden.
 Durch das automatische Skalieren passt sich der Dienst an die aktuelle Nachfrage der Anwendung an.
-Werden gar keine Anfragen an die Anwendung getätigt, soll keine Instanz laufen.
+Werden gar keine Anfragen an die Anwendung getätigt, sollte keine Instanz laufen.
 Dies wird auch \emph{scale-to-zero} genannt \cite{ServerlessTrends}.
 
 \paragraph{Bezahlung des eigentlichen Verbrauchs} Kosten fallen nur dann an, wenn mindestens eine
@@ -103,7 +103,7 @@ Selbstverwaltete Dienste dagegen werden oft stündlich oder monatlich in Zahlung
 Dies ist die \emph{pay-for-use} Eigenschaft von Serverless \cite{Firecracker}.
 Zusätzlich bieten Google Cloud Run und AWS Lambda auch ein kostenloses Kontingent an
 \cite{CloudRunPricing} \cite{AWSLambda}. Erst nachdem die jeweiligen Ressourcen
-ausgelastet sind, fallen kosten an.
+ausgelastet sind, fallen Kosten an.
 
 Somit lässt sich das Serverless-Computing Konzept gut auf Applikationen anwenden,
 die über den Tag hinaus eine starke Schwankung in der Nachfrage haben. Der Cloudanbieter wird
@@ -118,7 +118,7 @@ dann an die benötigten Komponenten in passendem Format wieder ausgeführt zu we
 
 \subsection{Nachteile von Serverless}
 Neben den zahlreichen Vorteilen bergen serverlose Dienste auch einige Nachteile.
-Auch die Nachteile gelten, mit einer Ausnahme, für FaaS sowie für
+Diese gelten, mit einer Ausnahme, für FaaS sowie für
 Serverless Containers Dienste.
 
 \paragraph{Abhängigkeit der Cloud-Provider} Das Verwenden von vielen serverlosen Diensten kann zur Abhängigkeit der
@@ -126,8 +126,8 @@ Cloud-Provider (englisch \emph{vendor lock-in}) führen. Die einzelnen
 Services lassen sich leicht miteinander verbinden,
 was weiter die Komplexität der gesamten Anwendungsarchitektur verringert. Jedoch erwarten
 FaaS Dienste unterschiedliche Funktionsschreibweisen, sodass der Wechsel zu einem
-anderen Anbieter nicht mühelos ist \cite{EcoArc}.
-Serverless Container haben dieses Problem nicht.
+anderen Anbieter nicht mühelos wäre \cite{EcoArc}.
+Dieses Problem haben Serverless Container nicht.
 Deren Laufzeitumgebung wird durch ein Dockerimage festgelegt.
 Somit ist der Wechsel zu anderen Diensten ohne großen Aufwand
 möglich.
@@ -147,10 +147,10 @@ fertig so wird sie nicht sofort herunterfahren, sondern erst nach einer gewissen
 Dadurch kann sie bei erneuter Anfrage während diese Zeit wiederverwendet werden, denn Laufzeitumgebung und
 Anwendungslogik sind bereits geladen \cite{ColdStartComp}.
 
-\subsection{Open-Source Serverless Platform}
+\subsection{Open Source serverless Platform}
 
 Neben den serverlosen Diensten der Cloud-Provider stehen
-auch Open-Source Lösungen zur Verfügung. Platformen wie
+auch Open Source Lösungen zur Verfügung. Platformen wie
 Apache OpenWhisk \cite{OpenWhiskGithub} geben
 Entwicklern die Möglichkeit ihre Applikationen
 nach dem Serverless Konzept bereitzustellen und
@@ -177,7 +177,7 @@ wird hier der Aufbau einer serverlosen Platform
 anhand von Apache OpenWhisk vorgestellt.
 Aus Googles Dokumentationen wird nicht eindeutig ersichtlich, wie
 deren Service aufgebaut ist. Dagegen ist OpenWhisk eine
-gut dokumentierte Open-Source Lösung.
+gut dokumentierte Open Source Lösung.
 
 In OpenWhisk werden serverlose Funktionen \emph{Actions} genannt.
 Dafür wird in einer Datei eine Funktion deklarieren.
@@ -243,7 +243,7 @@ den weiteren Verlauf zu ermitteln.
 Er autorisiert die Anfrage und schaut auf nötige Authentifizierungen.
 Dafür befragt er CouchDB\footnote{\url{https://couchdb.apache.org/}}
 \textbf{(4)}. Nachdem Autorisierung
-und Authentifizierung erfolgreich abschließen,
+und Authentifizierung erfolgreich abgeschlossen sind,
 wird die Actions-Logik aus der Datenbank entnommen \textbf{(4)} und an den
 Load-Balancer weitergeleitet. Der Load-Balancer ist Bestandteil
 des Controllers und enthält eine Sicht auf alle \emph{Invoker}.
@@ -254,7 +254,7 @@ Störungen kommen oder es lässt sich kein freier
 Invoker finden. Deshalb sendet der Load-Balancer eine Nachricht an
 Apache Kafka\footnote{\url{https://kafka.apache.org/}} \textbf{(5)}.
 Kafka speichert seine einkommenden Nachrichten, sodass auch bei einem Systemabsturz alle
-Nachrichten vorhanden sind. Die Nachricht enthält welcher
+Nachrichten vorhanden sind. Diese enthält welcher
 Invoker die Action ausführen soll, auch wenn dieser momentan
 beschäftigt ist. Kafka verarbeitet die Nachricht und sendet eine
 Empfangsbestätigung mit der \texttt{activationId} zurück. Mithilfe
@@ -364,8 +364,7 @@ Begrenzt werden können beispielsweise CPU Zeit und Speicher eines Prozesses.
 Möglich wird dies durch \emph{subsystems},
 auch \emph{resource controller} genannt. Subsystems sind Bestandteil
 des Kernels und erlauben das Ändern von Prozesseigenschaften und
-Prozessverhalten in einer cgroups Gruppierung. 
-\cite{RedHatIntroToLinuxContainers}.
+Prozessverhalten in einer cgroups Gruppierung \cite{RedHatIntroToLinuxContainers}.
 
 Für die Sicherheit von Containerinstanzen ist seccomp-bpf 
 verantwortlich. Es filtert und limitiert

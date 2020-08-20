@@ -1,3 +1,7 @@
+# More info in Code Repo
+You will find more info for all repos to the code repo. \
+https://gitlab.cs.uni-duesseldorf.de/cn-tsn/students/bachelor/ba-ahmadi-code/-/tree/master
+
 # Vorlage Abschlussarbeiten
 
 Dieses Layout kann soll für Bachelor- und Masterarbeiten verwendet werden. Die
